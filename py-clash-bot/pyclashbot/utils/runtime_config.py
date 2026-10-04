@@ -14,6 +14,47 @@ SOURCE_ROOT = Path(__file__).resolve().parents[2]
 RESOURCE_ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else SOURCE_ROOT
 
 
+def install_unicode_image_io() -> None:
+    """Use Python file I/O for Windows Unicode image paths, preserving BGR decoding."""
+    import cv2  # noqa: PLC0415
+    import numpy as np  # noqa: PLC0415
+
+    if getattr(cv2, "_pyclashbot_unicode_io_installed", False):
+        return
+    original_imread = cv2.imread
+    original_imwrite = cv2.imwrite
+
+    def unicode_imread(filename, flags=cv2.IMREAD_COLOR):
+        file_path = os.fspath(filename)
+        if not isinstance(file_path, str) or file_path.isascii():
+            return original_imread(filename, flags)
+        try:
+            encoded = np.frombuffer(Path(file_path).read_bytes(), dtype=np.uint8)
+            if encoded.size == 0:
+                return None
+            return cv2.imdecode(encoded, flags)
+        except (OSError, ValueError, cv2.error):
+            return None
+
+    def unicode_imwrite(filename, img, params=None):
+        file_path = os.fspath(filename)
+        if not isinstance(file_path, str) or file_path.isascii():
+            return original_imwrite(filename, img) if params is None else original_imwrite(filename, img, params)
+        path = Path(file_path)
+        ok, encoded = cv2.imencode(path.suffix, img, [] if params is None else params)
+        if not ok:
+            return False
+        try:
+            path.write_bytes(encoded.tobytes())
+        except (OSError, ValueError):
+            return False
+        return True
+
+    setattr(cv2, "imread", unicode_imread)
+    setattr(cv2, "imwrite", unicode_imwrite)
+    setattr(cv2, "_pyclashbot_unicode_io_installed", True)
+
+
 @dataclass(frozen=True)
 class RuntimeConfig:
     data_root: Path

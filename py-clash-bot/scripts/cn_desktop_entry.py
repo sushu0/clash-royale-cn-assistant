@@ -29,6 +29,9 @@ def configure_desktop_runtime() -> None:
     os.environ["TEMP"] = str(temp_dir)
     os.environ["TMP"] = str(temp_dir)
     os.environ.setdefault("PYTHONPYCACHEPREFIX", str(cache_dir / "pycache"))
+    from pyclashbot.utils.runtime_config import install_unicode_image_io  # noqa: PLC0415
+
+    install_unicode_image_io()
     if not getattr(sys, "frozen", False):
         sys.path.insert(0, str(resource_root))
 
