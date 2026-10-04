@@ -51,6 +51,8 @@ try {
             $process.StartInfo.RedirectStandardError = $true
             $process.StartInfo.StandardOutputEncoding = [Text.UTF8Encoding]::new($false)
             $process.StartInfo.StandardErrorEncoding = [Text.UTF8Encoding]::new($false)
+            $process.StartInfo.EnvironmentVariables['PYTHONUTF8'] = '1'
+            $process.StartInfo.EnvironmentVariables['PYTHONIOENCODING'] = 'utf-8'
             if ($DataRoot) { $process.StartInfo.EnvironmentVariables['PYCLASHBOT_DATA_ROOT'] = $DataRoot }
             if (-not $process.Start()) { throw "$Name process did not start." }
             $stdoutTask = $process.StandardOutput.ReadToEndAsync()
