@@ -1,0 +1,181 @@
+{
+  "event": "observe",
+  "battle": 17,
+  "hand": [
+    {
+      "slot": 0,
+      "card": "goblin_giant",
+      "variant": "goblin_giant",
+      "available": true,
+      "offset": 118,
+      "margin": 1906
+    },
+    {
+      "slot": 1,
+      "card": "pekka",
+      "variant": "pekka",
+      "available": true,
+      "offset": 132,
+      "margin": 2212
+    },
+    {
+      "slot": 2,
+      "card": "bomber",
+      "variant": "bomber",
+      "available": true,
+      "offset": 136,
+      "margin": 2078
+    },
+    {
+      "slot": 3,
+      "card": "zap",
+      "variant": "zap",
+      "available": true,
+      "offset": 176,
+      "margin": 1776
+    }
+  ],
+  "cues": {
+    "elixir": 10,
+    "enemies": [
+      [
+        167,
+        416
+      ],
+      [
+        184,
+        395
+      ]
+    ],
+    "far_warnings": [
+      [
+        125,
+        269
+      ]
+    ],
+    "enemy_towers": {
+      "left": true,
+      "right": true
+    },
+    "enemy_tower_fill": {
+      "left": 1.0,
+      "right": 0.975
+    },
+    "own_tower_fill": {
+      "left": null,
+      "right": null
+    },
+    "elite_ability_ready": false,
+    "threats": [],
+    "dark_ground_candidates": [],
+    "allies": [
+      [
+        216,
+        354
+      ]
+    ]
+  },
+  "policy_observation": {
+    "tracks": [
+      {
+        "point": [
+          167,
+          416
+        ],
+        "anchor": [
+          167,
+          416
+        ],
+        "first": 8069.14,
+        "seen": 8069.671,
+        "frames": 5,
+        "motion": 0,
+        "domain": null
+      },
+      {
+        "point": [
+          184,
+          395
+        ],
+        "anchor": [
+          184,
+          395
+        ],
+        "first": 8068.609,
+        "seen": 8069.671,
+        "frames": 3,
+        "motion": 0,
+        "domain": null
+      },
+      {
+        "point": [
+          125,
+          269
+        ],
+        "anchor": [
+          125,
+          269
+        ],
+        "first": 8069.671,
+        "seen": 8069.671,
+        "frames": 5,
+        "motion": -19,
+        "domain": null
+      }
+    ],
+    "survivors": [
+      {
+        "card": "mega_minion",
+        "point": [
+          216,
+          354
+        ],
+        "deployed": 8054.953,
+        "seen": 8069.671,
+        "frames": 19,
+        "visible": true
+      },
+      {
+        "card": "baby_dragon",
+        "point": [
+          311,
+          355
+        ],
+        "deployed": 8058.812,
+        "seen": 8067.546,
+        "frames": 1,
+        "visible": false
+      }
+    ],
+    "quiet_seconds": 0,
+    "pressure": [
+      {
+        "lane": "left",
+        "kind": "unknown",
+        "point": [
+          167,
+          416
+        ],
+        "urgency": 432
+      },
+      {
+        "lane": "left",
+        "kind": "unknown",
+        "point": [
+          184,
+          395
+        ],
+        "urgency": 411
+      }
+    ]
+  },
+  "evidence": {
+    "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-observe-63.png",
+    "sha256": "377827e59117466c8beb77ccd26564b013e4cdd0090473a672a56ee9f4be4de0",
+    "sequence": 223
+  },
+  "time": "2026-09-28 13:03:36",
+  "session": "20260928-122306",
+  "policy_version": "double-air-567-v1.3-20260928",
+  "mode": "classic_1v1"
+}

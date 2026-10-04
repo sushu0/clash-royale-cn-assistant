@@ -1,0 +1,1 @@
+地狱飞龙 reset 候选结论：HOLD_NOT_READY_DO_NOT_ENABLE。未修改运行代码或素材。整头模板泛化失败；缩小到金属头盔后，排除两个源帧，只有一个非源帧达到0.88阈值，不满足至少两个非源活动火束事件。敌红牌、绿色躯干、活动火束的完整联合管线尚未验收，明确法师/火箭负例也未完成类别标注，因此不能启用reset=True或active_beam语义。全部来源和回放细节见decision.json、verified_archives.json、helmet-archive-matches.png。没有降低阈值来凑正例。

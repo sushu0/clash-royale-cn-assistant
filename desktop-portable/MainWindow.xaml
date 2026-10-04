@@ -1,0 +1,146 @@
+<Window x:Class="ClashAssistant.Desktop.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:interop="clr-namespace:ClashAssistant.Desktop.Interop"
+        Title="皇室战争助手" Width="1480" Height="920" MinWidth="1240" MinHeight="720" WindowStartupLocation="CenterScreen" Background="#F4F6F9" Foreground="{StaticResource Ink}" FontFamily="Microsoft YaHei UI" FontSize="13" Icon="Assets/clash-desktop.ico" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" Loaded="WindowLoaded" Closing="WindowClosing">
+  <DockPanel>
+    <Border DockPanel.Dock="Bottom" Background="White" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="20,6">
+      <DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding UpdatedText}" Style="{StaticResource Caption}"/><TextBlock Text="{Binding Notice}" Style="{StaticResource Caption}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="0,0,20,0"/></DockPanel>
+    </Border>
+    <Grid>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="196"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+      <Border Background="#17263E">
+        <DockPanel Margin="14,24,14,18">
+          <StackPanel DockPanel.Dock="Top" Margin="4,0,0,28">
+            <StackPanel Orientation="Horizontal">
+              <Image Source="Assets/clash-desktop.png" Width="32" Height="32" Margin="0,0,9,0"/>
+              <StackPanel VerticalAlignment="Center"><TextBlock Text="皇室战争助手" Foreground="White" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="CLASH ASSISTANT" Foreground="#9AAEC8" FontSize="9" FontFamily="Segoe UI" Margin="0,4,0,0"/></StackPanel>
+            </StackPanel>
+          </StackPanel>
+          <StackPanel DockPanel.Dock="Bottom">
+            <Button Content="收进系统托盘" Click="HideToTrayClick" Background="#243751" Foreground="#DFE7F2" BorderBrush="#304560" Margin="0,0,0,8"/>
+            <Button Content="退出软件" Click="ExitClick" Style="{StaticResource QuietButton}" Foreground="#A8B8CF"/>
+            <Border BorderBrush="#31435D" BorderThickness="0,1,0,0" Margin="4,14,4,0" Padding="0,14,0,0">
+              <StackPanel><TextBlock Text="本机任务控制" Foreground="#C5D1E2" FontSize="12"/><TextBlock Text="腾讯国服 · 经典 1V1" Foreground="#9AAEC8" FontSize="11" Margin="0,6,0,0"/><TextBlock Text="桌面版 2026.10" Foreground="#8EA2BF" FontSize="11" Margin="0,9,0,0"/></StackPanel>
+            </Border>
+          </StackPanel>
+          <StackPanel x:Name="Navigation">
+            <TextBlock Text="工作空间" Foreground="#9AAEC8" FontSize="11" Margin="13,0,0,10"/>
+            <Button Style="{StaticResource NavButton}" AutomationProperties.Name="工作台" AutomationProperties.AutomationId="Navigation0" Tag="0" Click="NavigateClick" ToolTip="工作台 · Ctrl+1"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center"/><TextBlock Text="工作台"/></StackPanel></Button>
+            <Button Style="{StaticResource NavButton}" AutomationProperties.Name="对局记录" AutomationProperties.AutomationId="Navigation1" Tag="1" Click="NavigateClick" ToolTip="对局记录 · Ctrl+2"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center"/><TextBlock Text="对局记录"/></StackPanel></Button>
+            <Button Style="{StaticResource NavButton}" AutomationProperties.Name="策略统计" AutomationProperties.AutomationId="Navigation2" Tag="2" Click="NavigateClick" ToolTip="策略统计 · Ctrl+3"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center"/><TextBlock Text="策略统计"/></StackPanel></Button>
+            <Button Style="{StaticResource NavButton}" AutomationProperties.Name="错误报告" AutomationProperties.AutomationId="Navigation3" Tag="3" Click="NavigateClick" ToolTip="历史错误报告总数 · Ctrl+4"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center"/><TextBlock Text="错误报告"/><Border Background="#304864" CornerRadius="5" Padding="6,2" Margin="8,-2,0,-2"><TextBlock Text="{Binding ReportBadgeText}" Foreground="#D7E6FC" FontSize="10" TextWrapping="NoWrap"/></Border></StackPanel></Button>
+            <Button Style="{StaticResource NavButton}" AutomationProperties.Name="运行日志" AutomationProperties.AutomationId="Navigation4" Tag="4" Click="NavigateClick" ToolTip="运行日志 · Ctrl+5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center"/><TextBlock Text="运行日志"/></StackPanel></Button>
+          </StackPanel>
+        </DockPanel>
+      </Border>
+      <Grid Grid.Column="1" Margin="22,22,22,18">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <Grid Margin="0,0,0,16">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center"><TextBlock Text="{Binding PageTitle}" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="{Binding PageSubtitle}" Style="{StaticResource Caption}" Margin="0,5,0,0"/></StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+            <Border Background="{Binding StateBackground}" CornerRadius="14" Padding="11,6" Margin="0,0,10,0" VerticalAlignment="Center"><TextBlock Text="{Binding StateLabel}" Foreground="{Binding StateColor}" FontSize="12" TextWrapping="NoWrap"/></Border>
+            <Button Content="开始运行" AutomationProperties.AutomationId="StartTask" AutomationProperties.HelpText="{Binding StartHint}" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding CanStart}" ToolTip="{Binding StartHint}" Click="StartClick" MinWidth="94" Margin="0,0,8,0"/>
+            <Button Content="停止任务" AutomationProperties.AutomationId="StopTask" IsEnabled="{Binding CanStop}" Click="StopClick" MinWidth="88" Margin="0,0,8,0"/>
+            <Button x:Name="PreviewToggle" Content="收起游戏" AutomationProperties.AutomationId="ToggleGamePreview" Click="PreviewToggleClick" MinWidth="88" ToolTip="收起预览后，游戏恢复为独立窗口"/>
+          </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="WorkspaceGrid" SizeChanged="WorkspaceSizeChanged">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="580"/><ColumnDefinition x:Name="SplitterColumn" Width="12"/><ColumnDefinition x:Name="GameColumn" Width="320" MinWidth="270" MaxWidth="480"/></Grid.ColumnDefinitions>
+          <TabControl x:Name="Pages" Background="Transparent" BorderThickness="0" Padding="0">
+            <TabItem>
+              <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <Border Style="{StaticResource Card}" Padding="0" Margin="0,0,0,12">
+                  <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Background="{Binding StateColor}" CornerRadius="12,0,0,12"/>
+                    <Grid Grid.Column="1" Margin="15,12"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                      <StackPanel><TextBlock Text="{Binding Phase}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="{Binding PhaseDescription}" Style="{StaticResource Caption}" Margin="0,6,0,0"/></StackPanel>
+                      <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="随机卡组 · 无限对战" FontSize="11" Foreground="#4F6FA5" HorizontalAlignment="Right" ToolTip="{Binding SessionText}"/>
+                        <Button Content="查看校准说明" Click="CalibrationInfoClick" Style="{StaticResource QuietButton}" Padding="6,4" Margin="0,5,0,0" Foreground="#946321" Visibility="{Binding HasCalibrationRequest,Converter={StaticResource BoolVisibility}}"/>
+                        <Button Content="查看暂停报告" Click="LatestReportClick" Style="{StaticResource QuietButton}" Padding="6,4" Margin="0,5,0,0" Foreground="#AC4654" Visibility="{Binding HasPauseReport,Converter={StaticResource BoolVisibility}}"/>
+                      </StackPanel>
+                    </Grid>
+                  </Grid>
+                </Border>
+                <Grid Grid.Row="1" Margin="0,0,0,12">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="1.08*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="0.85*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="1.2*"/></Grid.ColumnDefinitions>
+                  <Border Style="{StaticResource Card}" Padding="15,12">
+                    <StackPanel><TextBlock Text="累计对局" Style="{StaticResource Caption}"/><DockPanel Margin="0,5,0,4"><TextBlock Text="{Binding Total}" Style="{StaticResource MetricValue}" DockPanel.Dock="Left"/><StackPanel Margin="13,2,0,0" VerticalAlignment="Center"><TextBlock FontSize="11" TextWrapping="NoWrap"><Run Text="{Binding Wins,Mode=OneWay}" Foreground="#197A62"/><Run Text=" 胜"/><Run Text="  /  "/><Run Text="{Binding Losses,Mode=OneWay}"/><Run Text=" 负"/></TextBlock><TextBlock Text="{Binding TotalNote}" FontSize="11" Foreground="{StaticResource Muted}" Margin="0,3,0,0" TextWrapping="NoWrap"/></StackPanel></DockPanel><TextBlock Style="{StaticResource Caption}"><Run Text="累计胜率  "/><Run Text="{Binding WinRate,Mode=OneWay}"/></TextBlock></StackPanel>
+                  </Border>
+                  <Border Grid.Column="2" Style="{StaticResource Card}" Padding="15,12">
+                    <StackPanel><TextBlock Text="近 20 局胜率" Style="{StaticResource Caption}"/><TextBlock Text="{Binding RecentRate}" Style="{StaticResource MetricValue}" Foreground="#3569D2" Margin="0,5,0,4"/><TextBlock Text="{Binding RecentNote}" Style="{StaticResource Caption}"/></StackPanel>
+                  </Border>
+                  <Border Grid.Column="4" Style="{StaticResource Card}" Padding="15,12">
+                    <StackPanel><TextBlock Text="奖励累计" Style="{StaticResource Caption}"/><Grid Margin="0,5,0,4"><Grid.ColumnDefinitions><ColumnDefinition Width="0.7*"/><ColumnDefinition Width="1.3*"/></Grid.ColumnDefinitions><TextBlock Text="{Binding Rewards}" Style="{StaticResource MetricValue}"/><TextBlock Grid.Column="1" Text="{Binding Coins}" Style="{StaticResource MetricValue}" HorizontalAlignment="Right" FontSize="25"/></Grid><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="已领奖励 · 次" Style="{StaticResource Caption}"/><TextBlock Grid.Column="1" Text="金币" Style="{StaticResource Caption}" HorizontalAlignment="Right"/></Grid></StackPanel>
+                  </Border>
+                </Grid>
+                <Grid Grid.Row="2" Margin="2,0,2,12">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="70"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="最近 20 场" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
+                  <ItemsControl Grid.Column="1" ItemsSource="{Binding ResultChips}" ToolTip="从左到右按时间排列，最右侧为最新结算">
+                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="20"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate><DataTemplate><Border Background="{Binding Background}" CornerRadius="4" Height="24" Margin="0,0,3,0"><TextBlock Text="{Binding Text}" Foreground="{Binding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11"/></Border></DataTemplate></ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </Grid>
+                <Border Grid.Row="3" Style="{StaticResource Card}" Padding="16,12,16,8">
+                  <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <DockPanel Margin="0,0,0,10"><Button DockPanel.Dock="Right" Content="全部记录 →" Tag="1" Click="NavigateClick" Style="{StaticResource QuietButton}" Padding="8,4"/><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="最新对局" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="最近 10 场" Style="{StaticResource Caption}" Margin="12,2,0,0"/></StackPanel></DockPanel>
+                    <DataGrid Grid.Row="1" x:Name="RecentGrid" ItemsSource="{Binding RecentBattles}" MouseDoubleClick="BattleDoubleClick" AutomationProperties.AutomationId="RecentBattles">
+                      <DataGrid.Columns><DataGridTextColumn Header="结算时间" Binding="{Binding Time}" Width="125" ElementStyle="{StaticResource GridText}"/><DataGridTextColumn Header="结果" Binding="{Binding Result}" Width="60"/><DataGridTextColumn Header="场次" Binding="{Binding Battle}" Width="60"/><DataGridTextColumn Header="出牌确认" Binding="{Binding Deployment}" Width="85"/><DataGridTextColumn Header="策略" Binding="{Binding PolicyLabel}" Width="*" ElementStyle="{StaticResource GridText}"/></DataGrid.Columns>
+                    </DataGrid>
+                    <DockPanel Grid.Row="2" Margin="0,9,0,0"><TextBlock DockPanel.Dock="Right" Text="{Binding DeploymentText}" Style="{StaticResource Caption}" FontSize="11"/><TextBlock Text="双击对局查看结算截图" Style="{StaticResource Caption}" FontSize="11" ToolTip="{Binding SessionText}"/></DockPanel>
+                  </Grid>
+                </Border>
+              </Grid>
+            </TabItem>
+            <TabItem>
+              <Border Style="{StaticResource Card}"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <DockPanel Margin="0,0,0,16"><ComboBox DockPanel.Dock="Right" x:Name="HistoryScope" SelectedIndex="0" SelectionChanged="ScopeChanged" AutomationProperties.Name="历史范围"><ComboBoxItem Content="随机卡组" Tag="random"/><ComboBoxItem Content="567 历史" Tag="567"/><ComboBoxItem Content="野猪历史" Tag="hog"/><ComboBoxItem Content="全部历史" Tag="all"/></ComboBox><StackPanel><TextBlock Text="已结算对局" Style="{StaticResource SectionTitle}" Margin="0,0,0,5"/><TextBlock Text="最近 60 场 · 双击查看原始结算截图" Style="{StaticResource Caption}"/></StackPanel></DockPanel>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Battles}" MouseDoubleClick="BattleDoubleClick"><DataGrid.Columns><DataGridTextColumn Header="结算时间" Binding="{Binding Time}" Width="135" ElementStyle="{StaticResource GridText}"/><DataGridTextColumn Header="结果" Binding="{Binding Result}" Width="60"/><DataGridTextColumn Header="场次" Binding="{Binding Battle}" Width="60"/><DataGridTextColumn Header="出牌确认" Binding="{Binding Deployment}" Width="85"/><DataGridTextColumn Header="策略版本" Binding="{Binding PolicyLabel}" Width="*" ElementStyle="{StaticResource GridText}"/><DataGridTextColumn Header="证据" Binding="{Binding EvidenceStatus}" Width="72"/></DataGrid.Columns></DataGrid>
+                <TextBlock Grid.Row="2" Text="{Binding HistoryNote}" Style="{StaticResource Caption}" Margin="0,12,0,0"/>
+              </Grid></Border>
+            </TabItem>
+            <TabItem>
+              <Border Style="{StaticResource Card}"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><StackPanel Margin="0,0,0,16"><TextBlock Text="各版本运行表现" Style="{StaticResource SectionTitle}"/><TextBlock Text="按实际策略版本独立统计，保留未知与平局记录" Style="{StaticResource Caption}"/></StackPanel><DataGrid Grid.Row="1" ItemsSource="{Binding Versions}"><DataGrid.Columns><DataGridTextColumn Header="策略版本" Binding="{Binding Label}" Width="*" ElementStyle="{StaticResource GridText}"/><DataGridTextColumn Header="局数" Binding="{Binding Total}" Width="60"/><DataGridTextColumn Header="胜" Binding="{Binding Wins}" Width="50"/><DataGridTextColumn Header="负" Binding="{Binding Losses}" Width="50"/><DataGridTextColumn Header="平 / 未知" Binding="{Binding Other}" Width="85"/><DataGridTextColumn Header="胜率" Binding="{Binding Rate}" Width="75"/></DataGrid.Columns></DataGrid></Grid></Border>
+            </TabItem>
+            <TabItem>
+              <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,14"><DockPanel><Button DockPanel.Dock="Right" Content="报告文件夹" Click="OpenReportsFolderClick"/><StackPanel><TextBlock Text="{Binding ReportCountText}" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="按时间保留每次异常，选择记录查看原因与当时画面" Style="{StaticResource Caption}" Margin="0,6,0,0"/></StackPanel></DockPanel></Border>
+                <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition Width="235"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                  <Border Style="{StaticResource Card}" Padding="10">
+                    <ListBox ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport,Mode=TwoWay}" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="历史错误报告">
+                      <ListBox.ItemContainerStyle><Style TargetType="ListBoxItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,8"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="ItemFrame" Background="White" CornerRadius="8" BorderThickness="1" BorderBrush="#E3E8EF" Padding="12"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemFrame" Property="Background" Value="#EEF3FF"/><Setter TargetName="ItemFrame" Property="BorderBrush" Value="#8EADF2"/></Trigger><Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="ItemFrame" Property="BorderBrush" Value="#3569EA"/><Setter TargetName="ItemFrame" Property="BorderThickness" Value="2"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style></ListBox.ItemContainerStyle>
+                      <ListBox.ItemTemplate><DataTemplate><StackPanel><TextBlock Text="{Binding TimeLabel}" FontSize="12" Foreground="#476AA9" Margin="0,0,0,8"/><TextBlock Text="{Binding Reason}" FontSize="13"/><TextBlock Text="{Binding ScreenshotLabel}" Style="{StaticResource Caption}" FontSize="11" Margin="0,10,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
+                    </ListBox>
+                  </Border>
+                  <Border Grid.Column="2" Style="{StaticResource Card}" Padding="16"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+                    <TextBlock Text="{Binding SelectedReportTitle}" Style="{StaticResource SectionTitle}"/><TextBlock Text="{Binding SelectedReportReason}" FontSize="15" FontWeight="Medium" Margin="0,0,0,10"/><TextBlock Text="{Binding SelectedReportMeta}" Style="{StaticResource Caption}" Margin="0,0,0,14"/>
+                    <WrapPanel Margin="0,0,0,10"><Button Content="打开报告" Click="OpenReportClick" IsEnabled="{Binding HasSelectedReport}" Padding="12,8" Margin="0,0,8,8"/><Button Content="打开截图" Click="OpenScreenshotClick" IsEnabled="{Binding HasSelectedScreenshot}" Padding="12,8" Margin="0,0,0,8"/></WrapPanel>
+                    <Border Background="#F4F6F9" CornerRadius="8" Padding="10"><Image Source="{Binding ReportImage}" Stretch="Uniform" MaxHeight="450"/></Border>
+                    <TextBlock Text="{Binding ReportImageNote}" Style="{StaticResource Caption}" Margin="0,10,0,16"/>
+                    <Expander Header="完整报告预览"><TextBox Text="{Binding ReportText,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" MaxHeight="350" BorderThickness="0" Background="#F7F9FC" FontFamily="Consolas" FontSize="12" Margin="0,12,0,0" Padding="10"/></Expander>
+                  </StackPanel></ScrollViewer></Border>
+                </Grid>
+              </Grid>
+            </TabItem>
+            <TabItem>
+              <Border Style="{StaticResource Card}"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><DockPanel><CheckBox DockPanel.Dock="Right" Content="自动滚动" x:Name="AutoScroll" IsChecked="True" VerticalAlignment="Center"/><TextBlock Text="最近运行事件" Style="{StaticResource SectionTitle}"/></DockPanel><StackPanel Grid.Row="1" Margin="0,0,0,12"><TextBlock Style="{StaticResource Caption}"><Run Text="最近一次决策："/><Run Text="{Binding DecisionText,Mode=OneWay}"/></TextBlock><TextBlock Text="{Binding LogNotice}" Foreground="#946321" FontSize="12" Margin="0,5,0,0"/></StackPanel><TextBox Grid.Row="2" x:Name="LogBox" Text="{Binding LogText,Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" BorderThickness="0" Background="#F7F9FC" FontFamily="Consolas" FontSize="12" Padding="14"/></Grid></Border>
+            </TabItem>
+          </TabControl>
+          <GridSplitter Grid.Column="1" x:Name="GameSplitter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="False" DragCompleted="LayoutSplitChanged" ToolTip="拖动调整游戏区宽度" AutomationProperties.Name="调整游戏区宽度">
+            <GridSplitter.Template><ControlTemplate TargetType="GridSplitter"><Grid Background="{TemplateBinding Background}"><Border x:Name="Grip" Width="2" Height="56" CornerRadius="1" Background="#CDD6E3" VerticalAlignment="Center" HorizontalAlignment="Center"/></Grid><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Grip" Property="Background" Value="#3569EA"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Grip" Property="Background" Value="#3569EA"/></Trigger></ControlTemplate.Triggers></ControlTemplate></GridSplitter.Template>
+          </GridSplitter>
+          <Border Grid.Column="2" x:Name="GamePane" Style="{StaticResource Card}" Padding="14">
+            <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+              <DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding EmulatorStatus}" Foreground="#197A62" FontSize="11" VerticalAlignment="Center"/><TextBlock Text="游戏预览" FontSize="16" FontWeight="SemiBold"/></DockPanel>
+              <TextBlock Grid.Row="1" Text="模拟器画面 · 连接与任务状态分别显示" Style="{StaticResource Caption}" FontSize="11" Margin="0,8,0,12"/>
+              <Grid Grid.Row="2" Background="#142239" ClipToBounds="True"><interop:NativeEmulatorHost x:Name="EmulatorHost"/><StackPanel x:Name="EmulatorPlaceholder" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="18"><TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="30" Foreground="#8294B4" HorizontalAlignment="Center"/><TextBlock Text="等待游戏窗口连接" Foreground="#B4C3DA" FontSize="12" Margin="0,16,0,0" HorizontalAlignment="Center"/></StackPanel></Grid>
+              <Grid Grid.Row="3" Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Button Content="弹出窗口" Click="DetachClick" Padding="8,8"/><Button Grid.Column="2" Content="重新嵌入" Click="AttachClick" Padding="8,8"/></Grid>
+              <TextBlock Grid.Row="4" Text="拖动左侧分隔线调整预览宽度" Style="{StaticResource Caption}" FontSize="11" Margin="0,10,0,0"/>
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+    </Grid>
+  </DockPanel>
+</Window>

@@ -1,0 +1,2300 @@
+{
+  "schema": 1,
+  "resolution": [
+    419,
+    633
+  ],
+  "observed_date": "2026-10-04",
+  "pages": [
+    {
+      "name": "news_list_native_hover",
+      "route": "news_close",
+      "cues": [
+        {
+          "roi": "news_list_tabs",
+          "template": "news_list_native_hover_news_list_tabs"
+        },
+        {
+          "roi": "news_native_close_edge",
+          "template": "news_list_native_hover_news_native_close_edge"
+        }
+      ],
+      "source": "news_article_return_native.png",
+      "source_sha256": "1737b330f3191a0c4d4655f9eaada961e59a0a77b9286f458664cc0375ebca26"
+    },
+    {
+      "name": "news_esports_live",
+      "route": "news_video_close",
+      "cues": [
+        {
+          "roi": "news_video_title",
+          "template": "news_esports_live_news_video_title"
+        },
+        {
+          "roi": "news_video_close",
+          "template": "news_esports_live_news_video_close"
+        }
+      ],
+      "source": "news_esports_native.png",
+      "source_sha256": "9a6ff64d9c56fb553142f06020821953c5476723f6f7e8514c58df20a77e0351",
+      "target_cue": 1,
+      "variants": [
+        "news_esports_live_native.png"
+      ]
+    },
+    {
+      "name": "news_list_native",
+      "route": "news_close",
+      "cues": [
+        {
+          "roi": "news_list_tabs",
+          "template": "news_list_native_news_list_tabs"
+        },
+        {
+          "roi": "news_native_close_edge",
+          "template": "news_list_native_news_native_close_edge"
+        }
+      ],
+      "source": "news_esports_closed_native.png",
+      "source_sha256": "737b14a5641f9d4a1cc61fae01f457b26bcdeb4a9fd92940e64ea9e72d7b9986",
+      "variants": [
+        "top_news_fresh_native.png",
+        "news_list_scrolled_native.png",
+        "news_article_return_native.png"
+      ]
+    },
+    {
+      "name": "news_article_native",
+      "route": "news_close",
+      "cues": [
+        {
+          "roi": "news_article_label",
+          "template": "news_article_native_news_article_label"
+        },
+        {
+          "roi": "news_native_close_edge",
+          "template": "news_article_native_news_native_close_edge"
+        }
+      ],
+      "source": "news_article_fresh_native.png",
+      "source_sha256": "e898dedf42e7c3f8ff7781283b3d4fee5b4824df0cb6ddcad8e0fb6ebe8f4af0",
+      "variants": [
+        "news_article_bottom_native.png"
+      ]
+    },
+    {
+      "name": "daily_gift_probability_tooltip",
+      "route": "daily_gift_info_toggle",
+      "cues": [
+        {
+          "roi": "daily_gift_probability_title",
+          "template": "daily_gift_probability_tooltip_daily_gift_probability_title"
+        },
+        {
+          "roi": "daily_gift_info_button",
+          "template": "daily_gift_probability_tooltip_daily_gift_info_button"
+        }
+      ],
+      "source": "daily_gift_info.png",
+      "source_sha256": "84a9dc46a5df2a4c104f37c963f068e0a2f1db8914d06a1aab6189d91b82d5b2",
+      "target_cue": 1
+    },
+    {
+      "name": "daily_gift_received",
+      "route": "daily_gift_received_close",
+      "cues": [
+        {
+          "roi": "daily_gift_received_title",
+          "template": "daily_gift_received_daily_gift_received_title"
+        },
+        {
+          "roi": "daily_gift_received_body",
+          "template": "daily_gift_received_daily_gift_received_body"
+        },
+        {
+          "roi": "daily_gift_received_confirm",
+          "template": "daily_gift_received_daily_gift_received_confirm"
+        }
+      ],
+      "source": "purple_cards_news.png",
+      "source_sha256": "bbe2110ec08aba39e1a550fd95530eb5530d6493332e8b63fca81960761bc94e",
+      "target_cue": 2,
+      "variants": [
+        "daily_gift_info_closed.png"
+      ]
+    },
+    {
+      "name": "classic_battle_information",
+      "route": "classic_info_close",
+      "cues": [
+        {
+          "roi": "classic_info_title",
+          "template": "classic_battle_information_classic_info_title"
+        },
+        {
+          "roi": "classic_info_close",
+          "template": "classic_battle_information_classic_info_close"
+        }
+      ],
+      "source": "classic_battle_info.png",
+      "source_sha256": "695f4af039427ff432c0d90e31b91269225bd6c9c7252f9335776a1239a25edc",
+      "target_cue": 1
+    },
+    {
+      "name": "card_collection_levels",
+      "route": "king_level_close",
+      "cues": [
+        {
+          "roi": "king_collection_title",
+          "template": "card_collection_levels_king_collection_title"
+        },
+        {
+          "roi": "king_level_close",
+          "template": "card_collection_levels_king_level_close"
+        }
+      ],
+      "source": "king_xp.png",
+      "source_sha256": "78f6e6eaa7e82e59f0a63ea8a2ecdfc9260530f153504a0040109f70a8a4597a",
+      "target_cue": 1,
+      "variants": [
+        "king_collection_levels.png",
+        "king_collection_lower.png",
+        "king_collection_upper.png",
+        "king_level_reward_info.png"
+      ]
+    },
+    {
+      "name": "king_tower_level",
+      "route": "king_level_close",
+      "cues": [
+        {
+          "roi": "king_tower_title",
+          "template": "king_tower_level_king_tower_title"
+        },
+        {
+          "roi": "king_level_close",
+          "template": "king_tower_level_king_level_close"
+        }
+      ],
+      "source": "king_level_chests.png",
+      "source_sha256": "50189d707b83dc77eb3855ae584d90568b8708e178a4fab07b473c7efa58a023",
+      "target_cue": 1,
+      "variants": [
+        "king_tower_level_limit.png"
+      ]
+    },
+    {
+      "name": "crown_reward_tooltip",
+      "route": "crown_tooltip_close",
+      "cues": [
+        {
+          "roi": "crown_tooltip_title",
+          "template": "crown_reward_tooltip_crown_tooltip_title"
+        },
+        {
+          "roi": "crown_tooltip_tip",
+          "template": "crown_reward_tooltip_crown_tooltip_tip"
+        },
+        {
+          "roi": "crown_tooltip_crown",
+          "template": "crown_reward_tooltip_crown_tooltip_crown"
+        }
+      ],
+      "source": "crown_quests.png",
+      "source_sha256": "710ec8db13b8c13a4d3906b245a4a5833b9ef9658b7f76e2135a0e997204267c"
+    },
+    {
+      "name": "goblin_king_preview",
+      "route": "goblin_preview_close",
+      "cues": [
+        {
+          "roi": "goblin_preview_crown",
+          "template": "goblin_king_preview_goblin_preview_crown"
+        },
+        {
+          "roi": "goblin_preview_panel_edge",
+          "template": "goblin_king_preview_goblin_preview_panel_edge"
+        },
+        {
+          "roi": "goblin_preview_confirm",
+          "template": "goblin_king_preview_goblin_preview_confirm"
+        }
+      ],
+      "source": "goblin_king_preview.png",
+      "source_sha256": "8aaa9a4c474b8c7966fdc465dd116b670ce6e21bfb2bfea112efbca80b5c186a",
+      "target_cue": 2,
+      "variants": [
+        "goblin_king_cannon.png"
+      ]
+    },
+    {
+      "name": "goblin_event",
+      "route": "red_event_close",
+      "cues": [
+        {
+          "roi": "red_event_info_button",
+          "template": "goblin_event_red_event_info_button",
+          "search_roi": "red_event_info_button_search"
+        },
+        {
+          "roi": "red_event_close",
+          "template": "goblin_event_red_event_close",
+          "search_roi": "red_event_close_search"
+        },
+        {
+          "roi": "goblin_records_icon",
+          "template": "goblin_event_goblin_records_icon"
+        }
+      ],
+      "source": "goblin_event.png",
+      "source_sha256": "0740aa851b2bc666f0012849d7738d3bd994332a78f524aac3a954e78a8ffa6f",
+      "target_cue": 1,
+      "variants": [
+        "goblin_info_closed.png",
+        "goblin_prizes_closed.png",
+        "goblin_records_closed.png",
+        "goblin_preview_closed.png"
+      ]
+    },
+    {
+      "name": "goblin_prizes",
+      "route": "red_event_prizes_close",
+      "cues": [
+        {
+          "roi": "red_event_prizes_title",
+          "template": "goblin_prizes_red_event_prizes_title"
+        },
+        {
+          "roi": "red_event_prizes_close",
+          "template": "goblin_prizes_red_event_prizes_close"
+        }
+      ],
+      "source": "goblin_prizes.png",
+      "source_sha256": "552aed46903ad783a8b486e8c30ed20deeab24386f46df2e2510eed34cf7be3a",
+      "target_cue": 1,
+      "variants": [
+        "goblin_prize_preview.png",
+        "goblin_prizes_bottom.png"
+      ]
+    },
+    {
+      "name": "card_form_standard_info",
+      "route": "card_info_close",
+      "cues": [
+        {
+          "roi": "card_form_footer_tabs",
+          "template": "card_form_standard_info_card_form_footer_tabs"
+        },
+        {
+          "roi": "card_info_close",
+          "template": "card_form_standard_info_card_info_close"
+        }
+      ],
+      "source": "red_barbarian_item.png",
+      "source_sha256": "f70a1d4b259f9580679b92308cbda711a8b3c254dba4b8200c2f69a5318ebbcc",
+      "target_cue": 1
+    },
+    {
+      "name": "card_form_awakening_info",
+      "route": "card_info_close",
+      "cues": [
+        {
+          "roi": "card_form_footer_tabs",
+          "template": "card_form_awakening_info_card_form_footer_tabs"
+        },
+        {
+          "roi": "card_info_close",
+          "template": "card_form_awakening_info_card_info_close"
+        }
+      ],
+      "source": "red_barbarian_item_stats.png",
+      "source_sha256": "e7bd58ecc3ab3bbbb64a50277dab6a9ffb618457ae6b44e710845a84e3bfce5e",
+      "target_cue": 1
+    },
+    {
+      "name": "card_form_elite_info",
+      "route": "hero_info_close",
+      "cues": [
+        {
+          "roi": "card_form_footer_tabs",
+          "template": "card_form_elite_info_card_form_footer_tabs"
+        },
+        {
+          "roi": "hero_info_close",
+          "template": "card_form_elite_info_hero_info_close"
+        }
+      ],
+      "source": "red_barbarian_item_hero.png",
+      "source_sha256": "4b1d93a00a40a389064ae85192f49b01c427797937210d3ce510fb0047cbb8b0",
+      "target_cue": 1
+    },
+    {
+      "name": "red_event_prizes",
+      "route": "red_event_prizes_close",
+      "cues": [
+        {
+          "roi": "red_event_prizes_title",
+          "template": "red_event_prizes_red_event_prizes_title"
+        },
+        {
+          "roi": "red_event_prizes_close",
+          "template": "red_event_prizes_red_event_prizes_close"
+        }
+      ],
+      "source": "red_event_prizes.png",
+      "source_sha256": "35407c3bfdfa6c1049716936e3f1f77f8f50e361386e584551a2116937268244",
+      "target_cue": 1,
+      "variants": [
+        "red_event_prizes_bottom.png"
+      ]
+    },
+    {
+      "name": "red_event",
+      "route": "red_event_close",
+      "cues": [
+        {
+          "roi": "red_event_info_button",
+          "template": "red_event_red_event_info_button",
+          "search_roi": "red_event_info_button_search"
+        },
+        {
+          "roi": "red_event_close",
+          "template": "red_event_red_event_close",
+          "search_roi": "red_event_close_search"
+        },
+        {
+          "roi": "red_event_records_icon",
+          "template": "red_event_red_event_records_icon"
+        }
+      ],
+      "source": "red_event.png",
+      "source_sha256": "53b972b9bc8cb570928797f60b443b1304f69bd5ba7a97c5b1f2a217e2c0c72d",
+      "target_cue": 1,
+      "variants": [
+        "red_event_info_closed.png",
+        "red_event_prizes_closed.png",
+        "red_event_records_closed.png"
+      ]
+    },
+    {
+      "name": "red_event_barbarian",
+      "route": "red_event_close",
+      "cues": [
+        {
+          "roi": "red_event_info_button",
+          "template": "red_event_barbarian_red_event_info_button",
+          "search_roi": "red_event_info_button_search"
+        },
+        {
+          "roi": "red_event_close",
+          "template": "red_event_barbarian_red_event_close",
+          "search_roi": "red_event_close_search"
+        },
+        {
+          "roi": "red_event_records_icon",
+          "template": "red_event_barbarian_red_event_records_icon"
+        }
+      ],
+      "source": "red_event_barbarian.png",
+      "source_sha256": "531f6553503098920aa08faa2ab3b34c7bd4aae1b58dc2ccaae1e43394e34a7d",
+      "target_cue": 1,
+      "variants": [
+        "red_barbarian_info_closed.png",
+        "red_barbarian_records_closed.png",
+        "red_barbarian_item_closed.png"
+      ]
+    },
+    {
+      "name": "awakening_machine_item_information",
+      "route": "emote_info_close",
+      "cues": [
+        {
+          "roi": "awakening_machine_item_title",
+          "template": "awakening_machine_item_information_awakening_machine_item_title"
+        },
+        {
+          "roi": "awakening_machine_item_close",
+          "template": "awakening_machine_item_information_awakening_machine_item_close"
+        }
+      ],
+      "source": "awakening_prize_detail.png",
+      "source_sha256": "1797ead9759707b72cb5c23496c4b8f3121d31ffa9d51629cba0868b84e79604",
+      "target_cue": 1
+    },
+    {
+      "name": "awakening_machine_rules",
+      "route": "awakening_machine_sheet_close",
+      "cues": [
+        {
+          "roi": "awakening_machine_rules_title",
+          "template": "awakening_machine_rules_awakening_machine_rules_title"
+        },
+        {
+          "roi": "awakening_machine_sheet_close",
+          "template": "awakening_machine_rules_awakening_machine_sheet_close"
+        }
+      ],
+      "source": "awakening_machine_info.png",
+      "source_sha256": "bc3b868c8b422e219c0def37fbf035285fb13afaff946827a814f135181c9444",
+      "target_cue": 1,
+      "variants": [
+        "awakening_machine_info_scroll.png",
+        "awakening_machine_info_bottom.png",
+        "red_event_info.png",
+        "red_event_info_middle.png",
+        "red_event_info_end.png",
+        "red_barbarian_info.png",
+        "goblin_event_info.png",
+        "goblin_info_middle.png"
+      ]
+    },
+    {
+      "name": "awakening_machine_prizes",
+      "route": "awakening_machine_sheet_close",
+      "cues": [
+        {
+          "roi": "awakening_machine_prizes_title",
+          "template": "awakening_machine_prizes_awakening_machine_prizes_title"
+        },
+        {
+          "roi": "awakening_machine_sheet_close",
+          "template": "awakening_machine_prizes_awakening_machine_sheet_close"
+        }
+      ],
+      "source": "awakening_machine_prizes.png",
+      "source_sha256": "8927b656292c661cb69e5cfecb0531f7979860103164746ef30736114e768cd6",
+      "target_cue": 1,
+      "variants": [
+        "awakening_prizes_bottom.png",
+        "awakening_prizes_end.png",
+        "awakening_prize_detail_closed.png"
+      ]
+    },
+    {
+      "name": "awakening_machine_records",
+      "route": "awakening_machine_sheet_close",
+      "cues": [
+        {
+          "roi": "awakening_machine_records_title",
+          "template": "awakening_machine_records_awakening_machine_records_title"
+        },
+        {
+          "roi": "awakening_machine_sheet_close",
+          "template": "awakening_machine_records_awakening_machine_sheet_close"
+        }
+      ],
+      "source": "awakening_machine_records.png",
+      "source_sha256": "f1ef677c91b622cc8a7fc7bffb5c81398ffee3de6047b10b0e2b847140e71fee",
+      "target_cue": 1,
+      "variants": [
+        "awakening_records_bottom.png",
+        "red_event_records.png",
+        "red_barbarian_records.png",
+        "goblin_records.png",
+        "goblin_records_bottom.png"
+      ]
+    },
+    {
+      "name": "awakening_machine",
+      "route": "awakening_machine_close",
+      "cues": [
+        {
+          "roi": "awakening_machine_title",
+          "template": "awakening_machine_awakening_machine_title"
+        },
+        {
+          "roi": "awakening_machine_close",
+          "template": "awakening_machine_awakening_machine_close"
+        }
+      ],
+      "source": "blue_backpack.png",
+      "source_sha256": "3f6c9cf87d264456f5b48f28e7adb12300d2fb9edb469ff223547c2f1d3f0c0c",
+      "target_cue": 1,
+      "variants": [
+        "awakening_machine_info_closed.png",
+        "awakening_records_closed.png"
+      ]
+    },
+    {
+      "name": "crl_support_shop",
+      "route": "crl_return",
+      "cues": [
+        {
+          "roi": "crl_shop_title",
+          "template": "crl_support_shop_crl_shop_title"
+        },
+        {
+          "roi": "crl_return_button",
+          "template": "crl_support_shop_crl_return_button"
+        }
+      ],
+      "source": "crl_support_shop_raw.png",
+      "source_sha256": "3c6208b9f7e8e0d2418bc2968257a6b4aa463b61646610490a1409c35c5ecae2",
+      "target_cue": 1
+    },
+    {
+      "name": "crl_support_shop_native",
+      "route": "crl_return",
+      "cues": [
+        {
+          "roi": "crl_shop_title",
+          "template": "crl_support_shop_native_crl_shop_title"
+        },
+        {
+          "roi": "crl_return_button",
+          "template": "crl_support_shop_native_crl_return_button"
+        }
+      ],
+      "source": "crl_support_shop_native.png",
+      "source_sha256": "c1a9e08e2a9cc75965c95206f41f65167b84ad99e809733a1208fa0052b60c0e",
+      "target_cue": 1,
+      "variants": [
+        "crl_shop_rules_closed_native.png"
+      ]
+    },
+    {
+      "name": "crl_support_shop_scrolled",
+      "route": "crl_return",
+      "cues": [
+        {
+          "roi": "crl_return_button",
+          "template": "crl_support_shop_scrolled_crl_return_button"
+        },
+        {
+          "roi": "crl_shop_champion_button",
+          "template": "crl_support_shop_scrolled_crl_shop_champion_button"
+        }
+      ],
+      "source": "crl_shop_bottom_native.png",
+      "source_sha256": "5d88907297934ba9013e44f98da302058b4a3ead40421977291b3e242b7aadea",
+      "target_cue": 0
+    },
+    {
+      "name": "crl_activity_rules_native",
+      "route": "crl_rules_close",
+      "cues": [
+        {
+          "roi": "crl_rules_title",
+          "template": "crl_activity_rules_native_crl_rules_title"
+        },
+        {
+          "roi": "crl_rules_close",
+          "template": "crl_activity_rules_native_crl_rules_close"
+        }
+      ],
+      "source": "crl_rules_native_bottom.png",
+      "source_sha256": "7e4186cd71aa089a924a5c8e7f28ec9b52d66128e24bf1bf621137c7b8e4a909",
+      "target_cue": 1,
+      "variants": [
+        "crl_support_shop_rules_native.png",
+        "crl_shop_rules_bottom_native.png",
+        "crl_shop_rules_end_native.png"
+      ]
+    },
+    {
+      "name": "crl_activity_rules",
+      "route": "crl_rules_close",
+      "cues": [
+        {
+          "roi": "crl_rules_title",
+          "template": "crl_activity_rules_crl_rules_title"
+        },
+        {
+          "roi": "crl_rules_close",
+          "template": "crl_activity_rules_crl_rules_close"
+        }
+      ],
+      "source": "crl_rules.png",
+      "source_sha256": "b5eb332d926187d2e076f16d5529b2583539c98c4b168fb2db9123876d309f34",
+      "target_cue": 1
+    },
+    {
+      "name": "crl_champion_road_adb",
+      "route": "crl_return",
+      "cues": [
+        {
+          "roi": "crl_header",
+          "template": "crl_champion_road_adb_crl_header"
+        },
+        {
+          "roi": "crl_return_button",
+          "template": "crl_champion_road_adb_crl_return_button"
+        }
+      ],
+      "source": "crl_reopen.png",
+      "source_sha256": "0e6beca5e88d410bf01370f9a1dac7852585ab4aa5a405b575f9e8fd42cb46d6",
+      "target_cue": 1
+    },
+    {
+      "name": "crl_champion_road",
+      "route": "crl_return",
+      "cues": [
+        {
+          "roi": "crl_header",
+          "template": "crl_champion_road_crl_header"
+        },
+        {
+          "roi": "crl_return_button",
+          "template": "crl_champion_road_crl_return_button"
+        }
+      ],
+      "source": "crl_native_page.png",
+      "source_sha256": "156e34f0b149fa5e29953b147ef153da28285f4bd406054dffd1558e46920854",
+      "target_cue": 1
+    },
+    {
+      "name": "custom_bundle",
+      "route": "custom_bundle_close",
+      "cues": [
+        {
+          "roi": "custom_bundle_root_title",
+          "template": "custom_bundle_custom_bundle_root_title"
+        },
+        {
+          "roi": "custom_bundle_root_close",
+          "template": "custom_bundle_custom_bundle_root_close"
+        }
+      ],
+      "source": "evolution_shop_entry.png",
+      "source_sha256": "c1a4d2b69fde93578adf31a03cc3b1eff7538f5631125a8bf79acd5421e09163",
+      "target_cue": 1,
+      "variants": [
+        "custom_bundle_help_closed.png",
+        "custom_bundle_choices_closed.png"
+      ]
+    },
+    {
+      "name": "custom_bundle_choices",
+      "route": "custom_bundle_choices_close",
+      "cues": [
+        {
+          "roi": "custom_bundle_choices_title",
+          "template": "custom_bundle_choices_custom_bundle_choices_title"
+        },
+        {
+          "roi": "custom_bundle_choices_close",
+          "template": "custom_bundle_choices_custom_bundle_choices_close"
+        }
+      ],
+      "source": "custom_bundle_choices.png",
+      "source_sha256": "f17b64e76fb360c3a6508bccb922da5a4d02f512586fbded35ee6b4df16db43d",
+      "target_cue": 1
+    },
+    {
+      "name": "custom_bundle_help",
+      "route": "custom_bundle_help_close",
+      "cues": [
+        {
+          "roi": "custom_bundle_help_title",
+          "template": "custom_bundle_help_custom_bundle_help_title"
+        },
+        {
+          "roi": "custom_bundle_help_close",
+          "template": "custom_bundle_help_custom_bundle_help_close"
+        }
+      ],
+      "source": "custom_bundle_help.png",
+      "source_sha256": "3674ae07812dfe9c642ea6a30fa8704d3f1e9b44b033da30291f68fff2d5dc75",
+      "target_cue": 1,
+      "variants": [
+        "custom_bundle_help_bottom.png"
+      ]
+    },
+    {
+      "name": "daily_activity_help_alt",
+      "route": "daily_activity_help_close",
+      "cues": [
+        {
+          "roi": "daily_activity_help_title",
+          "template": "daily_activity_help_alt_daily_activity_help_title",
+          "search_roi": "daily_activity_help_title_search"
+        },
+        {
+          "roi": "daily_activity_help_close",
+          "template": "daily_activity_help_alt_daily_activity_help_close",
+          "search_roi": "daily_activity_help_close_search"
+        }
+      ],
+      "source": "daily_activity_help_second.png",
+      "source_sha256": "38cbb6abb2d13b5ac9ebf75b0985d21786e0b02f295aa47fd94403adf159d5ae",
+      "target_cue": 1,
+      "variants": [
+        "daily_activity_special_piece.png"
+      ]
+    },
+    {
+      "name": "daily_activity_help",
+      "route": "daily_activity_help_close",
+      "cues": [
+        {
+          "roi": "daily_activity_help_title",
+          "template": "daily_activity_help_daily_activity_help_title",
+          "search_roi": "daily_activity_help_title_search"
+        },
+        {
+          "roi": "daily_activity_help_close",
+          "template": "daily_activity_help_daily_activity_help_close",
+          "search_roi": "daily_activity_help_close_search"
+        }
+      ],
+      "source": "daily_activity_help.png",
+      "source_sha256": "3b4830a70365647feb1132b00256370d50190c5741bae4555ffbfa6d470472c3",
+      "target_cue": 1,
+      "variants": [
+        "daily_activity_help_second.png",
+        "daily_activity_special_piece.png"
+      ]
+    },
+    {
+      "name": "daily_activity",
+      "route": "daily_activity_confirm",
+      "cues": [
+        {
+          "roi": "daily_activity_info_anchor",
+          "template": "daily_activity_daily_activity_info_anchor"
+        },
+        {
+          "roi": "daily_activity_footer_confirm",
+          "template": "daily_activity_daily_activity_footer_confirm"
+        }
+      ],
+      "source": "daily_activity.png",
+      "source_sha256": "f5594c3ba3de4ea112d465a8628e286d8eb53ec964e9fa6ef81fa8489c4b646a",
+      "target_cue": 1,
+      "variants": [
+        "daily_activity_returned.png",
+        "daily_activity_help_closed.png"
+      ]
+    },
+    {
+      "name": "pass_royale_track",
+      "route": "pass_confirm",
+      "cues": [
+        {
+          "roi": "pass_header",
+          "template": "pass_royale_track_pass_header"
+        },
+        {
+          "roi": "pass_footer_confirm",
+          "template": "pass_royale_track_pass_footer_confirm"
+        }
+      ],
+      "source": "pass_actual.png",
+      "source_sha256": "a477fdea138114fdd9fca6d4f9d9f0e0322ca30c1c8b6ef0ad03d9856d6eb30e",
+      "target_cue": 1,
+      "variants": [
+        "pass_scroll_probe.png",
+        "pass_track_lower.png",
+        "pass_track_middle.png"
+      ]
+    },
+    {
+      "name": "deck_action_menu",
+      "route": "member_dismiss",
+      "cues": [
+        {
+          "roi": "deck_action_add_label",
+          "template": "deck_action_menu_deck_action_add_label"
+        },
+        {
+          "roi": "deck_action_link_label",
+          "template": "deck_action_menu_deck_action_link_label"
+        }
+      ],
+      "source": "deck_action_menu.png",
+      "source_sha256": "a23137bc33c0d9722a2a1a3b4c9f2b950d67d1cff21cc29bc11ff1f93188938a",
+      "variants": [
+        "deck_menu_again.png"
+      ]
+    },
+    {
+      "name": "unowned_clear_deck_confirmation",
+      "route": "deck_confirm_cancel",
+      "cues": [
+        {
+          "roi": "deck_clear_title",
+          "template": "unowned_clear_deck_confirmation_deck_clear_title"
+        },
+        {
+          "roi": "deck_confirm_message",
+          "template": "unowned_clear_deck_confirmation_deck_confirm_message"
+        },
+        {
+          "roi": "game_exit_cancel",
+          "template": "unowned_clear_deck_confirmation_game_exit_cancel"
+        },
+        {
+          "roi": "game_exit_confirm",
+          "template": "unowned_clear_deck_confirmation_game_exit_confirm"
+        }
+      ],
+      "source": "delete_deck_confirmation.png",
+      "source_sha256": "4e6db4cde1829e5586aa11d0f9bdb8ed597a72df2c67578ec461305f4cfdff2a",
+      "target_cue": 2,
+      "unowned_only": true
+    },
+    {
+      "name": "awakening_information",
+      "route": "awakening_close",
+      "cues": [
+        {
+          "roi": "awakening_title",
+          "template": "awakening_information_awakening_title"
+        },
+        {
+          "roi": "awakening_close",
+          "template": "awakening_information_awakening_close"
+        }
+      ],
+      "source": "awakening_info.png",
+      "source_sha256": "fde71ce82ea7c0c423c5dafdbd70866a514a6aed84f950d03581431d8b24b833",
+      "target_cue": 1,
+      "variants": [
+        "awakening_sources.png"
+      ]
+    },
+    {
+      "name": "tower_card_information",
+      "route": "tower_info_close",
+      "cues": [
+        {
+          "roi": "tower_level_unit",
+          "template": "tower_card_information_tower_level_unit",
+          "search_roi": "tower_level_unit_search",
+          "match": "glyph_outline"
+        },
+        {
+          "roi": "tower_info_close",
+          "template": "tower_card_information_tower_info_close"
+        }
+      ],
+      "source": "locked_tower_card_menu.png",
+      "source_sha256": "11e5813df8688228f657b1d651a1e399692481de3ad91599862a3d91ee0d7e92",
+      "target_cue": 1,
+      "variants": [
+        "tower_video.png",
+        "tower_stats.png",
+        "tower_description.png"
+      ]
+    },
+    {
+      "name": "hero_card_unit_chrome",
+      "route": "hero_info_close",
+      "cues": [
+        {
+          "roi": "hero_level_unit",
+          "template": "hero_card_unit_chrome_hero_level_unit",
+          "search_roi": "hero_level_unit_search",
+          "match": "glyph_outline"
+        },
+        {
+          "roi": "hero_info_close",
+          "template": "hero_card_unit_chrome_hero_info_close"
+        }
+      ],
+      "source": "locked_hero_information.png",
+      "source_sha256": "7ff3da6a76b46c741fed926c0076c6799ecd4aebcfa145cd0c930645a7deff79",
+      "target_cue": 1,
+      "variants": [
+        "hero_information.png",
+        "hero_video_preview.png",
+        "hero_ability_info.png",
+        "hero_description.png",
+        "hero_text_description.png"
+      ]
+    },
+    {
+      "name": "hero_card_information_gold",
+      "route": "hero_info_close",
+      "cues": [
+        {
+          "roi": "hero_level_unit",
+          "template": "hero_card_information_gold_hero_level_unit"
+        },
+        {
+          "roi": "hero_progress_edge",
+          "template": "hero_card_information_gold_hero_progress_edge"
+        },
+        {
+          "roi": "hero_info_close",
+          "template": "hero_card_information_gold_hero_info_close"
+        }
+      ],
+      "source": "hero_ability_info.png",
+      "source_sha256": "d2ff87b86f16c9fc649c6f25879d97a0a78f79705fcde4ac3967a88c0f548e85",
+      "target_cue": 2,
+      "variants": [
+        "hero_text_description.png"
+      ]
+    },
+    {
+      "name": "collection_filter_options",
+      "route": "member_dismiss",
+      "cues": [
+        {
+          "roi": "collection_filter_title",
+          "template": "collection_filter_options_collection_filter_title",
+          "search_roi": "collection_filter_title_search"
+        },
+        {
+          "roi": "collection_filter_labels",
+          "template": "collection_filter_options_collection_filter_labels",
+          "search_roi": "collection_filter_labels_search"
+        }
+      ],
+      "source": "collection_filter_options.png",
+      "source_sha256": "0e7ba9088eb9bd47a324baf11a421ecc27a4b8a27d22730794ccede57b881a6f",
+      "variants": [
+        "awakening_filter_dialog.png",
+        "awakening_filter_restored.png"
+      ]
+    },
+    {
+      "name": "hero_card_information",
+      "route": "hero_info_close",
+      "cues": [
+        {
+          "roi": "hero_level_unit",
+          "template": "hero_card_information_hero_level_unit"
+        },
+        {
+          "roi": "hero_progress_edge",
+          "template": "hero_card_information_hero_progress_edge"
+        },
+        {
+          "roi": "hero_info_close",
+          "template": "hero_card_information_hero_info_close"
+        }
+      ],
+      "source": "hero_information.png",
+      "source_sha256": "6368d634b044a98aa195a638d068b7f8b01c87342703d28a5a5f6ec860be2804",
+      "target_cue": 2,
+      "variants": [
+        "hero_video_preview.png",
+        "hero_ability_info.png",
+        "hero_description.png",
+        "hero_text_description.png",
+        "hero_prev_ability.png",
+        "hero_prev_stats.png"
+      ]
+    },
+    {
+      "name": "hero_card_chrome",
+      "route": "hero_info_close",
+      "cues": [
+        {
+          "roi": "hero_progress_edge",
+          "template": "hero_card_chrome_hero_progress_edge"
+        },
+        {
+          "roi": "hero_info_close",
+          "template": "hero_card_chrome_hero_info_close"
+        }
+      ],
+      "source": "hero_information.png",
+      "source_sha256": "6368d634b044a98aa195a638d068b7f8b01c87342703d28a5a5f6ec860be2804",
+      "target_cue": 1,
+      "variants": [
+        "hero_video_preview.png",
+        "hero_ability_info.png",
+        "hero_description.png",
+        "hero_text_description.png",
+        "hero_prev_ability.png",
+        "hero_prev_stats.png"
+      ]
+    },
+    {
+      "name": "unowned_deck_confirmation",
+      "route": "deck_confirm_cancel",
+      "cues": [
+        {
+          "roi": "deck_confirm_title",
+          "template": "unowned_deck_confirmation_deck_confirm_title"
+        },
+        {
+          "roi": "deck_confirm_message",
+          "template": "unowned_deck_confirmation_deck_confirm_message"
+        },
+        {
+          "roi": "game_exit_cancel",
+          "template": "unowned_deck_confirmation_game_exit_cancel"
+        },
+        {
+          "roi": "game_exit_confirm",
+          "template": "unowned_deck_confirmation_game_exit_confirm"
+        }
+      ],
+      "source": "random_deck_confirmation.png",
+      "source_sha256": "7c89cd895b3da9c9194c30be99b34539bec6b8dd6ec90f62ed347719c2328f49",
+      "target_cue": 2,
+      "unowned_only": true
+    },
+    {
+      "name": "card_mastery_detail",
+      "route": "card_mastery_close",
+      "cues": [
+        {
+          "roi": "card_mastery_header",
+          "template": "card_mastery_detail_card_mastery_header"
+        },
+        {
+          "roi": "card_mastery_close",
+          "template": "card_mastery_detail_card_mastery_close"
+        },
+        {
+          "roi": "card_mastery_footer",
+          "template": "card_mastery_detail_card_mastery_footer"
+        }
+      ],
+      "source": "card_mastery_from_info.png",
+      "source_sha256": "f16cb0583dfb65c27886570bff46819402fc69be95245c3e16c1c2d38301cded",
+      "target_cue": 1,
+      "variants": [
+        "mastery_task_info.png",
+        "mastery_locked_task.png"
+      ]
+    },
+    {
+      "name": "card_information",
+      "route": "card_info_close",
+      "cues": [
+        {
+          "roi": "card_info_rarity_label",
+          "template": "card_information_card_info_rarity_label"
+        },
+        {
+          "roi": "card_info_type_label",
+          "template": "card_information_card_info_type_label"
+        },
+        {
+          "roi": "card_info_close",
+          "template": "card_information_card_info_close"
+        }
+      ],
+      "source": "card_information.png",
+      "source_sha256": "8a1dba44ce40fcc048cdb08cf43483757d8b4162682fb78e73aa870a5ca404e1",
+      "target_cue": 2,
+      "variants": [
+        "card_description.png",
+        "card_text_description.png",
+        "mastery_to_card_info.png",
+        "card_skin_close.png"
+      ]
+    },
+    {
+      "name": "card_editor",
+      "route": "card_editor_confirm",
+      "cues": [
+        {
+          "roi": "card_editor_library_title",
+          "template": "card_editor_card_editor_library_title"
+        },
+        {
+          "roi": "clan_intro_confirm",
+          "template": "card_editor_clan_intro_confirm"
+        }
+      ],
+      "source": "card_info_to_editor.png",
+      "source_sha256": "db85f93b37b6800d84ce415bcbd0c4de25db7c7392a08898275b05914039f0d5",
+      "target_cue": 1
+    },
+    {
+      "name": "card_skin_selector",
+      "route": "card_skin_close",
+      "cues": [
+        {
+          "roi": "card_skin_arrow",
+          "template": "card_skin_selector_card_skin_arrow"
+        },
+        {
+          "roi": "card_skin_equipped",
+          "template": "card_skin_selector_card_skin_equipped"
+        }
+      ],
+      "source": "card_skin_selector.png",
+      "source_sha256": "817160143aaae2017a6426ddf536a0e8a1d7626a2762d41fe408c0b95069cc97",
+      "target_cue": 0
+    },
+    {
+      "name": "duel_deck",
+      "route": "duel_deck_back",
+      "cues": [
+        {
+          "roi": "duel_deck_title",
+          "template": "duel_deck_duel_deck_title"
+        },
+        {
+          "roi": "clan_intro_confirm",
+          "template": "duel_deck_clan_intro_confirm"
+        }
+      ],
+      "source": "deck_options.png",
+      "source_sha256": "15a8fba22f0c8e25551e009a433c16c182350cde74960608a2d105a5653bf332",
+      "idle_only": true,
+      "variants": [
+        "duel_deck_help.png",
+        "duel_help_closed.png"
+      ]
+    },
+    {
+      "name": "deck_2v2",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "deck_title",
+          "template": "deck_2v2_deck_title"
+        },
+        {
+          "roi": "deck_2v2_selectors",
+          "template": "deck_2v2_deck_2v2_selectors"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "deck_2v2_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "deck_current.png",
+      "source_sha256": "2a47d06d8551e08a70060f9ca023deee02e360d8209f847ff20859cf7a6c1768",
+      "target_cue": 2
+    },
+    {
+      "name": "game_exit_confirm",
+      "route": "exit_game_cancel",
+      "cues": [
+        {
+          "roi": "game_exit_title",
+          "template": "game_exit_confirm_game_exit_title"
+        },
+        {
+          "roi": "game_exit_message",
+          "template": "game_exit_confirm_game_exit_message"
+        },
+        {
+          "roi": "game_exit_cancel",
+          "template": "game_exit_confirm_game_exit_cancel"
+        },
+        {
+          "roi": "game_exit_confirm",
+          "template": "game_exit_confirm_game_exit_confirm"
+        }
+      ],
+      "source": "news_list.png",
+      "source_sha256": "c4f312ce449f1cef2db3bc9b5d7b0fb3a62678a76b3cc7dad0c4c6d57876bb29",
+      "target_cue": 2
+    },
+    {
+      "name": "news_list",
+      "route": "news_close",
+      "cues": [
+        {
+          "roi": "news_list_tabs",
+          "template": "news_list_news_list_tabs"
+        },
+        {
+          "roi": "news_close",
+          "template": "news_list_news_close"
+        }
+      ],
+      "source": "left_cards_event.png",
+      "source_sha256": "1f51ad1bf3739e5378534919dc002c427570b5645134843adb3316b9d0909f0a",
+      "target_cue": 1
+    },
+    {
+      "name": "news_article",
+      "route": "news_close",
+      "cues": [
+        {
+          "roi": "news_article_label",
+          "template": "news_article_news_article_label"
+        },
+        {
+          "roi": "news_close",
+          "template": "news_article_news_close"
+        }
+      ],
+      "source": "news_article_back.png",
+      "source_sha256": "acd02e795dcb1b72070aa67bd5fb3e987544fbda854a634ae34232b2f271b3e0",
+      "target_cue": 1
+    },
+    {
+      "name": "profile_editor",
+      "route": "profile_editor_back",
+      "cues": [
+        {
+          "roi": "profile_editor_crown",
+          "template": "profile_editor_profile_editor_crown"
+        },
+        {
+          "roi": "profile_editor_confirm",
+          "template": "profile_editor_profile_editor_confirm"
+        }
+      ],
+      "source": "profile_banner_edit.png",
+      "source_sha256": "598bb358c674c481de4d6e601945f277810493b72055a6fca84cbc77fc51eaa9",
+      "idle_only": true,
+      "variants": [
+        "profile_banner_backgrounds.png",
+        "profile_king_skin.png",
+        "profile_tower_skin.png",
+        "profile_emote_edit.png",
+        "profile_emote_scrolled.png"
+      ]
+    },
+    {
+      "name": "friends_dialog",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "friends_title",
+          "template": "friends_dialog_friends_title"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "friends_dialog_leaderboard_close"
+        }
+      ],
+      "source": "friends_lobby.png",
+      "source_sha256": "e0335106c454b120dffa979d09c5672bbb015f6698e5680aeff5136c9135eada",
+      "target_cue": 1,
+      "fixture_source": "friends_lobby_cues_only.png",
+      "variants": [
+        "friends_game_cues_only.png",
+        "friends_inbox_cues_only.png"
+      ]
+    },
+    {
+      "name": "social_friend_menu",
+      "route": "member_dismiss",
+      "cues": [
+        {
+          "roi": "social_friend_profile_button",
+          "template": "social_friend_menu_social_friend_profile_button"
+        },
+        {
+          "roi": "social_friend_clan_button",
+          "template": "social_friend_menu_social_friend_clan_button"
+        }
+      ],
+      "source": "social_friend_menu.png",
+      "source_sha256": "943467be18609b00d2ed0296e905609296a93154a30419061ad118ecdae1ea95",
+      "fixture_source": "social_friend_menu_cues_only.png"
+    },
+    {
+      "name": "social_home",
+      "route": "social",
+      "cues": [
+        {
+          "roi": "social_heading",
+          "template": "social_home_social_heading"
+        },
+        {
+          "roi": "social_nav_selected",
+          "template": "social_home_social_nav_selected",
+          "search_roi": "social_nav_selected_search"
+        },
+        {
+          "roi": "social_nav_battle",
+          "template": "social_home_social_nav_battle",
+          "search_roi": "social_nav_battle_search"
+        }
+      ],
+      "source": "social_home.png",
+      "source_sha256": "e3033928cad1352ebd9cad6c817301a36feffaab9070df9c084e47c3e20f8a3a",
+      "target_cue": 2
+    },
+    {
+      "name": "social_scrolled",
+      "route": "social",
+      "cues": [
+        {
+          "roi": "social_nav_selected",
+          "template": "social_scrolled_social_nav_selected",
+          "search_roi": "social_nav_selected_search"
+        },
+        {
+          "roi": "social_nav_battle",
+          "template": "social_scrolled_social_nav_battle",
+          "search_roi": "social_nav_battle_search"
+        }
+      ],
+      "source": "social_home.png",
+      "source_sha256": "e3033928cad1352ebd9cad6c817301a36feffaab9070df9c084e47c3e20f8a3a",
+      "target_cue": 1
+    },
+    {
+      "name": "social_filter",
+      "route": "member_dismiss",
+      "cues": [
+        {
+          "roi": "social_filter_title",
+          "template": "social_filter_social_filter_title"
+        },
+        {
+          "roi": "social_filter_labels",
+          "template": "social_filter_social_filter_labels"
+        }
+      ],
+      "source": "social_filter.png",
+      "source_sha256": "5e52327db6f7e75b00f36d1f426d6eb7f4c21bc93da3da2f0d7501adefc05c28",
+      "fixture_source": "social_filter_cues_only.png"
+    },
+    {
+      "name": "social_add_friend",
+      "route": "friend_close",
+      "cues": [
+        {
+          "roi": "social_add_friend_title",
+          "template": "social_add_friend_social_add_friend_title"
+        },
+        {
+          "roi": "social_add_friend_close",
+          "template": "social_add_friend_social_add_friend_close"
+        }
+      ],
+      "source": "social_add_friend.png",
+      "source_sha256": "fec97c5240a13843d2d8c3c5438989d93e921e580b57129868a4be57b7d245cb",
+      "target_cue": 1,
+      "fixture_source": "social_add_friend_cues_only.png"
+    },
+    {
+      "name": "clan_intro",
+      "route": "clan_intro_confirm",
+      "cues": [
+        {
+          "roi": "clan_intro_title",
+          "template": "clan_intro_clan_intro_title"
+        },
+        {
+          "roi": "clan_intro_confirm",
+          "template": "clan_intro_clan_intro_confirm"
+        }
+      ],
+      "source": "clan_intro_loaded.png",
+      "source_sha256": "6ab85aeeab6ef92c8fded530675211e67a68c3b1e4cedfeb557826e411504275",
+      "target_cue": 1,
+      "variants": [
+        "clan_intro.png"
+      ]
+    },
+    {
+      "name": "clan_search",
+      "route": "clan_search_close",
+      "cues": [
+        {
+          "roi": "clan_search_title",
+          "template": "clan_search_clan_search_title"
+        },
+        {
+          "roi": "clan_search_close",
+          "template": "clan_search_clan_search_close"
+        }
+      ],
+      "source": "clan_search.png",
+      "source_sha256": "20fe851102c7b534b970ed676b5856d61f018a40fc3f5c9fbc0874e67619c683",
+      "target_cue": 1
+    },
+    {
+      "name": "clan_search_advanced",
+      "route": "clan_advanced_close",
+      "cues": [
+        {
+          "roi": "clan_advanced_title",
+          "template": "clan_search_advanced_clan_advanced_title"
+        },
+        {
+          "roi": "clan_advanced_close",
+          "template": "clan_search_advanced_clan_advanced_close"
+        }
+      ],
+      "source": "clan_search_advanced.png",
+      "source_sha256": "21cf424880e843b4dfd793ca2f832ff3ebc2e5a350d56bbd33f947f398b09baf",
+      "target_cue": 1
+    },
+    {
+      "name": "clan_create",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "clan_create_title",
+          "template": "clan_create_clan_create_title"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "clan_create_leaderboard_close"
+        }
+      ],
+      "source": "clan_create.png",
+      "source_sha256": "b7c58de6a61d55e1586ec88ef4a2e4042b230f652d3aafb5c13882347e7576d4",
+      "target_cue": 1
+    },
+    {
+      "name": "clan_emblem_picker",
+      "route": "clan_emblem_close",
+      "cues": [
+        {
+          "roi": "clan_emblem_title",
+          "template": "clan_emblem_picker_clan_emblem_title"
+        },
+        {
+          "roi": "clan_emblem_close",
+          "template": "clan_emblem_picker_clan_emblem_close"
+        }
+      ],
+      "source": "clan_emblem_picker.png",
+      "source_sha256": "d70481414015f413d681d0ac4bc9b35319d6ae408ae003e801d9f4b193e202ac",
+      "target_cue": 1,
+      "variants": [
+        "clan_emblem_scrolled.png"
+      ]
+    },
+    {
+      "name": "emote_offer_info",
+      "route": "emote_info_close",
+      "cues": [
+        {
+          "roi": "emote_info_title",
+          "template": "emote_offer_info_emote_info_title",
+          "search_roi": "offer_title_search"
+        },
+        {
+          "roi": "emote_info_close",
+          "template": "emote_offer_info_emote_info_close",
+          "search_roi": "offer_close_search"
+        }
+      ],
+      "source": "emote_offer_info.png",
+      "source_sha256": "3806ccdcf0464b3d31c6287cf7b7f7fa0c6133342380ecef9cfff109ff086351",
+      "target_cue": 1
+    },
+    {
+      "name": "shop_offer_info",
+      "route": "shop_info_close",
+      "cues": [
+        {
+          "roi": "shop_info_title",
+          "template": "shop_offer_info_shop_info_title",
+          "search_roi": "offer_title_search"
+        },
+        {
+          "roi": "shop_info_close",
+          "template": "shop_offer_info_shop_info_close",
+          "search_roi": "offer_close_search"
+        }
+      ],
+      "source": "shop_offer_info.png",
+      "source_sha256": "8a55209800eb016f52a120bbe915f4fbd2133556db5a2704130a69b307fe5d97",
+      "target_cue": 1
+    },
+    {
+      "name": "emote_market",
+      "route": "market_close",
+      "cues": [
+        {
+          "roi": "market_title",
+          "template": "emote_market_market_title"
+        },
+        {
+          "roi": "market_close",
+          "template": "emote_market_market_close"
+        }
+      ],
+      "source": "emote_market.png",
+      "source_sha256": "7d3f3d11ccf06cf258c570e39ecbfa54c0a2f770bc69ab8f86fa033ff55167dc",
+      "target_cue": 1
+    },
+    {
+      "name": "emote_market_scrolled",
+      "route": "market_close",
+      "cues": [
+        {
+          "roi": "market_close",
+          "template": "emote_market_scrolled_market_close"
+        },
+        {
+          "roi": "market_voucher_info",
+          "template": "emote_market_scrolled_market_voucher_info",
+          "search_roi": "market_voucher_info_search"
+        }
+      ],
+      "source": "emote_market.png",
+      "source_sha256": "7d3f3d11ccf06cf258c570e39ecbfa54c0a2f770bc69ab8f86fa033ff55167dc",
+      "target_cue": 0,
+      "variants": [
+        "emote_market_scrolled.png"
+      ]
+    },
+    {
+      "name": "shop_offers_top",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_offers_top_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_offers_top_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_offers_top_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_offers_top.png",
+      "source_sha256": "e4f53d85a2a4d2dab95326e1050b3695eb372cb6a284768db393d47968fe6a64",
+      "target_cue": 2,
+      "variants": [
+        "shop_offers_middle.png",
+        "shop_offers_bottom.png"
+      ]
+    },
+    {
+      "name": "shop_weekly",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_weekly_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_weekly_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_weekly_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_weekly.png",
+      "source_sha256": "abe2e9b519713000cb20e896ee42bd72a7c5457c3d3cd6da39bcedd27a5727fe",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_vouchers",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_vouchers_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_vouchers_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_vouchers_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_vouchers.png",
+      "source_sha256": "240fcb2c5c9649c7f043328cd69c9a0841d89959213424d08aed8d32cee757a1",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_cosmetics",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_cosmetics_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_cosmetics_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_cosmetics_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_cosmetics.png",
+      "source_sha256": "ea246cb047f1706347d871595972db693b1b10a2032f257ae8487d7958d22dfb",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_emotes",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_emotes_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_emotes_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_emotes_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_emotes.png",
+      "source_sha256": "dfb66b89e72d04bb363b08f65ff3cd1bf806507c7099841e849431ecb9dd5fae",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_card_chests",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_card_chests_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_card_chests_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_card_chests_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_card_chests.png",
+      "source_sha256": "2c745e5bb0c24d794a0b22a607fcf49561b9c79b1b07fcaa2c0513748a29c6ed",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_lucky_chests",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_lucky_chests_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_lucky_chests_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_lucky_chests_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_lucky_chests.png",
+      "source_sha256": "8b64e9c71a310af7d31ed3ee6b59c687d9a7cc07aa929b70b0be71b5456188bc",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_surprise_chests",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_surprise_chests_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_surprise_chests_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_surprise_chests_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_surprise_chests.png",
+      "source_sha256": "c3a51e916daab7d458701dffc5e6f9db5e2869b9e3d5bcb1226915af565cfe8d",
+      "target_cue": 2
+    },
+    {
+      "name": "shop_resources_top",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_resources_top_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_resources_top_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_resources_top_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_resources_top.png",
+      "source_sha256": "6afa9c019569df15398694f9a1708a4ab853c82ff2c9746e095230c985801fcb",
+      "target_cue": 2,
+      "variants": [
+        "shop_resources_middle.png",
+        "shop_resources_bottom.png"
+      ]
+    },
+    {
+      "name": "shop_scrolled",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_scrolled_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_scrolled_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_offers_top.png",
+      "source_sha256": "e4f53d85a2a4d2dab95326e1050b3695eb372cb6a284768db393d47968fe6a64",
+      "target_cue": 1
+    },
+    {
+      "name": "burger_menu",
+      "route": "burger_dismiss",
+      "cues": [
+        {
+          "roi": "burger_header",
+          "template": "burger_menu_burger_header"
+        },
+        {
+          "roi": "burger_footer",
+          "template": "burger_menu_burger_footer"
+        }
+      ],
+      "source": "burger_menu.png",
+      "source_sha256": "b2f8243e0a32b0aaf62abc5e8e99502f3eec888bcd50011d0142997095a57b04"
+    },
+    {
+      "name": "inbox",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "inbox_title",
+          "template": "inbox_inbox_title"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "inbox_leaderboard_close"
+        }
+      ],
+      "source": "inbox.png",
+      "source_sha256": "33abd518c7f97c9ffa3db032d8685cd9b85fa809dbeb489768d10817e42d7530",
+      "target_cue": 1
+    },
+    {
+      "name": "settings",
+      "route": "settings_close",
+      "cues": [
+        {
+          "roi": "settings_title",
+          "template": "settings_settings_title"
+        },
+        {
+          "roi": "settings_close",
+          "template": "settings_settings_close"
+        }
+      ],
+      "source": "settings.png",
+      "source_sha256": "1fc411c88adf68fc484c0a752976ef50d5b7b0c056da38c99d28d9aabd034e26",
+      "target_cue": 1
+    },
+    {
+      "name": "more_settings",
+      "route": "more_settings_close",
+      "cues": [
+        {
+          "roi": "more_settings_title",
+          "template": "more_settings_more_settings_title"
+        },
+        {
+          "roi": "more_settings_close",
+          "template": "more_settings_more_settings_close"
+        }
+      ],
+      "source": "more_settings_top.png",
+      "source_sha256": "9f221ae0a3b5bf0b54dea0056b7b2a29229de07be4fa04d49ba8102a615cc0fe",
+      "target_cue": 1,
+      "variants": [
+        "more_settings_bottom.png"
+      ]
+    },
+    {
+      "name": "tournaments",
+      "route": "tournaments_back",
+      "cues": [
+        {
+          "roi": "tournaments_title",
+          "template": "tournaments_tournaments_title"
+        },
+        {
+          "roi": "tournaments_back",
+          "template": "tournaments_tournaments_back"
+        }
+      ],
+      "source": "tournaments.png",
+      "source_sha256": "82e22cc121e068ef48205680e1446a80478265202dfb01ae09a041bbe1fa9179",
+      "target_cue": 1
+    },
+    {
+      "name": "tournament_help",
+      "route": "tournament_help_close",
+      "cues": [
+        {
+          "roi": "tournament_help_title",
+          "template": "tournament_help_tournament_help_title"
+        },
+        {
+          "roi": "tournament_help_close",
+          "template": "tournament_help_tournament_help_close"
+        }
+      ],
+      "source": "tournament_help.png",
+      "source_sha256": "8682c0bb9c72eb87ccc0956f8a0d86db9882c62d8cca72417202bc63f26d6a0c",
+      "target_cue": 1
+    },
+    {
+      "name": "tournament_create",
+      "route": "modal_right",
+      "cues": [
+        {
+          "roi": "tournament_create_title",
+          "template": "tournament_create_tournament_create_title"
+        },
+        {
+          "roi": "battle_log_close",
+          "template": "tournament_create_battle_log_close"
+        }
+      ],
+      "source": "tournament_create.png",
+      "source_sha256": "962f1658ae05b1693e873bf31e0e3a889b980edcc8b27b80b3e119690c1e6490",
+      "target_cue": 1
+    },
+    {
+      "name": "royale_tv",
+      "route": "modal_right",
+      "cues": [
+        {
+          "roi": "royale_tv_title",
+          "template": "royale_tv_royale_tv_title"
+        },
+        {
+          "roi": "royale_tv_arrows",
+          "template": "royale_tv_royale_tv_arrows"
+        },
+        {
+          "roi": "battle_log_close",
+          "template": "royale_tv_battle_log_close"
+        }
+      ],
+      "source": "royale_tv.png",
+      "source_sha256": "0d39d351a4accf01590382fc1515a10c8008f0f195dd3c19cd4ebfb1a9b6529e",
+      "target_cue": 2,
+      "variants": [
+        "royale_tv_arena.png"
+      ]
+    },
+    {
+      "name": "spectate_exit_confirm",
+      "route": "spectate_confirm",
+      "cues": [
+        {
+          "roi": "spectate_confirm_message",
+          "template": "spectate_exit_confirm_spectate_confirm_message"
+        },
+        {
+          "roi": "spectate_confirm_button",
+          "template": "spectate_exit_confirm_spectate_confirm_button"
+        },
+        {
+          "roi": "spectate_next_top",
+          "template": "spectate_exit_confirm_spectate_next_top",
+          "minimum_std": 4
+        }
+      ],
+      "source": "spectate_exit_confirm.png",
+      "source_sha256": "24a78890db970fe7ca1ec91212102cef29551364d0457c9b1389ac65ea4d57c6",
+      "idle_only": true
+    },
+    {
+      "name": "spectate",
+      "route": "android_back",
+      "cues": [
+        {
+          "roi": "spectate_next_top",
+          "template": "spectate_spectate_next_top"
+        },
+        {
+          "roi": "spectate_next_bottom",
+          "template": "spectate_spectate_next_bottom"
+        }
+      ],
+      "source": "spectate.png",
+      "source_sha256": "b1c5db805b59dce547407f57906684ddfcbaa560df740394e10ac2ed80cd1a98",
+      "idle_only": true
+    },
+    {
+      "name": "player_profile",
+      "route": "profile_close",
+      "cues": [
+        {
+          "roi": "profile_crown",
+          "template": "player_profile_profile_crown"
+        },
+        {
+          "roi": "profile_close",
+          "template": "player_profile_profile_close"
+        }
+      ],
+      "source": "player_profile_top.png",
+      "source_sha256": "c605621fa2eaad3ceadcf4feca28c1fb92261e5c336ed55dd00d53272ad8c5d0",
+      "target_cue": 1,
+      "variants": [
+        "player_profile_middle.png",
+        "player_profile_stats.png",
+        "player_profile_seasons.png",
+        "player_profile_bottom.png"
+      ]
+    },
+    {
+      "name": "clan_member_menu",
+      "route": "member_dismiss",
+      "cues": [
+        {
+          "roi": "member_labels",
+          "template": "clan_member_menu_member_labels"
+        },
+        {
+          "roi": "member_profile_button",
+          "template": "clan_member_menu_member_profile_button"
+        }
+      ],
+      "source": "clan_member_menu.png",
+      "source_sha256": "796576d355e892588b0f879c104aa0bc07e32f11a8f4c3e7ccf54764137b297e"
+    },
+    {
+      "name": "clan_detail",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "clan_title",
+          "template": "clan_detail_clan_title"
+        },
+        {
+          "roi": "clan_tab",
+          "template": "clan_detail_clan_tab"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "clan_detail_leaderboard_close"
+        }
+      ],
+      "source": "clan_detail.png",
+      "source_sha256": "4f30b550119bbe223f0bff2b76d96736c08cb9cd880f74c83c525f5065aad9b9",
+      "target_cue": 2
+    },
+    {
+      "name": "battle_log",
+      "route": "modal_right",
+      "cues": [
+        {
+          "roi": "battle_log_title",
+          "template": "battle_log_battle_log_title"
+        },
+        {
+          "roi": "battle_log_tabs",
+          "template": "battle_log_battle_log_tabs"
+        },
+        {
+          "roi": "battle_log_close",
+          "template": "battle_log_battle_log_close"
+        }
+      ],
+      "source": "battle_log.png",
+      "source_sha256": "556cf62aa82235a9d03c77cfc5e1fa0bca26b195877d89ccaa9333f1b83856a9",
+      "target_cue": 2
+    },
+    {
+      "name": "tournament_history",
+      "route": "modal_right",
+      "cues": [
+        {
+          "roi": "battle_log_title",
+          "template": "tournament_history_battle_log_title"
+        },
+        {
+          "roi": "battle_log_tabs",
+          "template": "tournament_history_battle_log_tabs"
+        },
+        {
+          "roi": "battle_log_close",
+          "template": "tournament_history_battle_log_close"
+        }
+      ],
+      "source": "tournament_history.png",
+      "source_sha256": "80cc6468e2164981d5514c6a4c7d0175c3e0b7351306b722411b088ee084ed56",
+      "target_cue": 2
+    },
+    {
+      "name": "leaderboard_players",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "leaderboard_title",
+          "template": "leaderboard_players_leaderboard_title"
+        },
+        {
+          "roi": "leaderboard_tabs",
+          "template": "leaderboard_players_leaderboard_tabs"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "leaderboard_players_leaderboard_close"
+        }
+      ],
+      "source": "leaderboard_players.png",
+      "source_sha256": "eb493a4b09e60dc0db1b042daa462007285c34430dac49e43a25c611286a97c6",
+      "target_cue": 2
+    },
+    {
+      "name": "leaderboard_clans",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "leaderboard_title",
+          "template": "leaderboard_clans_leaderboard_title"
+        },
+        {
+          "roi": "leaderboard_tabs",
+          "template": "leaderboard_clans_leaderboard_tabs"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "leaderboard_clans_leaderboard_close"
+        }
+      ],
+      "source": "leaderboard_clans.png",
+      "source_sha256": "dc0f180620fe542a53765164df002ced4f5c0db1e236dcb8b84eb1faf09e6d85",
+      "target_cue": 2
+    },
+    {
+      "name": "leaderboard_wars",
+      "route": "leaderboard_close",
+      "cues": [
+        {
+          "roi": "leaderboard_title",
+          "template": "leaderboard_wars_leaderboard_title"
+        },
+        {
+          "roi": "leaderboard_tabs",
+          "template": "leaderboard_wars_leaderboard_tabs"
+        },
+        {
+          "roi": "leaderboard_close",
+          "template": "leaderboard_wars_leaderboard_close"
+        }
+      ],
+      "source": "leaderboard_wars.png",
+      "source_sha256": "84aed404d9bd3696ec0186ade719dcc76761f34776fcdfe128ea59a6eb6d3a58",
+      "target_cue": 2
+    },
+    {
+      "name": "elite_info",
+      "route": "elite_close",
+      "cues": [
+        {
+          "roi": "elite_title",
+          "template": "elite_info_elite_title"
+        },
+        {
+          "roi": "elite_close",
+          "template": "elite_info_elite_close"
+        }
+      ],
+      "source": "elite_info.png",
+      "source_sha256": "ce581e14c2804c8dd68e67aa01a12c0d659fb79d0b8b4a1a3d30ef7487b2453e"
+    },
+    {
+      "name": "elite_gameplay_info",
+      "route": "elite_close",
+      "cues": [
+        {
+          "roi": "elite_title",
+          "template": "elite_gameplay_info_elite_title"
+        },
+        {
+          "roi": "elite_close",
+          "template": "elite_gameplay_info_elite_close"
+        }
+      ],
+      "source": "elite_gameplay_info.png",
+      "source_sha256": "5daf6f63aea19ef38b5f98bfb28fab5c4b654adc7a7f8fd21ad3cc0d02e24940"
+    },
+    {
+      "name": "game_modes",
+      "route": "mode_arrow",
+      "cues": [
+        {
+          "roi": "mode_title",
+          "template": "game_modes_mode_title",
+          "search_roi": "mode_title_search"
+        },
+        {
+          "roi": "mode_arrow",
+          "template": "game_modes_mode_arrow",
+          "search_roi": "mode_arrow_search"
+        }
+      ],
+      "source": "game_modes_top.png",
+      "source_sha256": "0cc079bd452b6f0435ed0bf96924876eea70a799343d6610ee63d679fd56c140",
+      "target_cue": 1,
+      "variants": [
+        "game_modes_middle.png",
+        "game_modes_scrolled.png"
+      ]
+    },
+    {
+      "name": "collection_badges",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_badges_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_badges_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_badges_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_badges.png",
+      "source_sha256": "8da3603d4d36d5d8e8fd79da62592ec33aca4ab8f68f5c1a0c2f9c5af3182f00",
+      "target_cue": 2
+    },
+    {
+      "name": "collection_card_forms",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_card_forms_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_card_forms_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_card_forms_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_card_forms.png",
+      "source_sha256": "6f76d4a66ec70f738b524632a66c07d945ff9ff1d5899db2484e3113a1e7a289",
+      "target_cue": 2
+    },
+    {
+      "name": "collection_emotes",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_emotes_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_emotes_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_emotes_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_emotes.png",
+      "source_sha256": "0725d43e9c03da2aeaef8415fa744f35953b8ce23398cfd8b39ed7c6cb495d8e",
+      "target_cue": 2
+    },
+    {
+      "name": "collection_mastery",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_mastery_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_mastery_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_mastery_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_mastery.png",
+      "source_sha256": "e1bea139ca6f30208ef33c8fa4fb6fee9c54de09c400d44d01b9232148796a52",
+      "target_cue": 2
+    },
+    {
+      "name": "collection_tower_skins",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_tower_skins_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_tower_skins_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_tower_skins_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_tower_skins.png",
+      "source_sha256": "c82adb1fc5411f1ef621c68a232ec10f321081f553b11fe61a587aadcf1f425b",
+      "target_cue": 2
+    },
+    {
+      "name": "collection_scrolled",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_scrolled_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_scrolled_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_badges.png",
+      "source_sha256": "8da3603d4d36d5d8e8fd79da62592ec33aca4ab8f68f5c1a0c2f9c5af3182f00",
+      "target_cue": 1
+    }
+  ]
+}

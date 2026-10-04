@@ -1,0 +1,87 @@
+import os
+import sys
+from pathlib import Path
+
+from cx_Freeze import Executable, setup
+
+ROOT_DIR = Path(__file__).parent.parent
+BUILD_ROOT = Path(os.environ.get("PYCLASHBOT_BUILD_ROOT", ROOT_DIR / "build"))
+DIST_ROOT = Path(os.environ.get("PYCLASHBOT_DIST_ROOT", ROOT_DIR / "dist"))
+sys.path.insert(0, str(ROOT_DIR))
+
+PROJECT_NAME = "py-clash-bot"
+AUTHOR = "Matthew Miglio, Martin Miglio"
+DESCRIPTION = "Automated Clash Royale"
+KEYWORDS = "clash of clans bot"
+COPYRIGHT = "2023 Matthew Miglio"
+ENTRY_POINT = ROOT_DIR / "scripts" / "cn_windows_entry.py"
+ICON_PATH = ROOT_DIR / "assets" / "pixel-pycb.ico"
+GUI = True
+UPGRADE_CODE = "{494bebef-6fc5-42e5-98c8-d0b2e339750e}"
+
+
+try:
+    _version_idx = sys.argv.index("--target-version")
+    VERSION = sys.argv[_version_idx + 1]
+    del sys.argv[_version_idx : _version_idx + 2]
+except (ValueError, IndexError):
+    VERSION = "v0.0.0"
+
+version_file = ROOT_DIR / "pyclashbot" / "__version__"
+if not version_file.exists():
+    version_file.touch()
+with version_file.open("w", encoding="utf-8") as f:
+    f.write(VERSION)
+
+
+build_exe_options = {
+    "build_exe": str(BUILD_ROOT / "cn-exe"),
+    "excludes": ["test", "setuptools"],
+    "packages": ["pyclashbot", "scripts", "ttkbootstrap", "tkinter"],
+    "include_files": [
+        (ROOT_DIR / "assets" / "pixel-pycb.ico", "assets/pixel-pycb.ico"),
+        (ROOT_DIR / "pyclashbot" / "detection" / "reference_images", "pyclashbot/detection/reference_images"),
+        (ROOT_DIR / "pyclashbot" / "__version__", "pyclashbot/__version__"),
+        (ROOT_DIR / "scripts", "scripts"),
+        (ROOT_DIR / "pyclashbot", "source/pyclashbot"),
+    ],
+    "include_msvcr": True,
+}
+
+bdist_msi_options = {
+    "dist_dir": str(DIST_ROOT),
+    "upgrade_code": UPGRADE_CODE,
+    "add_to_path": False,
+    # cx-freeze 8.4+ removed bdist_msi's target_version, so without these the
+    # filename/ProductVersion fall back to pyproject's v0.0.0 placeholder.
+    "product_version": VERSION,
+    "output_name": f"pyclashbot-{VERSION}-win64.msi",
+    "initial_target_dir": r"D:\codex\apps\pyclashbot\program",
+    "summary_data": {
+        "author": AUTHOR,
+        "comments": DESCRIPTION,
+        "keywords": KEYWORDS,
+    },
+}
+
+exe = Executable(
+    script=ENTRY_POINT,
+    base="Win32GUI" if GUI else None,
+    uac_admin=False,
+    shortcut_name=f"{PROJECT_NAME} {VERSION}",
+    shortcut_dir="DesktopFolder",
+    target_name=f"{PROJECT_NAME}.exe",
+    copyright=COPYRIGHT,
+    icon=ICON_PATH,
+)
+
+setup(
+    name=PROJECT_NAME,
+    description=DESCRIPTION,
+    executables=[exe],
+    options={
+        "build": {"build_base": str(BUILD_ROOT / "intermediates")},
+        "bdist_msi": bdist_msi_options,
+        "build_exe": build_exe_options,
+    },
+)

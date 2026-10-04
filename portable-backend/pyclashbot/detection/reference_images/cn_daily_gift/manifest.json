@@ -1,0 +1,59 @@
+{
+  "schema": "cn-daily-gift-templates/v1",
+  "source": "outputs/error-reports/20261004-080006-841991-13d659b07abe29404c728160/game.png",
+  "source_sha256": "543da8765ac598cd0c78ba4003f96e20d9b0a75208c38778c8e97243253d6d12",
+  "source_created_at": "2026-10-04T08:00:06+08:00",
+  "choice": "我想变好看",
+  "choice_coordinate": [
+    210,
+    434
+  ],
+  "cue_text": {
+    "title": "福袋天降 好事成三",
+    "rich": "我想变富有",
+    "luck": "我想碰碰运气",
+    "cosmetic": "我想变好看"
+  },
+  "assets": [
+    {
+      "path": "title/20261004.png",
+      "crop_ltrb": [
+        116,
+        45,
+        301,
+        69
+      ],
+      "sha256": "3af4198aa74ec7adc947c148bab370bf16d612f8aad48f714eac2aaf5ec52166"
+    },
+    {
+      "path": "rich/20261004.png",
+      "crop_ltrb": [
+        166,
+        184,
+        250,
+        204
+      ],
+      "sha256": "8cbfdc2648556634f807662e6273741a0d3299e063983741147497ff5497b846"
+    },
+    {
+      "path": "luck/20261004.png",
+      "crop_ltrb": [
+        164,
+        317,
+        254,
+        337
+      ],
+      "sha256": "bffff4c894f6cd961ccfe97e13f0b844e3a22c30177c4777da114679a4fa90fb"
+    },
+    {
+      "path": "cosmetic/20261004.png",
+      "crop_ltrb": [
+        165,
+        450,
+        251,
+        472
+      ],
+      "sha256": "3c9dd8876a04b18a5a1cb0c613e3654a67a0ca50016222707c4d4a23e04a2514"
+    }
+  ]
+}

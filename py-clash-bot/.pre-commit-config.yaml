@@ -1,0 +1,45 @@
+fail_fast: true
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+default_language_version:
+    python: python3.12
+
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+        types: [python]
+      - id: trailing-whitespace
+        types: [python]
+      - id: check-ast
+        types: [python]
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.24.1
+    hooks:
+      - id: validate-pyproject
+        files: pyproject.toml
+  # Use the same tools installed by uv.lock locally and in CI.
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: Ruff format (locked project tool)
+        entry: uv run --locked --no-sync ruff format
+        language: system
+        types_or: [python, pyi]
+      - id: ruff
+        name: Ruff lint (locked project tool)
+        entry: uv run --locked --no-sync ruff check --fix --exit-non-zero-on-fix
+        language: system
+        types_or: [python, pyi]
+      - id: ty
+        name: ty check (locked project tool)
+        entry: uv run --locked --no-sync ty check
+        language: system
+        pass_filenames: false
+        types_or: [python, pyi]

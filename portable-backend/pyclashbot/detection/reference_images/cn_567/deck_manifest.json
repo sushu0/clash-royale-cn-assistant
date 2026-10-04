@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "frame_shape": [
+    633,
+    419,
+    3
+  ],
+  "reference_review": "Actual CN deck previews visually reviewed; displayed levels 11. Level numbers are provenance only, not live OCR.",
+  "references": [
+    {
+      "file": "verified_deck.png",
+      "sha256": "52d79c7474b2023b5ade7b723606cc21e8b12cc680d2e60afbcc803d83106c92",
+      "source": "work/567/deck-live.png",
+      "cards": [
+        {
+          "slot": 0,
+          "card": "pekka",
+          "variant": "pekka",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 1,
+          "card": "goblin_giant",
+          "variant": "goblin_giant",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 2,
+          "card": "goblin_machine",
+          "variant": "goblin_machine",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 3,
+          "card": "baby_dragon",
+          "variant": "baby_dragon",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 4,
+          "card": "mega_minion",
+          "variant": "mega_minion",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 5,
+          "card": "bomber",
+          "variant": "bomber",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 6,
+          "card": "zap",
+          "variant": "zap",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 7,
+          "card": "arrows",
+          "variant": "arrows",
+          "reviewed_displayed_level": 11
+        }
+      ]
+    },
+    {
+      "file": "verified_deck_evo.png",
+      "sha256": "bbac6649c79e325283b96ab95db6479e00945838b6e68f6bc1253a5708655cd8",
+      "source": "work/567-evo/deck-live.png",
+      "cards": [
+        {
+          "slot": 0,
+          "card": "pekka",
+          "variant": "pekka",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 1,
+          "card": "goblin_giant",
+          "variant": "goblin_giant",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 2,
+          "card": "bomber",
+          "variant": "evo_bomber",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 3,
+          "card": "baby_dragon",
+          "variant": "baby_dragon",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 4,
+          "card": "mega_minion",
+          "variant": "mega_minion",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 5,
+          "card": "goblin_machine",
+          "variant": "goblin_machine",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 6,
+          "card": "zap",
+          "variant": "zap",
+          "reviewed_displayed_level": 11
+        },
+        {
+          "slot": 7,
+          "card": "arrows",
+          "variant": "arrows",
+          "reviewed_displayed_level": 11
+        }
+      ]
+    }
+  ]
+}

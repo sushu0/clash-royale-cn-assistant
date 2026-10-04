@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "resolution": [
+    419,
+    633
+  ],
+  "channel_order": "BGR",
+  "purpose": "Supplement missing/current Chinese hand artwork without relaxing old fingerprint gates",
+  "observed_cost_note": "Current goblin_hut cost 4 is observed on source frames; global catalog remains unchanged",
+  "samples": [
+    {
+      "file": "evo_witch-37.png",
+      "sha256": "fcd08a0f2c5b0e893b31a6fedbbdf8a6b72f98d27441ca9c63e0be9803ab6894",
+      "variant": "evo_witch",
+      "observed_cost": 5,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-37.png",
+      "source_sha256": "c298024a9966b340154fab270f55b2586eabb93ae033f32c2afcf26471c1a5bb",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        182,
+        529,
+        236,
+        595
+      ],
+      "cost_source_roi": [
+        199,
+        583,
+        219,
+        603
+      ]
+    },
+    {
+      "file": "bandit-37.png",
+      "sha256": "63a897d53ca49c41f47cb2b7d8b6a3c4ae807d2d807a5a3ab143bf387a48874c",
+      "variant": "bandit",
+      "observed_cost": 3,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-37.png",
+      "source_sha256": "c298024a9966b340154fab270f55b2586eabb93ae033f32c2afcf26471c1a5bb",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        249,
+        529,
+        303,
+        595
+      ],
+      "cost_source_roi": [
+        266,
+        583,
+        286,
+        603
+      ]
+    },
+    {
+      "file": "goblin_hut-37.png",
+      "sha256": "e4048e1973d38cb625305ad4e95ab8713885c1561f3644bcaac7a6d8a35e0eb5",
+      "variant": "goblin_hut",
+      "observed_cost": 4,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-37.png",
+      "source_sha256": "c298024a9966b340154fab270f55b2586eabb93ae033f32c2afcf26471c1a5bb",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        316,
+        529,
+        370,
+        595
+      ],
+      "cost_source_roi": [
+        334,
+        582,
+        354,
+        602
+      ]
+    },
+    {
+      "file": "evo_witch-40.png",
+      "sha256": "409b43545880a3424ceec361c0a8e03ff9c21b7851ccd45008ea478437dcc049",
+      "variant": "evo_witch",
+      "observed_cost": 5,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-40.png",
+      "source_sha256": "5dff1182aab963588e57f1e08042e017e98cf28b0e3e2ae52ca44c19a049f051",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        182,
+        529,
+        236,
+        595
+      ],
+      "cost_source_roi": [
+        199,
+        583,
+        219,
+        603
+      ]
+    },
+    {
+      "file": "bandit-40.png",
+      "sha256": "539b5b1d808285c4ef913833406a21ef1b4b1931e9edd79c545b4523bab34a42",
+      "variant": "bandit",
+      "observed_cost": 3,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-40.png",
+      "source_sha256": "5dff1182aab963588e57f1e08042e017e98cf28b0e3e2ae52ca44c19a049f051",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        249,
+        529,
+        303,
+        595
+      ],
+      "cost_source_roi": [
+        266,
+        583,
+        286,
+        603
+      ]
+    },
+    {
+      "file": "goblin_hut-40.png",
+      "sha256": "6689acf00cc8ec662779c95d1447e96bfde3fd617c007511073b7b2d7b95a365",
+      "variant": "goblin_hut",
+      "observed_cost": 4,
+      "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-40.png",
+      "source_sha256": "5dff1182aab963588e57f1e08042e017e98cf28b0e3e2ae52ca44c19a049f051",
+      "source_session": "20261003-182719",
+      "source_roi": [
+        316,
+        529,
+        370,
+        595
+      ],
+      "cost_source_roi": [
+        334,
+        582,
+        354,
+        602
+      ]
+    }
+  ]
+}

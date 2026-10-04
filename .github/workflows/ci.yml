@@ -1,0 +1,63 @@
+name: Source validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: py-clash-bot
+    env:
+      UV_PROJECT_ENVIRONMENT: D:\codex\ci\verification-env
+      UV_CACHE_DIR: D:\codex\ci\uv-cache
+      PYCLASHBOT_DATA_ROOT: D:\codex\ci\data
+      TEMP: D:\codex\ci\temp
+      TMP: D:\codex\ci\temp
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare isolated validation directories
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force -Path $env:TEMP, $env:UV_CACHE_DIR, $env:PYCLASHBOT_DATA_ROOT | Out-Null
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: '0.12.19'
+          python-version: '3.12.14'
+      - name: Install locked dependencies
+        run: uv sync --locked
+      - name: Check lock, format and types
+        run: |
+          uv lock --check
+          uv run --locked --no-sync ruff check .
+          uv run --locked --no-sync ruff format --check .
+          uv run --locked --no-sync ty check
+      - name: Run offline tests
+        run: uv run --locked --no-sync pytest -q -p no:cacheprovider --basetemp=D:/codex/ci/temp/pytest
+
+  desktop:
+    runs-on: windows-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_CLI_HOME: D:\codex\ci\dotnet
+      NUGET_PACKAGES: D:\codex\ci\nuget
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Compile the portable desktop interface
+        run: dotnet build desktop-portable/ClashAssistant.Desktop.csproj --configuration Release
+      - name: Compile the original desktop interface
+        run: dotnet build desktop-wpf/ClashAssistant.Desktop.csproj --configuration Release
+

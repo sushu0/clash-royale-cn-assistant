@@ -1,0 +1,63 @@
+<Window x:Class="ClashAssistant.Desktop.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="皇室战争助手 · 首次使用与环境设置" Width="790" Height="770" MinWidth="650" MinHeight="620"
+        WindowStartupLocation="CenterScreen" Background="#F4F6F9" FontFamily="Microsoft YaHei UI"
+        FontSize="13" Foreground="{StaticResource Ink}" Icon="Assets/clash-desktop.ico">
+  <Grid Margin="28,22">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel Margin="0,0,0,18">
+      <TextBlock Text="先连接你自己的模拟器" FontSize="24" FontWeight="SemiBold"/>
+      <TextBlock Text="安装包已包含桌面程序、Python 和识别依赖。MEmu 模拟器及腾讯国服游戏需要你自行安装、打开并登录。" Margin="0,10,0,0" Foreground="{StaticResource Muted}"/>
+    </StackPanel>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+        <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+          <StackPanel>
+            <DockPanel><Button DockPanel.Dock="Right" Content="自动查找 MEmu" Click="DiscoverClick" Padding="12,6"/>
+              <TextBlock Text="模拟器和 ADB" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </DockPanel>
+            <TextBlock Text="请选择 MEmu 安装目录里的 memuc.exe。路径会保存在这份软件的 data 文件夹中。" Style="{StaticResource Caption}" Margin="0,10,0,10"/>
+            <TextBlock Text="MEmu 控制程序（memuc.exe）" Margin="0,0,0,5"/>
+            <DockPanel Margin="0,0,0,12"><Button DockPanel.Dock="Right" Content="浏览…" Click="BrowseMemucClick" Margin="9,0,0,0" Padding="12,6"/>
+              <TextBox x:Name="MemucPath" AutomationProperties.AutomationId="SetupMemucPath" Height="35" Padding="9,7" VerticalContentAlignment="Center"/>
+            </DockPanel>
+            <TextBlock Text="ADB 程序（adb.exe）" Margin="0,0,0,5"/>
+            <DockPanel Margin="0,0,0,12"><Button DockPanel.Dock="Right" Content="浏览…" Click="BrowseAdbClick" Margin="9,0,0,0" Padding="12,6"/>
+              <TextBox x:Name="AdbPath" AutomationProperties.AutomationId="SetupAdbPath" Height="35" Padding="9,7" VerticalContentAlignment="Center"/>
+            </DockPanel>
+            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="200"/></Grid.ColumnDefinitions>
+              <StackPanel Margin="0,0,14,0"><TextBlock Text="ADB 设备地址" Margin="0,0,0,5"/>
+                <TextBox x:Name="Serial" AutomationProperties.AutomationId="SetupSerial" Text="127.0.0.1:21503" Height="35" Padding="9,7"/>
+              </StackPanel>
+              <StackPanel Grid.Column="1"><TextBlock Text="MEmu 实例" Margin="0,0,0,5"/><TextBlock Text="仅支持 0 号实例" Padding="9,8" Background="#EEF2F8"/></StackPanel>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+          <StackPanel>
+            <DockPanel><Button x:Name="DetectButton" AutomationProperties.AutomationId="SetupDetect" DockPanel.Dock="Right" Content="检测环境" Click="DetectClick" Padding="12,6"/>
+              <TextBlock Text="运行条件" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </DockPanel>
+            <TextBlock Text="需要：Windows 64 位、MEmu 0 号实例、腾讯国服皇室战争，以及 Android 有效分辨率 419 × 633、DPI 160。" Margin="0,10,0,8"/>
+            <TextBlock Text="请先手动打开模拟器，并在模拟器设置中调整分辨率和 DPI。检测只读取 ADB 连接状态、屏幕设置和游戏安装信息；请手动完成设备连接。" Style="{StaticResource Caption}"/>
+            <TextBox x:Name="DetectionResult" AutomationProperties.AutomationId="SetupDetectionResult" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="110" MaxHeight="175" Padding="10" Margin="0,12,0,0" Background="#F6F8FC" BorderBrush="{StaticResource Line}" Text="尚未检测。环境设置不会自动启动模拟器、修改分辨率、登录游戏或开始对战。"/>
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+              <Button x:Name="ScreenSetButton" Content="设置屏幕为 419 × 633 / 160" AutomationProperties.AutomationId="SetupScreenSet" Click="SetScreenClick" Padding="12,6" Margin="0,0,9,0"/>
+              <Button x:Name="ScreenRestoreButton" Content="恢复原屏幕设置" AutomationProperties.AutomationId="SetupScreenRestore" Click="RestoreScreenClick" Padding="12,6"/>
+            </StackPanel>
+            <TextBlock Text="屏幕设置仅在点击并确认后执行。原设置会先保留备份；设置或恢复后，请自己重新打开游戏。" Style="{StaticResource Caption}" Margin="0,9,0,0"/>
+          </StackPanel>
+        </Border>
+        <TextBlock x:Name="Status" AutomationProperties.AutomationId="SetupStatus" TextWrapping="Wrap" Foreground="#3D5F9B" Margin="2,0,2,8"/>
+      </StackPanel>
+    </ScrollViewer>
+    <DockPanel Grid.Row="2" Margin="0,18,0,0">
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+        <Button Content="关闭" Click="CloseClick" Margin="0,0,9,0"/>
+        <Button Content="保存配置" AutomationProperties.AutomationId="SetupSave" Click="SaveClick" Style="{StaticResource PrimaryButton}"/>
+      </StackPanel>
+      <TextBlock Text="保存后，从“皇室战争助手”快捷方式打开主界面，再手动开始任务。" Style="{StaticResource Caption}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+    </DockPanel>
+  </Grid>
+</Window>

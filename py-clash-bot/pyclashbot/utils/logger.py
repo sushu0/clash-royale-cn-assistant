@@ -1,0 +1,620 @@
+"""import logging for file logging"""
+
+import logging
+import pprint
+import random
+import threading
+import time
+import zipfile
+from functools import wraps
+from os import listdir, makedirs, remove
+from os.path import abspath, basename, exists, getmtime, join, normcase
+
+from pyclashbot.utils.platform import get_log_dir
+from pyclashbot.utils.versioning import __version__
+
+LOGS_TO_KEEP = 10
+
+log_dir = get_log_dir("py-clash-bot")
+log_name = join(log_dir, time.strftime("%Y-%m-%d_%H-%M", time.localtime()) + ".txt")
+archive_name: str = join(log_dir, "logs.zip")
+
+
+def compress_logs() -> None:
+    """Archive will contain a large text file, all old logs appended together
+    extract the file and read the text to get the old logs
+    """
+    logs: list[str] = sorted(
+        [join(log_dir, log) for log in listdir(log_dir) if log.endswith(".txt")],
+        key=getmtime,
+    )
+    if len(logs) >= LOGS_TO_KEEP:
+        with zipfile.ZipFile(
+            archive_name,
+            "a" if exists(archive_name) else "w",
+        ) as archive:
+            for log in logs[:-LOGS_TO_KEEP]:
+                # Use basename so this works on all platforms (Windows, macOS, Linux)
+                archive.write(log, basename(log))
+                remove(log)
+
+
+def _normalized_log_path(path: str) -> str:
+    return normcase(abspath(path))
+
+
+def _attach_log_file_handler(log_path: str) -> None:
+    """Attach a log-file handler if this process does not already have one for log_path."""
+    if not exists(log_dir):
+        makedirs(log_dir)
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+
+    target_log = _normalized_log_path(log_path)
+    for handler in root_logger.handlers:
+        if isinstance(handler, logging.FileHandler):
+            try:
+                if _normalized_log_path(handler.baseFilename) == target_log:
+                    return
+            except Exception:
+                continue
+
+    file_handler = logging.FileHandler(log_path, encoding="utf-8")
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(logging.Formatter("%(levelname)s:%(asctime)s %(message)s"))
+    root_logger.addHandler(file_handler)
+
+
+def attach_worker_file_logging(session_log_path: str) -> None:
+    """Attach file logging in the bot worker subprocess.
+
+    macOS/Windows use spawn for multiprocessing, so the worker does not inherit
+    the GUI process's logging handlers.
+    """
+    _attach_log_file_handler(session_log_path)
+
+
+def initialize_pylogging() -> None:
+    """Method to be called once to initialize python logging"""
+    _attach_log_file_handler(log_name)
+
+    logging.info("Logging initialized for %s", __version__)
+    logging.info("Log directory: %s", log_dir)
+    logging.info("Current log file: %s", log_name)
+    logging.info(
+        """
+ ____  _  _       ___  __      __    ___  _   _     ____  _____  ____
+(  _ \\( \\/ )___  / __)(  )    /__\\  / __)( )_( )___(  _ \\(  _  )(_  _)
+ )___/ \\  /(___)( (__  )(__  /(__)\\ \\__ \\ ) _ ((___)) _ < )(_)(   )(
+(__)   (__)      \\___)(____)(__)(__)(___/(_) (_)   (____/(_____) (__)
+""",
+    )
+    logging.info(
+        "Machine Info: \n%s",
+        pprint.pformat(_get_machine_info(), sort_dicts=False, indent=4),
+    )
+
+    compress_logs()
+
+
+def _get_machine_info() -> dict:
+    # Delayed import to avoid logging before handlers are installed.
+    # Logging handlers must exist before machine-info loads.
+    from pyclashbot.utils.machine_info import (  # noqa: PLC0415
+        MACHINE_INFO,
+    )
+
+    return MACHINE_INFO
+
+
+class Logger:
+    """Class for logging. Allows for cross-thread, console and file logging.
+
+    Args:
+    ----
+        stats (dict[str, str | int] | None, optional): stats to communicate
+            between threads. Defaults to None.
+        timed (bool, optional): whether to time the bot. Defaults to True.
+
+    """
+
+    def __init__(
+        self,
+        stats: dict[str, str | int] | None = None,
+        timed: bool = True,
+    ) -> None:
+        # stats for threaded communication
+        self.stats = stats
+        self.stats_mutex = threading.Lock()
+
+        # immutable statistics
+        self.start_time = time.time() if timed else None
+
+        ####STATISTICS
+
+        # fight stats
+        self.wins = 0
+        self.losses = 0
+        self.friendly_crowns = 0
+        self.enemy_crowns = 0
+        self._1v1_fights = 0
+        self._2v2_fights = 0
+        self.classic_1v1_fights = 0
+        self.classic_2v2_fights = 0
+        self.trophy_road_1v1_fights = 0
+        self.cards_played = 0
+        self.war_fights = 0
+        self.card_randomizations = 0
+        self.card_cycles = 0
+        self.winrate: str = "0%"
+
+        # streak tracking
+        self.current_win_streak = 0
+        self.best_win_streak = 0
+
+        # job stats
+        self.battlepass_collects = 0
+        self.bannerbox_collects = 0
+        self.cards_upgraded = 0
+        self.card_mastery_reward_collections = 0
+        self.chests_unlocked = 0
+        self.daily_rewards = 0
+        self.donates = 0
+        self.requests = 0
+        self.clan_gift_claims = 0
+        self.account_switches = 0
+        self.shop_offer_collections = 0
+        self.war_chest_collects = 0
+        self.level_up_chest_collects = 0
+        self.trophy_road_reward_collections = 0
+        self.season_shop_buys = 0
+        self.magic_item_buys = 0
+
+        # account stuff
+        self.current_account = -1
+        self.account_index_history = []
+        self.account2clan = {}
+
+        # restart stats
+        self.auto_restarts = 0
+        self.restarts_after_failure = 0
+        self.most_recent_restart_time = 0
+
+        # bot stats
+        self.current_state = "No state"
+        # Whether the current state's lines print to the terminal. The state
+        # machine sets this via set_current_state(state, console=...); the
+        # logger itself knows nothing about which states are noisy. Defaults to
+        # False so the pre-loop emulator boot (which runs before the first
+        # set_current_state call) stays quiet on the console. Every line is
+        # still written to the log file regardless.
+        self._console_enabled = False
+        self.current_status = "Idle"
+        self.time_of_last_card_upgrade = 0
+        self.time_of_last_free_offer_collection = 0
+
+        # track errored logger
+        self.errored = False
+
+        # write initial values to queue
+        self._update_stats()
+
+    def _update_log(self) -> None:
+        self._update_stats()
+        logging.info(self.current_status)
+
+    def _update_stats(self) -> None:
+        """Updates the stats with a dictionary of mutable statistics"""
+        with self.stats_mutex:
+            self.stats = {
+                # fight stats
+                "wins": self.wins,
+                "losses": self.losses,
+                "classic_1v1_fights": self.classic_1v1_fights,
+                "classic_2v2_fights": self.classic_2v2_fights,
+                "trophy_road_1v1_fights": self.trophy_road_1v1_fights,
+                "winrate": self.winrate,
+                "current_win_streak": self.current_win_streak,
+                "best_win_streak": self.best_win_streak,
+                "card_randomizations": self.card_randomizations,
+                "card_cycles": self.card_cycles,
+                # collection stats
+                "war_chest_collects": self.war_chest_collects,
+                "card_mastery_reward_collections": self.card_mastery_reward_collections,
+                "cards_donated": self.donates,
+                "card_requests": self.requests,
+                "clan_gifts_claimed": self.clan_gift_claims,
+                "account_switches": self.account_switches,
+                # card stats
+                "upgrades": self.cards_upgraded,
+                "cards_played": self.cards_played,
+                # bot stats
+                "restarts_after_failure": self.restarts_after_failure,
+                "current_status": self.current_status,
+            }
+
+    def get_stats(self):
+        """Get stats"""
+        with self.stats_mutex:
+            stats = self.stats
+        if stats is not None:
+            stats["time_since_start"] = self.calc_time_since_start()
+        return stats
+
+    @staticmethod
+    def _updates_gui(func):
+        """Decorator to specify functions which update the queue with statistics"""
+
+        @wraps(func)
+        def wrapper(self: "Logger", *args, **kwargs):
+            result = func(self, *args, **kwargs)
+            self._update_log()  # pylint: disable=protected-access
+            return result
+
+        return wrapper
+
+    def log(self, message) -> None:
+        """Log something to file and print to console with time and stats.
+
+        The file write always happens; the console print is gated by
+        self._console_enabled, which the state machine sets per state via
+        set_current_state(state, console=...). Noisy states can be silenced in
+        the terminal without losing them from the log file.
+        """
+        log_message = f"[{self.current_state}] {message}"
+        logging.info(log_message)
+        if self._console_enabled:
+            time_string = self.calc_time_since_start()
+            print(f"[{self.current_state}] [{time_string}] {message}")
+
+    def calc_time_since_start(self) -> str:
+        """Calculate time since start of bot using logger's
+        stats and return as string in hours:mins:seconds
+        """
+        if self.start_time is not None:
+            hours, remainder = divmod(time.time() - self.start_time, 3600)
+            minutes, seconds = divmod(remainder, 60)
+        else:
+            hours, minutes, seconds = 0, 0, 0
+        return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+
+    def add_account_to_account_history(self, i):
+        self.account_index_history.append(i)
+
+    def get_next_account(self, total_count):
+        def get_lowest_value_in_dict(search_dict) -> int:
+            lowest_val = None
+            lowest_index = None
+
+            for index, val in search_dict.items():
+                if (lowest_val is None) or (val < lowest_val):
+                    lowest_val = val
+                    lowest_index = index
+
+            if lowest_index is None:
+                return 0
+
+            # get a list of all the keys that have that value
+            lowest_keys = []
+            for key, value in search_dict.items():
+                if int(value) == int(search_dict[lowest_index]):
+                    lowest_keys.append(key)
+            random_lowest_key = random.choice(lowest_keys)
+
+            return int(random_lowest_key)
+
+        def log_account_history_dict(index2count):
+            self.log("Account history dict:")
+            self.log("{:^6} : {}".format("Acct #", "count"))
+            for index, count in index2count.items():
+                self.log(f"{index:^6} : {count}")
+
+        # make a dict that represents index2count for each index in range(total_count)
+        index2count = dict.fromkeys(range(total_count), 0)
+
+        # populate the dict with the counts of each index in account_index_history
+        for i in self.account_index_history:
+            index2count[i] += 1
+
+        # print the dict
+        log_account_history_dict(index2count)
+
+        # get the index with the lowest count
+        next_account = get_lowest_value_in_dict(index2count)
+
+        return next_account
+
+    def increment_season_shop_buys(self):
+        self.season_shop_buys += 1
+
+    def increment_magic_item_buys(self):
+        self.magic_item_buys += 1
+
+    @_updates_gui
+    def increment_classic_1v1_fights(self):
+        self.classic_1v1_fights += 1
+
+    @_updates_gui
+    def increment_classic_2v2_fights(self):
+        self.classic_2v2_fights += 1
+
+    @_updates_gui
+    def increment_trophy_road_fights(self):
+        self.trophy_road_1v1_fights += 1
+
+    def increment_trophy_road_reward_collects(self):
+        self.trophy_road_reward_collections += 1
+
+    def pick_lowest_fight_type_count(self, mode2toggle):
+        return "path_of_legends"
+
+    def is_in_clan(self):
+        if self.current_account in self.account2clan:
+            return self.account2clan[self.current_account]
+        return False
+
+    def update_in_a_clan_value(self, in_a_clan: bool):
+        self.account2clan[self.current_account] = in_a_clan
+
+    # frontend stats
+
+    @_updates_gui
+    def calc_win_rate(self):
+        """Calculate win rate using logger's stats and return as string"""
+        wins = self.wins
+        losses = self.losses
+
+        if wins == 0 and losses == 0:
+            return "0%"
+
+        if wins != 0 and losses == 0:
+            return "100%"
+
+        if wins == 0:
+            return "0%"
+
+        win_percentage = round(100 * (wins / (wins + losses)))
+        return f"{win_percentage}%"
+
+    @_updates_gui
+    def set_current_state(self, state_to_set, console: bool = True):
+        """Set logger's current_state, and whether its lines print to the console.
+
+        The caller (the state machine) owns the policy of which states are noisy
+        and passes console=False for those; the logger stays ignorant of state
+        names. The log file always receives every line regardless of console.
+        """
+        self.current_state = state_to_set
+        self._console_enabled = console
+
+    @_updates_gui
+    def increment_battlepass_collects(self):
+        """Increment the logger's battlepass_collects count by 1."""
+        self.battlepass_collects += 1
+
+    @_updates_gui
+    def add_shop_offer_collection(self) -> None:
+        """Add level up chest collection to log"""
+        self.shop_offer_collections += 1
+
+    @_updates_gui
+    def error(self, message: str) -> None:
+        """Log error message
+
+        Args:
+        ----
+            message (str): error message
+
+        """
+        self.errored = True
+        logging.error(message)
+
+    @_updates_gui
+    def add_card_mastery_reward_collection(self) -> None:
+        """Increment logger's card mastery reward collection counter by 1"""
+        self.card_mastery_reward_collections += 1
+
+    @_updates_gui
+    def add_chest_unlocked(self) -> None:
+        """Add chest unlocked to log"""
+        self.chests_unlocked += 1
+
+    @_updates_gui
+    def add_war_fight(self) -> None:
+        """Add card played to log"""
+        self.war_fights += 1
+
+    @_updates_gui
+    def add_card_played(self) -> None:
+        """Add card played to log"""
+        self.cards_played += 1
+
+    @_updates_gui
+    def add_level_up_chest_collect(self):
+        self.level_up_chest_collects += 1
+
+    @_updates_gui
+    def add_card_upgraded(self):
+        """Add card upgraded to log"""
+        self.cards_upgraded += 1
+
+    @_updates_gui
+    def add_win(self):
+        """Add win to log"""
+        self.wins += 1
+        self.winrate = self.calc_win_rate()
+
+        # Update win streak
+        self.current_win_streak += 1
+        self.best_win_streak = max(self.best_win_streak, self.current_win_streak)
+
+    @_updates_gui
+    def add_loss(self):
+        """Add loss to log"""
+        self.losses += 1
+        self.winrate = self.calc_win_rate()
+
+        # Reset win streak on loss
+        self.current_win_streak = 0
+
+    @_updates_gui
+    def add_1v1_fight(self) -> None:
+        """Add fight to log"""
+        self._1v1_fights += 1
+
+    @_updates_gui
+    def add_card_randomization(self):
+        """Incremenet card_randomizations counter"""
+        self.card_randomizations += 1
+
+    @_updates_gui
+    def add_deck_cycled(self):
+        """Increment card_cycles counter"""
+        self.card_cycles += 1
+
+    @_updates_gui
+    def increment_2v2_fights(self) -> None:
+        """Add fight to log"""
+        self._2v2_fights += 1
+
+    @_updates_gui
+    def add_request(self) -> None:
+        """Add request to log"""
+        self.requests += 1
+
+    @_updates_gui
+    def add_war_chest_collect(self) -> None:
+        """Add request to log"""
+        self.war_chest_collects += 1
+
+    @_updates_gui
+    def add_donate(self) -> None:
+        """Add donate to log"""
+        self.donates += 1
+
+    @_updates_gui
+    def add_clan_gift_claim(self) -> None:
+        """Add Pass Royale / clan gift claim to log"""
+        self.clan_gift_claims += 1
+
+    @_updates_gui
+    def add_account_switch(self) -> None:
+        """Count a successful linked-account switch."""
+        self.account_switches += 1
+
+    @_updates_gui
+    def add_daily_reward(self) -> None:
+        """Add donate to log"""
+        self.daily_rewards += 1
+
+    @_updates_gui
+    def change_status(self, status) -> None:
+        """Change status of bot in log
+
+        Args:
+        ----
+            status (str): status of bot
+
+        """
+        self.current_status = status
+        self.log(status)
+
+    @_updates_gui
+    def add_restart_after_failure(self) -> None:
+        """Add request to log"""
+        self.restarts_after_failure += 1
+
+    def add_bannerbox_collect(self):
+        """Increments logger's bannerbox_collects by 1"""
+        self.bannerbox_collects += 1
+
+    def get_1v1_fights(self) -> int:
+        """Returns logger's 1v1_fights stat"""
+        return self._1v1_fights
+
+    def get_2v2_fights(self) -> int:
+        """Returns logger's 2v2_fights stat"""
+        return self._2v2_fights
+
+    def get_cards_played(self) -> int:
+        """Returns logger's cards_played stat"""
+        return self.cards_played
+
+    def get_requests(self) -> int:
+        """Returns logger's requests stat"""
+        return self.requests
+
+    def get_card_upgrades(self) -> int:
+        """Returns logger's cards_upgraded stat"""
+        return self.cards_upgraded
+
+    def get_chests_opened(self):
+        """Return chests_unlocked stat"""
+        return self.chests_unlocked
+
+    def update_time_of_last_card_upgrade(self, input_time) -> None:
+        """Sets logger's time_of_last_card_upgrade to input_time"""
+        self.time_of_last_card_upgrade = input_time
+
+    def log_job_dictionary(self, job_dictionary: dict[str, str | int]) -> None:
+        """Method for logging the job dictionary
+        args:
+            job_dictionary: the job dictionary to log
+        returns:
+            None
+        """
+        user_toggle_keys_and_values = []
+        increment_user_input_keys_and_values = []
+
+        for key, value in job_dictionary.items():
+            if "increment_user_input" in key:
+                increment_user_input_keys_and_values.append((key, value))
+            else:
+                user_toggle_keys_and_values.append((key, value))
+
+        self.log("-------------------------------")
+        self.log("------Job Dictionary:----------")
+        self.log("-------------------------------")
+
+        self.log("User Toggle Keys and Values:")
+        for key, value in user_toggle_keys_and_values:
+            while len(key) < 45:
+                key += " "  # noqa: PLW2901
+            self.log(f"     -{key}:           {value}")
+
+        self.log("-------------------------------")
+        self.log("Increment User Input Keys and Values:")
+        for key, value in increment_user_input_keys_and_values:
+            while len(key) < 45:
+                key += " "  # noqa: PLW2901
+            self.log(f"     -{key}:              [{value}]")
+
+        self.log("-------------------------------")
+        self.log("-------------------------------")
+        self.log("-------------------------------\n\n")
+
+
+class ProcessLogger(Logger):
+    """Logger that sends stats updates through a multiprocessing Queue.
+
+    Used with WorkerProcess to communicate stats back to the main UI process.
+    """
+
+    def __init__(self, stats_queue, timed: bool = True) -> None:
+        super().__init__(timed=timed)
+        self._stats_queue = stats_queue
+
+    def _update_log(self) -> None:
+        """Override to send stats through queue instead of just updating local dict."""
+        super()._update_log()
+        # Non-blocking put to queue - if queue is full, skip this update
+        if self._stats_queue is not None and self.stats is not None:
+            try:
+                self._stats_queue.put_nowait(self.stats.copy())
+            except Exception:
+                pass  # Queue full or closed, skip this update
+
+
+if __name__ == "__main__":
+    pass

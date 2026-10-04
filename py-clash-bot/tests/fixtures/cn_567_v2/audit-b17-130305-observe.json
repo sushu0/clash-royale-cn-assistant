@@ -1,0 +1,86 @@
+{
+  "event": "observe",
+  "battle": 17,
+  "hand": [
+    {
+      "slot": 0,
+      "card": "goblin_giant",
+      "variant": "goblin_giant",
+      "available": true,
+      "offset": 116,
+      "margin": 1902
+    },
+    {
+      "slot": 1,
+      "card": "arrows",
+      "variant": "arrows",
+      "available": true,
+      "offset": 120,
+      "margin": 1572
+    },
+    {
+      "slot": 2,
+      "card": "bomber",
+      "variant": "bomber",
+      "available": true,
+      "offset": 130,
+      "margin": 2076
+    },
+    {
+      "slot": 3,
+      "card": "zap",
+      "variant": "zap",
+      "available": true,
+      "offset": 192,
+      "margin": 1748
+    }
+  ],
+  "cues": {
+    "elixir": 10,
+    "enemies": [],
+    "far_warnings": [],
+    "enemy_towers": {
+      "left": true,
+      "right": true
+    },
+    "enemy_tower_fill": {
+      "left": 1.0,
+      "right": 0.975
+    },
+    "own_tower_fill": {
+      "left": 0.397,
+      "right": null
+    },
+    "elite_ability_ready": false,
+    "threats": [],
+    "dark_ground_candidates": [],
+    "allies": []
+  },
+  "policy_observation": {
+    "tracks": [],
+    "survivors": [
+      {
+        "card": "goblin_machine",
+        "point": [
+          289,
+          255
+        ],
+        "deployed": 8005.718,
+        "seen": 8012.093,
+        "frames": 1,
+        "visible": false
+      }
+    ],
+    "quiet_seconds": 14.59,
+    "pressure": []
+  },
+  "evidence": {
+    "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-observe-60.png",
+    "sha256": "c65f2b5779e6f614227848c96bb678eb92e53ed5680b24a1ed614a375bb04e09",
+    "sequence": 220
+  },
+  "time": "2026-09-28 13:03:05",
+  "session": "20260928-122306",
+  "policy_version": "double-air-567-v1.3-20260928",
+  "mode": "classic_1v1"
+}

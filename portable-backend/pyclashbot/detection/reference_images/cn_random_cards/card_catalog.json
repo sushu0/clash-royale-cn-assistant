@@ -1,0 +1,782 @@
+{
+  "knight": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000000
+  },
+  "archers": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000001
+  },
+  "goblins": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000002
+  },
+  "giant": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000003
+  },
+  "pekka": {
+    "cost": 7,
+    "type": "Troop",
+    "id": 26000004
+  },
+  "minions": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000005
+  },
+  "balloon": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000006
+  },
+  "witch": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000007
+  },
+  "barbarians": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000008
+  },
+  "golem": {
+    "cost": 8,
+    "type": "Troop",
+    "id": 26000009
+  },
+  "skeletons": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000010
+  },
+  "valkyrie": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000011
+  },
+  "skeleton_army": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000012
+  },
+  "bomber": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000013
+  },
+  "musketeer": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000014
+  },
+  "baby_dragon": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000015
+  },
+  "prince": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000016
+  },
+  "wizard": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000017
+  },
+  "mini_pekka": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000018
+  },
+  "spear_goblins": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000019
+  },
+  "giant_skeleton": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000020
+  },
+  "hog": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000021
+  },
+  "minion_horde": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000022
+  },
+  "ice_wizard": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000023
+  },
+  "royal_giant": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000024
+  },
+  "guards": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000025
+  },
+  "princess": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000026
+  },
+  "dark_prince": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000027
+  },
+  "three_musketeers": {
+    "cost": 9,
+    "type": "Troop",
+    "id": 26000028
+  },
+  "lava_hound": {
+    "cost": 7,
+    "type": "Troop",
+    "id": 26000029
+  },
+  "ice_spirit": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000030
+  },
+  "fire_spirit": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000031
+  },
+  "miner": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000032
+  },
+  "sparky": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000033
+  },
+  "bowler": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000034
+  },
+  "lumberjack": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000035
+  },
+  "battle_ram": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000036
+  },
+  "inferno_dragon": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000037
+  },
+  "ice_golem": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000038
+  },
+  "mega_minion": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000039
+  },
+  "dart_goblin": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000040
+  },
+  "goblin_gang": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000041
+  },
+  "electro_wizard": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000042
+  },
+  "elite_barbarians": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000043
+  },
+  "hunter": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000044
+  },
+  "executioner": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000045
+  },
+  "bandit": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000046
+  },
+  "royal_recruits": {
+    "cost": 7,
+    "type": "Troop",
+    "id": 26000047
+  },
+  "night_witch": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000048
+  },
+  "bats": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000049
+  },
+  "royal_ghost": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000050
+  },
+  "ram_rider": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000051
+  },
+  "zappies": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000052
+  },
+  "rascals": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000053
+  },
+  "cannon_cart": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000054
+  },
+  "mega_knight": {
+    "cost": 7,
+    "type": "Troop",
+    "id": 26000055
+  },
+  "skeleton_barrel": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000056
+  },
+  "flying_machine": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000057
+  },
+  "wall_breakers": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000058
+  },
+  "royal_hogs": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000059
+  },
+  "goblin_giant": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000060
+  },
+  "fisherman": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000061
+  },
+  "magic_archer": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000062
+  },
+  "electro_dragon": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000063
+  },
+  "fire_cracker": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000064
+  },
+  "mighty_miner": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000065
+  },
+  "super_witch": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000066
+  },
+  "elixir_golem": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000067
+  },
+  "battle_healer": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000068
+  },
+  "skeleton_king": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000069
+  },
+  "super_lava_hound": {
+    "cost": 8,
+    "type": "Troop",
+    "id": 26000070
+  },
+  "super_magic_archer": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000071
+  },
+  "archer_queen": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000072
+  },
+  "santa_hog_rider": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000073
+  },
+  "golden_knight": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000074
+  },
+  "super_ice_golem": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000075
+  },
+  "monk": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000077
+  },
+  "super_archers": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000078
+  },
+  "skeleton_dragons": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000080
+  },
+  "terry": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000081
+  },
+  "super_mini_pekka": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000082
+  },
+  "mother_witch": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000083
+  },
+  "electro_spirit": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000084
+  },
+  "electro_giant": {
+    "cost": 7,
+    "type": "Troop",
+    "id": 26000085
+  },
+  "raging_prince": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000086
+  },
+  "phoenix": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000087
+  },
+  "cannon": {
+    "cost": 3,
+    "type": "Building",
+    "id": 27000000
+  },
+  "goblin_hut": {
+    "cost": 5,
+    "type": "Building",
+    "id": 27000001
+  },
+  "mortar": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000002
+  },
+  "inferno_tower": {
+    "cost": 5,
+    "type": "Building",
+    "id": 27000003
+  },
+  "bomb_tower": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000004
+  },
+  "barb_hut": {
+    "cost": 6,
+    "type": "Building",
+    "id": 27000005
+  },
+  "tesla": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000006
+  },
+  "elixir_collector": {
+    "cost": 6,
+    "type": "Building",
+    "id": 27000007
+  },
+  "xbow": {
+    "cost": 6,
+    "type": "Building",
+    "id": 27000008
+  },
+  "tombstone": {
+    "cost": 3,
+    "type": "Building",
+    "id": 27000009
+  },
+  "furnace": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000010
+  },
+  "goblin_cage": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000012
+  },
+  "goblin_drill": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000013
+  },
+  "party_hut": {
+    "cost": 5,
+    "type": "Building",
+    "id": 27000014
+  },
+  "fireball": {
+    "cost": 4,
+    "type": "Spell",
+    "id": 28000000
+  },
+  "arrows": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000001
+  },
+  "rage": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000002
+  },
+  "rocket": {
+    "cost": 6,
+    "type": "Spell",
+    "id": 28000003
+  },
+  "goblin_barrel": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000004
+  },
+  "freeze": {
+    "cost": 4,
+    "type": "Spell",
+    "id": 28000005
+  },
+  "mirror": {
+    "cost": 1,
+    "type": "Spell",
+    "id": 28000006
+  },
+  "lightning": {
+    "cost": 6,
+    "type": "Spell",
+    "id": 28000007
+  },
+  "zap": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000008
+  },
+  "poison": {
+    "cost": 4,
+    "type": "Spell",
+    "id": 28000009
+  },
+  "graveyard": {
+    "cost": 5,
+    "type": "Spell",
+    "id": 28000010
+  },
+  "the_log": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000011
+  },
+  "tornado": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000012
+  },
+  "clone": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000013
+  },
+  "earthquake": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000014
+  },
+  "barb_barrel": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000015
+  },
+  "heal_spirit": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 28000016
+  },
+  "snowball": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000017
+  },
+  "royal_delivery": {
+    "cost": 3,
+    "type": "Spell",
+    "id": 28000018
+  },
+  "party_rocket": {
+    "cost": 5,
+    "type": "Spell",
+    "id": 28000020
+  },
+  "archer": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000001
+  },
+  "hog_rider": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000021
+  },
+  "skeleton_warriors": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000025
+  },
+  "ice_spirits": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000030
+  },
+  "fire_spirits": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 26000031
+  },
+  "zap_machine": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000033
+  },
+  "rage_barbarian": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000035
+  },
+  "ice_golemite": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000038
+  },
+  "blowdart_goblin": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000040
+  },
+  "angry_barbarians": {
+    "cost": 6,
+    "type": "Troop",
+    "id": 26000043
+  },
+  "axe_man": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000045
+  },
+  "assassin": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000046
+  },
+  "dark_witch": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000048
+  },
+  "ghost": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000050
+  },
+  "mini_sparkys": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000052
+  },
+  "moving_cannon": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000054
+  },
+  "skeleton_balloon": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000056
+  },
+  "dart_barrell": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000057
+  },
+  "wallbreakers": {
+    "cost": 2,
+    "type": "Troop",
+    "id": 26000058
+  },
+  "elite_archer": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000062
+  },
+  "firecracker": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000064
+  },
+  "super_elite_archer": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000071
+  },
+  "super_hog_rider": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000073
+  },
+  "super_ice_golemite": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000075
+  },
+  "super_archer": {
+    "cost": 3,
+    "type": "Troop",
+    "id": 26000078
+  },
+  "super_hog_rider_terry": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000081
+  },
+  "witch_mother": {
+    "cost": 4,
+    "type": "Troop",
+    "id": 26000083
+  },
+  "prince_buff": {
+    "cost": 5,
+    "type": "Troop",
+    "id": 26000086
+  },
+  "barbarian_hut": {
+    "cost": 6,
+    "type": "Building",
+    "id": 27000005
+  },
+  "elixir _collector": {
+    "cost": 6,
+    "type": "Building",
+    "id": 27000007
+  },
+  "firespirit_hut": {
+    "cost": 4,
+    "type": "Building",
+    "id": 27000010
+  },
+  "goblin_party_hut": {
+    "cost": 5,
+    "type": "Building",
+    "id": 27000014
+  },
+  "log": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000011
+  },
+  "barb_log": {
+    "cost": 2,
+    "type": "Spell",
+    "id": 28000015
+  },
+  "heal": {
+    "cost": 1,
+    "type": "Troop",
+    "id": 28000016
+  },
+  "goblin_party_rocket": {
+    "cost": 5,
+    "type": "Spell",
+    "id": 28000020
+  }
+}

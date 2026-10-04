@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "resolution": [
+    419,
+    633
+  ],
+  "observed_date": "2026-10-04",
+  "label": {
+    "roi": "classic_label",
+    "search_roi": "classic_label_search",
+    "template": "classic_mode_label"
+  },
+  "label_source_sha256": "a9bd7d59b2e8cef4d710c88756f0578244648bb6b19b91eff2a167d6cd586331",
+  "shield": {
+    "roi": "classic_shield",
+    "search_roi": "classic_shield_search",
+    "template": "classic_mode_shield"
+  },
+  "shield_source_sha256": "a9bd7d59b2e8cef4d710c88756f0578244648bb6b19b91eff2a167d6cd586331",
+  "top_marker": {
+    "roi": "mode_top_marker",
+    "search_roi": "mode_top_marker_search",
+    "template": "classic_mode_top_marker"
+  },
+  "top_marker_source_sha256": "0cc079bd452b6f0435ed0bf96924876eea70a799343d6610ee63d679fd56c140"
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "id": "air_skeleton_barrel_top",
+    "kind": "air",
+    "enabled": true,
+    "file": "air_skeleton_barrel_top.png",
+    "threshold": 0.74,
+    "min_red_fraction": 0.55,
+    "anchor_offset": [
+      -13,
+      -6
+    ],
+    "source": "work/hog-validation/20260926-005724/observe-01-005913.png",
+    "source_sha256": "868364cf0efb23f07abb20178a9231b12ac11a983f5e7b1be90c1678cec0e12c",
+    "source_crop": [
+      310,
+      291,
+      342,
+      318
+    ],
+    "description": "Three red balloon tops of the observed skeleton barrel; labels and digits excluded. Limited air subtype only.",
+    "independent_validation_sources": [
+      "work/hog-validation/20260925-145226/observe-05-150337.png",
+      "work/hog-validation/20260925-181459/observe-02-182034.png"
+    ],
+    "known_abstention_source": "work/hog-validation/20260925-172029/observe-03-172710.png",
+    "template_sha256": "32f06c74ac289fd895547ee74be9b330f7eaabfe839a4bed5b910af7ef3f6c81"
+  },
+  {
+    "id": "rush_royal_giant_head",
+    "kind": "rush",
+    "enabled": true,
+    "file": "rush_royal_giant_head.png",
+    "threshold": 0.88,
+    "anchor_offset": [
+      4,
+      -8
+    ],
+    "source": "work/hog-validation/20260926-122831/observe-01-122911.png",
+    "source_sha256": "1dc9f6e5076bb7fa46b739e234e78e40af173c9ba38e83b685160fbc3d73140e",
+    "source_crop": [
+      296,
+      270,
+      330,
+      294
+    ],
+    "description": "Observed Royal Giant orange beard, head and chainmail shoulders. Excludes level digits/health bar and muzzle. Fixed current poses only.",
+    "template_sha256": "adfca78145d8223f4afab6e42915fa2b17c1cd6daaafa1c70409eb05caf2aaea"
+  },
+  {
+    "id": "rush_royal_giant_head",
+    "kind": "rush",
+    "enabled": true,
+    "file": "rush_royal_giant_head_recoil.png",
+    "threshold": 0.88,
+    "anchor_offset": [
+      4,
+      -8
+    ],
+    "source": "work/hog-validation/20260926-122831/play-02-musketeer-before.png",
+    "source_sha256": "3960bda67ef03b04649307aa4c14fcc95dedd4efb290b02acb9f32839c8ef7b6",
+    "source_crop": [
+      296,
+      270,
+      330,
+      294
+    ],
+    "description": "Observed Royal Giant orange beard, head and chainmail shoulders. Excludes level digits/health bar and muzzle. Fixed current poses only.",
+    "template_sha256": "ae695bba489021dbf89826cacc756d00c36ddfe5eb943223f3ab69cdd7ec1d74"
+  },
+  {
+    "id": "air_balloon_envelope",
+    "kind": "air",
+    "enabled": true,
+    "file": "air_balloon_envelope.png",
+    "threshold": 0.78,
+    "min_red_fraction": 0.6,
+    "anchor_offset": [
+      -12,
+      -12
+    ],
+    "source": "work/batch5/20260926-1535-baseline/evidence/202c01fdbf8354b7992f383b0d0da77d0eebb4d7b3c1174ec323bce17f568eb6.png",
+    "source_sha256": "202c01fdbf8354b7992f383b0d0da77d0eebb4d7b3c1174ec323bce17f568eb6",
+    "source_crop": [
+      289,
+      305,
+      331,
+      343
+    ],
+    "description": "Observed single red netted balloon envelope; excludes level digits and basket. Only this visual subtype is calibrated.",
+    "template_sha256": "26d0d46514ee59c3ada39ca2c4e7059b43df7cc2ce9e94f4809012b5ba6f5960"
+  },
+  {
+    "id": "air_balloon_envelope",
+    "kind": "air",
+    "enabled": true,
+    "early_only": true,
+    "file": "air_balloon_envelope_early_pose.png",
+    "threshold": 0.78,
+    "min_red_fraction": 0.6,
+    "anchor_offset": [
+      -21,
+      -13
+    ],
+    "source": "work/batch5/20260926-161656-candidate/evidence/fb911a8ffd10c5a5bffb494ce412d8f277ca7c8b79b4e833ae5d5f04a8d0b055.png",
+    "source_sha256": "fb911a8ffd10c5a5bffb494ce412d8f277ca7c8b79b4e833ae5d5f04a8d0b055",
+    "source_crop": [
+      96,
+      211,
+      138,
+      249
+    ],
+    "description": "Different early balloon pose from event 90; event 91 is held out, not a template source. Early ROI only, with separate red numeral verification.",
+    "template_sha256": "d09b7909edf8383b5e62310eb362e507d39f183cd46b9d9c6294b19e22138b10"
+  }
+]

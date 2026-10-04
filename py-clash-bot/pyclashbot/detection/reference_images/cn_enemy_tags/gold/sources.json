@@ -1,0 +1,26 @@
+[
+  {
+    "file": "red_gold_14.png",
+    "source": "work/batch5/20260926-170957-candidate2/evidence/e81c8cd69671ae4d447ae18511c58bc1b269ee32156daa5c1f168ba2d3404533.png",
+    "sha256": "e81c8cd69671ae4d447ae18511c58bc1b269ee32156daa5c1f168ba2d3404533",
+    "crop": [
+      275,
+      271,
+      284,
+      281
+    ],
+    "description": "Confirmed hostile red plaque with golden digits; number is not itself a side test."
+  },
+  {
+    "file": "red_gold_16.png",
+    "source": "work/batch5/20260926-170957-candidate2/evidence/80feb27985edff7697846bfd840c8482b869ce25d56abb4c98e5011ed24bd1fc.png",
+    "sha256": "80feb27985edff7697846bfd840c8482b869ce25d56abb4c98e5011ed24bd1fc",
+    "crop": [
+      117,
+      334,
+      126,
+      344
+    ],
+    "description": "Confirmed hostile red plaque with golden digits; number is not itself a side test."
+  }
+]

@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyclashbot"
+version = "v0.0.0"
+description = "Automated Clash Royale"
+authors = [
+    { name = "Matthew Miglio", email = "matthew@pyclashbot.app" },
+    { name = "Martin Miglio", email = "code@martinmiglio.dev" },
+]
+requires-python = ">=3.12.0,<3.13"
+readme = "README.md"
+license = {text = "NC-CL-1.0 AND CC-BY-NC-SA-4.0"}
+classifiers = [
+    "License :: Other/Proprietary License",
+]
+dependencies = [
+    # Direct runtime versions match the validated Windows environment. Test
+    # dependency updates in a separate environment before replacing a live one.
+    "opencv-python==4.14.0.94",
+    "numpy==2.5.3",
+    "pymemuc==0.6.0",
+    "psutil==7.2.2",
+    "pypresence==4.6.2",
+    "pillow==12.3.0",
+    "ttkbootstrap==1.20.4",
+]
+
+[tool.setuptools.packages.find]
+include = ["pyclashbot*", "scripts*"]
+exclude = ["assets*", "tests*"]
+
+[tool.setuptools.package-data]
+pyclashbot = ["detection/reference_images/**/*.png", "detection/reference_images/**/*.json", "emulators/configs/*.json"]
+scripts = ["*.ps1"]
+
+[project.scripts]
+pyclashbot-cn = "scripts.cn_windows_entry:main"
+
+[project.urls]
+homepage = "https://pyclashbot.app"
+
+[dependency-groups]
+build = [
+    "cx-freeze>=8.6.4,<9; sys_platform == 'win32'",
+    "pyinstaller>=6.0.0,<7; sys_platform == 'darwin'",
+    "packaging>=24.2",
+    "requests>=2.33.0",
+]
+dev = [
+    "pre-commit==4.2.0",
+    "ruff==0.16.10",
+    "pytest==9.1.1",
+    "ty==0.0.49",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+# Offline by default: bare `pytest` (and CI) skips emulator tests. A CLI
+# `-m emulator` overrides this (the last -m wins). `make test-emulator` does that.
+addopts = "--strict-markers -m 'not emulator'"
+markers = [
+    "emulator: requires a live emulator with Clash Royale parked on the main menu",
+]
+
+[tool.ruff.lint]
+select = [
+    "C4",
+    "E",
+    "F",
+    "W",
+    "C90",
+    "I",
+    "INP",
+    "ISC",
+    "PGH",
+    "PL",
+    "UP",
+    "N",
+    "RUF",
+    "TC",
+]
+
+ignore = [
+    # Keep existing positional public APIs compatible; PLR0913 already applies
+    # the same policy to total argument count.
+    "PLR0917",
+    "PLR0913",
+    "PLR0914",
+    "PLR0912",
+    "PLR0915",
+    "PLR0904",
+    "PLR0911",
+    "PLR0916",
+    "PLR1702",
+    "PLR1704",
+    "PLR0402",
+    "PLR0206",
+    "PLW0603",
+    "PLR2004",
+    "PLR6301",
+    "PLR6201",
+    "RUF012",
+    "TC002",
+    "E402",
+    "C901",
+    "E501",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.analysis]
+# Build-time deps used by scripts/ live in the `build` dependency group
+# (platform-gated), which isn't installed in the default dev venv.
+allowed-unresolved-imports = ["cx_Freeze", "PyInstaller.**", "requests"]
+
+# ttkbootstrap >=1.18 ships stubs covering bootstyle= on its widgets, but calls
+# through tkinter base types (e.g. Misc.configure(foreground=...)) still hit
+# typeshed signatures that don't know ttkbootstrap's restyled kwargs.
+[[tool.ty.overrides]]
+include = ["pyclashbot/interface/**", "scripts/cn_bot_control.py"]
+
+[tool.ty.overrides.rules]
+unknown-argument = "warn"

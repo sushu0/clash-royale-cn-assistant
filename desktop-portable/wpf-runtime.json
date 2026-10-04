@@ -1,0 +1,5 @@
+{
+  "data_root": "../data",
+  "backend_path": "../backend/ClashBackend.exe",
+  "distribution": true
+}

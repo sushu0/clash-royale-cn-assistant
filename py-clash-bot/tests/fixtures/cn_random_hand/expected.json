@@ -1,0 +1,137 @@
+[
+  {
+    "file": "live_hand_0.png",
+    "hand": [
+      {
+        "slot": 0,
+        "card": null,
+        "variant": null,
+        "candidate": "royal_recruits",
+        "available": false,
+        "offset": 2296,
+        "margin": 70,
+        "cost": null
+      },
+      {
+        "slot": 1,
+        "card": "vines",
+        "variant": "vines",
+        "candidate": "vines",
+        "available": true,
+        "offset": 122,
+        "margin": 2536,
+        "cost": 3
+      },
+      {
+        "slot": 2,
+        "card": null,
+        "variant": null,
+        "candidate": "giant_skeleton",
+        "available": false,
+        "offset": 1542,
+        "margin": 30,
+        "cost": null
+      },
+      {
+        "slot": 3,
+        "card": "arrows",
+        "variant": "arrows",
+        "candidate": "arrows",
+        "available": true,
+        "offset": 108,
+        "margin": 1556,
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "file": "live_hand_1.png",
+    "hand": [
+      {
+        "slot": 0,
+        "card": null,
+        "variant": null,
+        "candidate": "magic_archer",
+        "available": false,
+        "offset": 2268,
+        "margin": 134,
+        "cost": null
+      },
+      {
+        "slot": 1,
+        "card": null,
+        "variant": null,
+        "candidate": "cannon",
+        "available": false,
+        "offset": 1738,
+        "margin": 274,
+        "cost": null
+      },
+      {
+        "slot": 2,
+        "card": "poison",
+        "variant": "poison",
+        "candidate": "poison",
+        "available": true,
+        "offset": 352,
+        "margin": 1766,
+        "cost": 4
+      },
+      {
+        "slot": 3,
+        "card": null,
+        "variant": null,
+        "candidate": "zap",
+        "available": false,
+        "offset": 1946,
+        "margin": 64,
+        "cost": null
+      }
+    ]
+  },
+  {
+    "file": "live_hand_2.png",
+    "hand": [
+      {
+        "slot": 0,
+        "card": null,
+        "variant": null,
+        "candidate": "royal_recruits",
+        "available": false,
+        "offset": 2292,
+        "margin": 70,
+        "cost": null
+      },
+      {
+        "slot": 1,
+        "card": "vines",
+        "variant": "vines",
+        "candidate": "vines",
+        "available": true,
+        "offset": 122,
+        "margin": 2536,
+        "cost": 3
+      },
+      {
+        "slot": 2,
+        "card": null,
+        "variant": null,
+        "candidate": "barb_barrel",
+        "available": false,
+        "offset": 1490,
+        "margin": 34,
+        "cost": null
+      },
+      {
+        "slot": 3,
+        "card": null,
+        "variant": null,
+        "candidate": "giant_skeleton",
+        "available": false,
+        "offset": 1542,
+        "margin": 626,
+        "cost": null
+      }
+    ]
+  }
+]

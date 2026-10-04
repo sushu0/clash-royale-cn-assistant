@@ -1,0 +1,69 @@
+name: Offline validation
+
+on:
+  workflow_call:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Python 3.12 checks (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            environment: D:\codex\ci\verification-env
+            data: D:\codex\ci\pyclashbot-data
+            cache: D:\codex\ci\uv-cache
+            temp: D:\codex\ci\tmp
+          - os: ubuntu-latest
+            environment: .venv
+            data: .ci-data
+            cache: .ci-cache/uv
+            temp: .ci-tmp
+    env:
+      UV_PROJECT_ENVIRONMENT: ${{ matrix.environment }}
+      UV_CACHE_DIR: ${{ matrix.cache }}
+      PYCLASHBOT_DATA_ROOT: ${{ matrix.data }}
+      TEMP: ${{ matrix.temp }}
+      TMP: ${{ matrix.temp }}
+      TMPDIR: ${{ matrix.temp }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Create Windows data and temporary directories
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path $env:PYCLASHBOT_DATA_ROOT, $env:TEMP, $env:UV_CACHE_DIR | Out-Null
+      - name: Create POSIX data and temporary directories
+        if: runner.os != 'Windows'
+        shell: bash
+        run: mkdir -p "$PYCLASHBOT_DATA_ROOT" "$TMPDIR" "$UV_CACHE_DIR"
+      - name: Install pinned uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: '0.12.19'
+          python-version: '3.12.14'
+          enable-cache: true
+      - name: Verify lock and install dependencies
+        run: |
+          uv lock --check
+          uv sync --locked
+      - name: Check source without changing files
+        run: |
+          uv run --locked --no-sync ruff check .
+          uv run --locked --no-sync ruff format --check .
+          uv run --locked --no-sync ty check
+      - name: Run offline behavior tests
+        # GUI/process adapter regressions contain Windows API mocks. Windows is
+        # the acceptance platform; POSIX keeps the shared static checks.
+        if: runner.os == 'Windows'
+        run: uv run --locked --no-sync pytest -q -p no:cacheprovider --basetemp=${{ matrix.temp }}/pytest

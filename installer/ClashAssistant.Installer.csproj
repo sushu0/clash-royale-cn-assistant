@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <AssemblyName>ClashAssistant-Setup</AssemblyName>
+    <Version>1.0.0</Version>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PayloadZipPath Condition="'$(PayloadZipPath)' == ''">$(MSBuildThisFileDirectory)..\payload.zip</PayloadZipPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="TestHarness.cs" />
+    <Compile Include="TestHarness.cs" Condition="'$(InstallerTestHarness)' == 'true'" />
+    <EmbeddedResource Include="$(PayloadZipPath)" LogicalName="ClashAssistant.Installer.payload.zip" />
+  </ItemGroup>
+  <Target Name="CreateEmbeddedPayloadHash" BeforeTargets="AssignTargetPaths">
+    <Error Condition="!Exists('$(PayloadZipPath)')" Text="Payload ZIP does not exist: $(PayloadZipPath)" />
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+    <GetFileHash Files="$(PayloadZipPath)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="_HashedPayload" />
+    </GetFileHash>
+    <WriteLinesToFile File="$(IntermediateOutputPath)payload.sha256" Lines="@(_HashedPayload->'%(FileHash)')" Overwrite="true" Encoding="UTF-8" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(IntermediateOutputPath)payload.sha256" LogicalName="ClashAssistant.Installer.payload.sha256" />
+    </ItemGroup>
+  </Target>
+</Project>

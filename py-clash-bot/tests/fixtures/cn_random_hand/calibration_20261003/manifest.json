@@ -1,0 +1,152 @@
+[
+  {
+    "file": "recent-battle-38.png",
+    "sha256": "465c745e1105ff9313d5d9a3553f6b4a364b88165b6b47c0eba36973d79b8501",
+    "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-38.png",
+    "source_sha256": "e13dff11c1d6ad178352ccba1e756591b70c630488509d82b628939f96d2f797",
+    "source_roi": [
+      105,
+      510,
+      388,
+      620
+    ],
+    "expected_cards": [
+      "earthquake",
+      "witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_variants": [
+      "earthquake",
+      "evo_witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_costs": [
+      3,
+      5,
+      3,
+      4
+    ]
+  },
+  {
+    "file": "recent-battle-41.png",
+    "sha256": "593336537f9f38310569dd1d3a0d9a3c245e483896783620753cb9646bab0e7a",
+    "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-41.png",
+    "source_sha256": "032725c4ec9ccfcdf8773519036c5df546dd4b6446f6ea05f2c6259a4d4adb28",
+    "source_roi": [
+      105,
+      510,
+      388,
+      620
+    ],
+    "expected_cards": [
+      "earthquake",
+      "witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_variants": [
+      "earthquake",
+      "evo_witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_costs": [
+      3,
+      5,
+      3,
+      4
+    ]
+  },
+  {
+    "file": "recent-battle-43.png",
+    "sha256": "e2bb4cf8e050f9288a52f05681242484791ad6aaae08e06b2f88bd098bdeb0ef",
+    "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-43.png",
+    "source_sha256": "793e1981a41868290977b35cd5c35359a253dc61bfeb13e4fddf3d4010c8d24b",
+    "source_roi": [
+      105,
+      510,
+      388,
+      620
+    ],
+    "expected_cards": [
+      "earthquake",
+      "witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_variants": [
+      "earthquake",
+      "evo_witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_costs": [
+      3,
+      5,
+      3,
+      4
+    ]
+  },
+  {
+    "file": "recent-battle-44.png",
+    "sha256": "f8050cede0c16f1e90e67842512c8749cad7935fdf26195e53470ba73fdd9db7",
+    "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\recent-battle-44.png",
+    "source_sha256": "0e0be7254928969120521e8fa4b8868cfcdff70bef2e3277ea30f9cb4db43e58",
+    "source_roi": [
+      105,
+      510,
+      388,
+      620
+    ],
+    "expected_cards": [
+      "earthquake",
+      "witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_variants": [
+      "earthquake",
+      "evo_witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_costs": [
+      3,
+      5,
+      3,
+      4
+    ]
+  },
+  {
+    "file": "user-game-crop.png",
+    "sha256": "2d6c416e182f8fe8645d3907921504bfe8d0fc6832ea519286af4a54bdddebf9",
+    "source_path": "D:\\codex\\CodexWork\\clash\\work\\no-play-20261003\\vision-audit\\user-game-crop.png",
+    "source_sha256": "6a6003d7fecdb354973ad748b36b4fdb6824bf1bd19af6500b80945899701a34",
+    "source_roi": [
+      105,
+      510,
+      388,
+      620
+    ],
+    "expected_cards": [
+      "earthquake",
+      "witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_variants": [
+      "earthquake",
+      "evo_witch",
+      "bandit",
+      "goblin_hut"
+    ],
+    "expected_costs": [
+      3,
+      5,
+      3,
+      4
+    ]
+  }
+]

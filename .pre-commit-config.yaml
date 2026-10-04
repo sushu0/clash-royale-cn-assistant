@@ -1,0 +1,36 @@
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast
+        types: [python]
+      - id: trailing-whitespace
+        types: [python]
+        files: ^py-clash-bot/
+      - id: end-of-file-fixer
+        types: [python]
+        files: ^py-clash-bot/
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: Ruff format (locked Python project)
+        entry: uv run --project py-clash-bot --locked --no-sync ruff format
+        language: system
+        types_or: [python, pyi]
+        files: ^py-clash-bot/
+      - id: ruff
+        name: Ruff lint (locked Python project)
+        entry: uv run --project py-clash-bot --locked --no-sync ruff check --fix --exit-non-zero-on-fix
+        language: system
+        types_or: [python, pyi]
+        files: ^py-clash-bot/
+      - id: ty
+        name: Type check (locked Python project)
+        entry: uv --directory py-clash-bot run --locked --no-sync ty check
+        language: system
+        pass_filenames: false
+        types_or: [python, pyi]
+        files: ^py-clash-bot/
+

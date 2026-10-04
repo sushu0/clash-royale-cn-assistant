@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>ClashAssistant.Desktop</AssemblyName>
+    <RootNamespace>ClashAssistant.Desktop</RootNamespace>
+    <ApplicationIcon>..\py-clash-bot\assets\clash-desktop.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>2026.10.4.4</Version>
+    <PublishTrimmed>false</PublishTrimmed>
+    <DebugType>portable</DebugType>
+    <!-- WPF owns startup; WinForms is used only for NotifyIcon. PerMonitor V1
+         is explicitly declared to match the embedded emulator's DPI context. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="..\py-clash-bot\assets\clash-desktop.png" Link="Assets\clash-desktop.png" />
+    <Resource Include="..\py-clash-bot\assets\clash-desktop.ico" Link="Assets\clash-desktop.ico" />
+    <Content Include="..\py-clash-bot\assets\clash-desktop.ico" Link="clash-desktop.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="wpf-runtime.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

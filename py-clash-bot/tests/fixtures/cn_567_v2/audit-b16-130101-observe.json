@@ -1,0 +1,271 @@
+{
+  "event": "observe",
+  "battle": 16,
+  "hand": [
+    {
+      "slot": 0,
+      "card": "pekka",
+      "variant": "pekka",
+      "available": true,
+      "offset": 144,
+      "margin": 2226
+    },
+    {
+      "slot": 1,
+      "card": "goblin_machine",
+      "variant": "cn_goblin_machine",
+      "available": true,
+      "offset": 66,
+      "margin": 1884
+    },
+    {
+      "slot": 2,
+      "card": "zap",
+      "variant": "zap",
+      "available": true,
+      "offset": 184,
+      "margin": 1768
+    },
+    {
+      "slot": 3,
+      "card": "bomber",
+      "variant": "bomber",
+      "available": true,
+      "offset": 158,
+      "margin": 2064
+    }
+  ],
+  "cues": {
+    "elixir": 10,
+    "enemies": [
+      [
+        142,
+        330
+      ],
+      [
+        152,
+        426
+      ],
+      [
+        163,
+        397
+      ],
+      [
+        163,
+        422
+      ],
+      [
+        180,
+        400
+      ],
+      [
+        196,
+        412
+      ],
+      [
+        210,
+        418
+      ]
+    ],
+    "far_warnings": [],
+    "enemy_towers": {
+      "left": true,
+      "right": true
+    },
+    "enemy_tower_fill": {
+      "left": 0.718,
+      "right": null
+    },
+    "own_tower_fill": {
+      "left": null,
+      "right": 0.025
+    },
+    "elite_ability_ready": false,
+    "threats": [],
+    "dark_ground_candidates": [],
+    "allies": []
+  },
+  "policy_observation": {
+    "tracks": [
+      {
+        "point": [
+          142,
+          330
+        ],
+        "anchor": [
+          141,
+          330
+        ],
+        "first": 7913.359,
+        "seen": 7914.437,
+        "frames": 4,
+        "motion": 0,
+        "domain": null
+      },
+      {
+        "point": [
+          152,
+          426
+        ],
+        "anchor": [
+          152,
+          426
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 3,
+        "motion": 4,
+        "domain": null
+      },
+      {
+        "point": [
+          163,
+          397
+        ],
+        "anchor": [
+          163,
+          397
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 4,
+        "motion": 5,
+        "domain": null
+      },
+      {
+        "point": [
+          163,
+          422
+        ],
+        "anchor": [
+          163,
+          422
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 4,
+        "motion": 8,
+        "domain": null
+      },
+      {
+        "point": [
+          180,
+          400
+        ],
+        "anchor": [
+          180,
+          400
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 3,
+        "motion": -5,
+        "domain": null
+      },
+      {
+        "point": [
+          196,
+          412
+        ],
+        "anchor": [
+          196,
+          412
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 1,
+        "motion": 0
+      },
+      {
+        "point": [
+          210,
+          418
+        ],
+        "anchor": [
+          210,
+          418
+        ],
+        "first": 7914.437,
+        "seen": 7914.437,
+        "frames": 1,
+        "motion": 0
+      }
+    ],
+    "survivors": [],
+    "quiet_seconds": 0,
+    "pressure": [
+      {
+        "lane": "right",
+        "kind": "swarm",
+        "point": [
+          210,
+          418
+        ],
+        "urgency": 503
+      },
+      {
+        "lane": "left",
+        "kind": "swarm",
+        "point": [
+          163,
+          422
+        ],
+        "urgency": 470
+      },
+      {
+        "lane": "left",
+        "kind": "swarm",
+        "point": [
+          152,
+          426
+        ],
+        "urgency": 466
+      },
+      {
+        "lane": "left",
+        "kind": "swarm",
+        "point": [
+          196,
+          412
+        ],
+        "urgency": 460
+      },
+      {
+        "lane": "left",
+        "kind": "swarm",
+        "point": [
+          180,
+          400
+        ],
+        "urgency": 448
+      },
+      {
+        "lane": "left",
+        "kind": "swarm",
+        "point": [
+          163,
+          397
+        ],
+        "urgency": 445
+      },
+      {
+        "lane": "left",
+        "kind": "unknown",
+        "point": [
+          142,
+          330
+        ],
+        "urgency": 338
+      }
+    ]
+  },
+  "evidence": {
+    "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-observe-49.png",
+    "sha256": "6ed8f6662fd3a9825866d2b241475337b37c109ff2369ec936fbf0c9c2f62fd3",
+    "sequence": 209
+  },
+  "time": "2026-09-28 13:01:01",
+  "session": "20260928-122306",
+  "policy_version": "double-air-567-v1.3-20260928",
+  "mode": "classic_1v1"
+}

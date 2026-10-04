@@ -1,0 +1,41 @@
+clash-royale-cn-assistant
+
+This repository contains modified software based on:
+  pyclashbot/py-clash-bot
+  https://github.com/pyclashbot/py-clash-bot
+
+Upstream copyright:
+  Copyright (c) 2024 Matthew Miglio, Martin Miglio, and contributors
+
+Public repository maintainer and Chinese-client modifications:
+  sushu0
+  https://github.com/sushu0/clash-royale-cn-assistant
+
+MODIFIED SOFTWARE NOTICE
+
+This is a modified project, not an unmodified upstream release.
+Modifications and additions include the Windows Tencent Chinese-client
+control flow, random-deck mastery/reward loop, 567 and hog strategy work,
+process ownership and recovery, durable battle/evidence records,
+Chinese desktop controls, a WPF JSONL backend/frontend, a share edition
+with installation-owned data paths and first-use settings, and associated
+tests and build/development tools. See the source and RELEASE_NOTES.md
+for the public release scope. The maintainer does not claim sole authorship
+of the upstream code, templates, or third-party materials.
+
+LICENSES
+
+The upstream license is preserved in LICENSE and py-clash-bot/LICENSE.
+Source code related to this project is distributed under the py-clash-bot
+Non-Commercial Copyleft License 1.0 (NC-CL-1.0).
+Assets and documentation are distributed under CC BY-NC-SA 4.0.
+This public release does not replace those terms with MIT or grant
+unrestricted commercial permission.
+
+Third-party packages, runtimes, tools, and their notices remain subject
+to their respective licenses. Runtime installation and dependency
+resolution do not make those components the work of this maintainer.
+
+Clash Royale and its game assets are owned by Supercell. Reference game
+images in this project are used for screen recognition. This project
+is not an official Supercell project.

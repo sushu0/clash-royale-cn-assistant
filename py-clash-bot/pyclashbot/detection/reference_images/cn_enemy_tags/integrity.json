@@ -1,0 +1,12 @@
+{
+  "schema": "cn-enemy-tags/integrity-v1",
+  "files": {
+    "gold/level11_cn.png": "a2bcd11cd042900639736ebc99849b0aa44ca8c5a148e63414187303cddfc83a",
+    "gold/red_gold_14.png": "a046e8ea706352d02769597384dcc9f4d8b830c4c70f081a7d4851fae4ba10db",
+    "gold/red_gold_16.png": "92f272207b59bf6ae3d78b8d7ae886f45ae1de8d338e4d2c7e3b9c6fb83a4017",
+    "level13.png": "03e358005dc874cd255d2e63344df6e65feaf3a768259e92a8d8660efd6c9a91",
+    "level14.png": "c3721aab94052e7f5228329ce3bf43a9ddc07afef2868212c43a581acfb9034d",
+    "level15.png": "1d3e733e85ab1fc1ff028f6accbeb83c890502db7ae2e88ada63d727b127b2e3",
+    "level15_shield.png": "876e5b3fa7bedc439d21752c65c9deaffcf8762cd8434913caf2603309248209"
+  }
+}

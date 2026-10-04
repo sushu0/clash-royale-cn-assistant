@@ -1,0 +1,110 @@
+[
+  {
+    "id": "567_ground_drill_torso",
+    "kind": "ground",
+    "heavy": true,
+    "role": "ground_heavy",
+    "small": false,
+    "domain": "ground",
+    "anchor_offset": [
+      -4,
+      3
+    ],
+    "tag_search_bbox": [
+      -8,
+      -30,
+      22,
+      -5
+    ],
+    "threshold": 0.78,
+    "description": "Visible drilling ground unit torso; one nearby non-source frame validates this pose. Does not generalize to ordinary Giant or Giant Skeleton.",
+    "enabled": true,
+    "role_recovery_only": true,
+    "file": "567_ground_drill_torso.png",
+    "source": "tests/fixtures/cn_567_threats/ground_drill_source.png",
+    "source_sha256": "b8f5d0cdc2ec31e0f819907022819eb21e9aff2329ecdd5e8d078e5f684b3f11",
+    "source_crop": [
+      99,
+      311,
+      124,
+      345
+    ],
+    "source_trace": {
+      "time": "2026-09-28 12:23:41",
+      "battle": 1,
+      "event": "play",
+      "field": "evidence_before",
+      "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-play-before-00.png",
+      "sha256": "b8f5d0cdc2ec31e0f819907022819eb21e9aff2329ecdd5e8d078e5f684b3f11"
+    },
+    "independent_validation_sources": [
+      {
+        "path": "tests/fixtures/cn_567_threats/ground_drill_heldout.png",
+        "sha256": "43aebec432363a205c0d8fe6cb36d9498bf5c4116e336a0dc37443bddedd6f0e",
+        "trace_evidence": {
+          "time": "2026-09-28 12:23:39",
+          "battle": 1,
+          "event": "observe",
+          "field": "evidence",
+          "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-observe-02.png",
+          "sha256": "43aebec432363a205c0d8fe6cb36d9498bf5c4116e336a0dc37443bddedd6f0e"
+        }
+      }
+    ],
+    "template_sha256": "fda5b7ff8fb343064d99cb91cb6aab549cd4bd3f0c91b41efa707569d221f90b"
+  },
+  {
+    "id": "567_air_baby_dragon_front",
+    "kind": "air",
+    "heavy": false,
+    "role": "air",
+    "small": false,
+    "domain": "air",
+    "anchor_offset": [
+      3,
+      -8
+    ],
+    "tag_search_bbox": [
+      -20,
+      -18,
+      14,
+      3
+    ],
+    "threshold": 0.88,
+    "description": "Enemy baby dragon frontal head, with separately verified hostile white/gold level plaque. Different source and held-out capture; other wing/attack poses remain unknown.",
+    "enabled": true,
+    "role_recovery_only": true,
+    "file": "567_air_baby_dragon_front.png",
+    "source": "tests/fixtures/cn_567_threats/baby_dragon_source.png",
+    "source_sha256": "04a276db5c97dc7a79e9d57c71cf9a19ea0e9916ca0b541f4b1719784353bb2e",
+    "source_crop": [
+      322,
+      230,
+      341,
+      252
+    ],
+    "source_trace": {
+      "time": "2026-09-28 13:16:54",
+      "battle": 21,
+      "event": "play",
+      "field": "evidence_before",
+      "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-play-before-48.png",
+      "sha256": "04a276db5c97dc7a79e9d57c71cf9a19ea0e9916ca0b541f4b1719784353bb2e"
+    },
+    "independent_validation_sources": [
+      {
+        "path": "tests/fixtures/cn_567_threats/baby_dragon_heldout.png",
+        "sha256": "59e813acb866b5edd35d62095228eae2ac35ce293c184111e9386b4ef6543cb9",
+        "trace_evidence": {
+          "time": "2026-09-28 13:16:22",
+          "battle": 21,
+          "event": "play",
+          "field": "evidence_after",
+          "path": "D:\\codex\\CodexWork\\clash\\work\\567-validation\\20260928-122306\\recent-play-after-42.png",
+          "sha256": "59e813acb866b5edd35d62095228eae2ac35ce293c184111e9386b4ef6543cb9"
+        }
+      }
+    ],
+    "template_sha256": "4548606a6b0434b325e158482cee0c8a110d0d72bd0ac855f2c78fb4a0e89517"
+  }
+]

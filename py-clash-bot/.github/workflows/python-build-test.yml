@@ -1,0 +1,63 @@
+name: Build test packages
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    uses: ./.github/workflows/offline-validation.yml
+
+  build-windows:
+    name: Build Windows MSI
+    runs-on: windows-latest
+    needs: validation
+    env:
+      UV_PROJECT_ENVIRONMENT: D:\codex\ci\build-env
+      UV_CACHE_DIR: D:\codex\ci\uv-cache
+      PYCLASHBOT_DATA_ROOT: D:\codex\ci\pyclashbot-data
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: '0.12.19'
+          python-version: '3.12.14'
+          enable-cache: true
+      - name: Build package
+        run: |
+          uv run --locked --group build python scripts/setup_msi.py bdist_msi --target-version v0.0.0
+      - name: Upload MSI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: py-clash-bot-test-windows.msi
+          path: ./dist/pyclashbot*.msi
+          retention-days: 30
+
+  build-macos:
+    name: Build macOS DMG
+    runs-on: macos-latest
+    needs: validation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: '0.12.19'
+          python-version: '3.12.14'
+          enable-cache: true
+      - name: Build package
+        run: |
+          uv run --locked --group build python scripts/setup_macos.py --target-version v0.0.0
+      - name: Upload DMG Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: py-clash-bot-test-macos.dmg
+          path: ./dist/py-clash-bot*.dmg
+          retention-days: 30
