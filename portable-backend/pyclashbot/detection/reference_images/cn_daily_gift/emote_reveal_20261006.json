@@ -1,0 +1,37 @@
+{
+  "schema": "cn-daily-gift-reveal/v1",
+  "source": "D:\\codex\\CodexWork\\clash\\work\\random-mastery\\20261006-032214\\evidence\\recovery-d713057608c9e0770c0fb425ddb4ad95b3461f74f5b723dd63bfdc8156e97b9b.png",
+  "source_sha256": "d713057608c9e0770c0fb425ddb4ad95b3461f74f5b723dd63bfdc8156e97b9b",
+  "source_created_at": "2026-10-06T08:03:53+08:00",
+  "required_caller_context": "daily_reward_pending",
+  "action": "continue_daily_gift_reward",
+  "action_coordinate": [
+    209,
+    329
+  ],
+  "threshold": 0.95,
+  "minimum_brightness_ratio": 0.95,
+  "maximum_mean_bgr_difference": 12,
+  "assets": [
+    {
+      "path": "emote_reveal_title_20261006.png",
+      "crop_ltrb": [
+        177,
+        132,
+        244,
+        170
+      ],
+      "sha256": "32f2d8ec333800e8b4b015097f2e1ddba7981624371e86839f86da50d5dab19f"
+    },
+    {
+      "path": "emote_reveal_icon_20261006.png",
+      "crop_ltrb": [
+        164,
+        229,
+        256,
+        308
+      ],
+      "sha256": "371aec9fc09dd0ca8ba3f4646d10a6a825f9dc9a8ec7db8cd9f50d2ea300246e"
+    }
+  ]
+}

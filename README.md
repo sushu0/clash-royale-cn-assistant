@@ -4,19 +4,27 @@
 
 本仓库由 [sushu0](https://github.com/sushu0) 公开维护，基于 [pyclashbot/py-clash-bot](https://github.com/pyclashbot/py-clash-bot) 修改。希望把中文客户端适配、策略实现、桌面程序和开发工具一并分享，方便大家阅读、复现和继续改进。源码与文档沿用上游的**非商业许可**；使用和再分发前请阅读 [LICENSE](LICENSE) 与 [NOTICE](NOTICE)。
 
+**2026-10-08 更新的是 `main` 分支源码和文档。** 本次同步了每日精选、免费奖励与购买统计、奖励弹窗处理、暂停修复辅助和桌面状态相关实现，没有制作新的安装包或更新 GitHub Release。2026-10-05 的安装包是当时的旧二进制；下载它不会自动获得当前 `main` 的后续修改。已有克隆的更新方法见下文，游戏画面变化后的适配方法见 [图片识别维护指南](docs/VISION_MAINTENANCE.md)。
+
 ## 已实现的内容
 
 | 部分 | 内容 |
 | --- | --- |
 | 随机卡组熟练度 | 卡组生成、经典 1V1 循环、结算返回、熟练度页面检查与领取全部结果确认 |
 | 三种策略 | 随机卡组 `random`、567 双空军 `567`、野猪 `hog`，保留各自的源码和历史记录读取 |
+| 每日精选 | 手动触发商店检查、免费奖励领取和金币商品购买；跳过宝石商品，保留确认后的交易证据与当日统计 |
 | 中文桌面程序 | WPF 对战工作台、模拟器画面嵌入、系统托盘、对局记录、策略统计、异常报告、运行日志 |
 | 分享版首次设置 | 选择 MEmu/ADB、填写本机设备地址、只读检查分辨率、DPI 和腾讯版游戏是否安装 |
 | 运行与恢复 | runner/watchdog、进程归属检查、设备输入锁、断点和停止确认 |
+| 暂停修复辅助 | 本地异常 case 队列、独占 claim、停止意图门禁、失败冷却与闭环 proof 校验；实际修复由另行配置的 Codex 工作流完成 |
 | 战绩与证据 | 原始 JSONL、可重建 SQLite 索引、结算截图哈希、未知结果和证据缺失显示 |
 | 开发工具 | 锁定依赖、离线测试、Ruff、ty、冻结打包与桌面构建源码 |
 
 它使用屏幕识别和固定坐标，没有游戏 API。维护范围与识别精度受客户端画面、模拟器和分辨率影响；本仓库没有承诺固定胜率或保证每种牌都能正确应对。
+
+每日精选是会发送游戏操作的独立功能：先停止对战任务，再在 WPF 中主动触发。商品、币种、确认弹窗和交易结果需要分别识别；未知价格、证据不足或不确定的购买结果会停止或跳过，不重复尝试可能已经完成的交易。当日累计按已确认收据去重，不能把点击次数当成已购买数量。奖励弹窗和页面返回也依赖已校准画面，新增处理分支不代表新版游戏所有弹窗都已适配。
+
+`scripts/cn_auto_repair.py` 提供状态和 case 管理，不会自行修改源码、部署后端或恢复游戏。仓库中记录的定时监测是作者本机 Codex chat 的工作流，克隆仓库不会复制或启用它。手动停止、关闭功能、claim 失效或证据不足均应阻止自动恢复；自己的调度与修复流程需另行配置。接口说明见 [暂停修复辅助](py-clash-bot/docs/cn_auto_repair.md)，其中本机路径和 chat 绑定仅是原环境记录。
 
 ## 选择运行方式
 
@@ -108,6 +116,29 @@ uv run --locked --no-sync pyclashbot-cn
 
 每次打开新 PowerShell 窗口，都需要重新设置本次使用的环境变量。切换虚拟环境时同步修改 JSON 的 `python` 字段；不要对正在运行的机器人环境做依赖升级。当前桌面启动链固定使用 MEmu 0 号实例，单独改 JSON 的 `vm_index` 不会把它切到其他实例。
 
+## 更新已有源码
+
+先在界面停止任务并退出正在使用的程序，保留自己的运行数据。下面假设已经按上文克隆并配置了项目；新 PowerShell 窗口需重新设置 `$repo`、`$data` 和运行环境变量。先检查工作树，本地修改应单独保存；`git pull --ff-only` 遇到分支分叉会停止，不要用强制重置覆盖自己的修改。
+
+```powershell
+Set-Location -LiteralPath 'D:\codex\projects\clash-royale-cn-assistant'
+$repo = (Get-Location).Path
+git status --short
+git switch main
+git pull --ff-only origin main
+
+Set-Location -LiteralPath "$repo\py-clash-bot"
+uv sync --locked --python 3.12
+uv lock --check
+uv run --locked --no-sync python -m scripts.cn_windows_entry --self-check
+uv run --locked --no-sync pytest -q -p no:cacheprovider --basetemp="$repo\work\pytest-update"
+
+# 配置和策略选择仍由自己的数据根提供；打开窗口不会自动开始对战。
+uv run --locked --no-sync python -m scripts.cn_windows_entry
+```
+
+这会更新并运行 Python 源码。已安装的 `ClashBackend.exe`、WPF 程序和旧 Release 使用各自的冻结代码；只执行 `git pull` 或修改安装目录中的 `source` 副本不会更新它们。需要当前 WPF 功能时，应按 [构建说明](docs/BUILD.md) 从同一个 `main` 提交重新构建前端、后端和素材。完整更新方法、两后端素材同步与适配回归见 [图片识别维护指南](docs/VISION_MAINTENANCE.md)。
+
 ## 阅读源码
 
 ```text
@@ -132,6 +163,8 @@ uv run --locked --no-sync pyclashbot-cn
 核心流程是“读取画面 → 判断状态 → 选择策略动作 → 通过 ADB 输入 → 确认结果 → 保存记录”。WPF 通过本机 JSONL 协议调用 Python 后端，后端复用控制台的启动和停止逻辑。
 
 详细资料：[国服控制台与 567 历史](py-clash-bot/docs/cn-console-and-v4.md)、[部署区域](py-clash-bot/docs/placement-zones.md)、[运行与验证](py-clash-bot/docs/runtime-and-validation.md)、[开发约定](py-clash-bot/CONTRIBUTING.md)。其中历史文档包含原作者的本机路径和旧版验证记录；新用户上手以本文的公开路径示例为准。
+
+客户端更新后，先对照 [图片识别维护指南](docs/VISION_MAINTENANCE.md) 检查固定尺寸、卡牌费用、模板、状态判断和运行版本。当前 `void`（虚空）目录定义仍保留 3 费；2026-10-07 的本机诊断把它列为需针对新画面核验的适配项。本次源码同步没有把它标为已经修复，也没有承诺新版游戏全面兼容。
 
 ## 验证与数据解释
 

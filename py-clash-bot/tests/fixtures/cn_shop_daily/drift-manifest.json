@@ -1,0 +1,46 @@
+{
+  "resolution": [
+    419,
+    633
+  ],
+  "channel_order": "BGR after cv2.imread",
+  "captured_at_local": "2026-10-06",
+  "purpose": "Observed daily-shop scroll and post-purchase idle drift regression",
+  "frames": [
+    {
+      "file": "drift-001-navigation.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/001-navigation.png",
+      "sha256": "437d63ddff34e279b4c0b661d1e5fdbec455e5602bce99d6891422e3c0707478"
+    },
+    {
+      "file": "drift-007-transaction.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/007-transaction.png",
+      "sha256": "8bf685a0777e587e8566dc695ed0989a24075aaabd8bb8096b757c05eb917e05"
+    },
+    {
+      "file": "drift-008-daily-next-row.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/008-daily-next-row.png",
+      "sha256": "bcf3d0fb8a3030727028dafce2414f82ece223fa9e305933e0902be7092bbdc5"
+    },
+    {
+      "file": "drift-009-daily-next-row.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/009-daily-next-row.png",
+      "sha256": "b5a17df8704e5b2c44d869304c42f827423947c826d74539083f7a680e1a228e"
+    },
+    {
+      "file": "drift-010-item-recheck.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/010-item-recheck.png",
+      "sha256": "bd655799e20a8855a28325a987cae160b4f1b07e9383d57d5a2550cb0c8627ee"
+    },
+    {
+      "file": "drift-016-transaction.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/016-transaction.png",
+      "sha256": "a3c7faea0435d3f71dff65d994ccb569fc267fcf5a6d2b71acfb13b1f742a5bb"
+    },
+    {
+      "file": "drift-017-daily-next-row.png",
+      "source": "outputs/shop-daily/20261006-022049-324475/017-daily-next-row.png",
+      "sha256": "e75322d78f391328ec01f7e789edb64e32fdab407053456e1e36154ee710a229"
+    }
+  ]
+}

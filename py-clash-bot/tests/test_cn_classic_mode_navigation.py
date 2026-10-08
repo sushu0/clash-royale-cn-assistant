@@ -196,6 +196,62 @@ def test_starting_at_stalled_bottom_does_not_reset_the_entire_drawer():
     assert device.clicks == [(319, 449)]
 
 
+@pytest.mark.parametrize("starting_at_bottom", [False, True])
+def test_animated_stalled_bottom_reverses_within_the_same_input_budget(starting_at_bottom):
+    # This is the menu captured by the 2026-10-05 recovery failure. Its Classic
+    # row is clipped above the list while the visible row artwork keeps moving.
+    bottom = frame("cn_pages/mode_trace_animated_bottom.png")
+    variants = []
+    for brightness in (-48, 48):
+        animated = bottom.copy()
+        animated[200:625, 170:270] = np.clip(animated[200:625, 170:270].astype(np.int16) + brightness, 0, 255).astype(
+            np.uint8
+        )
+        step = cn_navigation_step(animated)
+        assert step is not None
+        assert step.page == "game_modes"
+        assert cn_classic_mode_point(animated) is None
+        variants.append(animated)
+    assert float(np.mean(np.abs(variants[0].astype(float) - variants[1].astype(float)))) > 2
+    correct = frame("cn_pages/classic_restored_lobby.png")
+    visible = frame("cn_pages/game_modes_classic_visible.png")
+    snapshots = {
+        "lobby": frame("cn_pages/classic_2v2_lobby.png"),
+        "top": frame("cn_pages/game_modes_top.png"),
+        "clipped": frame("cn_pages/mode_trace_clipped.png"),
+        "visible": visible,
+        "correct": correct,
+    }
+    device = SimpleNamespace(
+        clicks=[], swipes=[], observations=0, page="bottom" if starting_at_bottom else "lobby", animation=0
+    )
+
+    def screenshot():
+        device.observations += 1
+        if device.page == "bottom":
+            device.animation += 1
+            return variants[device.animation % 2]
+        return snapshots[device.page]
+
+    def click(*point):
+        device.clicks.append(point)
+        device.page = "top" if point == CN_CLASSIC_MODE_SELECTOR else "correct"
+
+    def swipe(*points):
+        device.swipes.append(points)
+        if points == CN_CLASSIC_MODE_SCROLL_TO_TOP:
+            device.page = "visible"
+        else:
+            assert points == CN_CLASSIC_MODE_SCROLL_TO_BOTTOM
+            device.page = "clipped" if device.page == "top" else "bottom"
+
+    device.screenshot, device.click, device.swipe = screenshot, click, swipe
+    assert nav.navigate_cn_classic_1v1(device, Logger(), ChineseVision(), max_steps=8, verify_menu=True)
+    assert device.swipes == [CN_CLASSIC_MODE_SCROLL_TO_BOTTOM] * 4 + [CN_CLASSIC_MODE_SCROLL_TO_TOP]
+    assert device.clicks == ([] if starting_at_bottom else [CN_CLASSIC_MODE_SELECTOR]) + [(319, 449)]
+    assert len(device.clicks) + len(device.swipes) <= 8
+
+
 @pytest.mark.parametrize("max_steps", [0, -1, True, 2.5])
 def test_invalid_input_budget_never_observes_or_taps(max_steps):
     device = device_for([])

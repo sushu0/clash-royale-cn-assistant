@@ -7,6 +7,58 @@
   "observed_date": "2026-10-04",
   "pages": [
     {
+      "name": "global_challenge_promotion",
+      "route": "global_challenge_promotion_close",
+      "cues": [
+        {
+          "roi": "global_challenge_promotion_title",
+          "template": "global_challenge_promotion_20261007_title"
+        },
+        {
+          "roi": "global_challenge_promotion_subtitle",
+          "template": "global_challenge_promotion_20261007_subtitle"
+        },
+        {
+          "roi": "global_challenge_promotion_close",
+          "template": "global_challenge_promotion_20261007_close"
+        }
+      ],
+      "source": "global_challenge_promotion_20261007.png",
+      "source_sha256": "1c41688b353475f23690733394520832a376c4822433382ac77cb62d0a138162",
+      "observed_date": "2026-10-07",
+      "target_cue": 2
+    },
+    {
+      "name": "king_skin_promotion",
+      "route": "king_skin_promotion_close",
+      "cues": [
+        {
+          "roi": "king_skin_promotion_title",
+          "template": "king_skin_promotion_20261006_title"
+        },
+        {
+          "roi": "king_skin_promotion_role",
+          "template": "king_skin_promotion_20261006_role"
+        },
+        {
+          "roi": "king_skin_promotion_close",
+          "template": "king_skin_promotion_20261006_close"
+        }
+      ],
+      "source": "king_skin_promotion_20261006.png",
+      "source_sha256": "7035ea436ffbbe2420fb32917b3a0a5e235423dd1492f4c68759f411a71946e0",
+      "observed_date": "2026-10-06",
+      "target_cue": 2,
+      "variants": [
+        "king_skin_promotion_before_relaunch_20261006.png",
+        "king_skin_promotion_current_20261006.png"
+      ],
+      "variant_source_sha256": {
+        "king_skin_promotion_before_relaunch_20261006.png": "e12876d23f377cf7e844eaed10d429bb46ac3941fe80f142d19adc2c5bf0b063",
+        "king_skin_promotion_current_20261006.png": "05b9e04589667cf165276a4c6660d0e4def26cd5750391911d24430bc4216658"
+      }
+    },
+    {
       "name": "news_list_native_hover",
       "route": "news_close",
       "cues": [
@@ -1552,6 +1604,30 @@
       ]
     },
     {
+      "name": "shop_offers_lightning",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "shop_offers_top_shop_category_header"
+        },
+        {
+          "roi": "shop_nav_selected",
+          "template": "shop_offers_top_shop_nav_selected",
+          "search_roi": "shop_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "shop_offers_lightning_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "shop_offers_lightning.png",
+      "source_sha256": "1699c88c49b4713ca062b96ea1861c9dffb6058573d5fa1fd16a65660948a218",
+      "observed_date": "2026-10-06",
+      "target_cue": 2
+    },
+    {
       "name": "shop_weekly",
       "route": "shop",
       "cues": [
@@ -2163,6 +2239,26 @@
       ]
     },
     {
+      "name": "game_modes",
+      "route": "mode_arrow",
+      "cues": [
+        {
+          "roi": "mode_title",
+          "template": "game_modes_blue_mode_title",
+          "search_roi": "mode_title_search"
+        },
+        {
+          "roi": "mode_arrow",
+          "template": "game_modes_blue_mode_arrow",
+          "search_roi": "mode_arrow_search"
+        }
+      ],
+      "source": "game_modes_blue_top.png",
+      "source_sha256": "5bfe237e3d6bf5150eb8e57600969e80366fb27e34960def74079f8a6229b44b",
+      "observed_date": "2026-10-05",
+      "target_cue": 1
+    },
+    {
       "name": "collection_badges",
       "route": "collection",
       "cues": [
@@ -2295,6 +2391,47 @@
       "source": "collection_badges.png",
       "source_sha256": "8da3603d4d36d5d8e8fd79da62592ec33aca4ab8f68f5c1a0c2f9c5af3182f00",
       "target_cue": 1
+    },
+    {
+      "name": "collection_cards_current",
+      "route": "collection",
+      "cues": [
+        {
+          "roi": "collection_header",
+          "template": "collection_tab_20261005_collection_header"
+        },
+        {
+          "roi": "collection_nav_selected",
+          "template": "collection_badges_collection_nav_selected",
+          "search_roi": "collection_nav_selected_search"
+        },
+        {
+          "roi": "collection_nav_battle",
+          "template": "collection_tab_20261005_collection_nav_battle",
+          "search_roi": "collection_nav_battle_search"
+        }
+      ],
+      "source": "collection_tab_20261005.png",
+      "source_sha256": "ecb10bd926b99e1e147b49c697f7913ad2709baefe5b08496c73278891038c21",
+      "observed_date": "2026-10-05",
+      "target_cue": 2
+    },
+    {
+      "name": "daily_shop_return",
+      "route": "shop",
+      "cues": [
+        {
+          "roi": "shop_category_header",
+          "template": "daily_shop_return_shop_category_header"
+        },
+        {
+          "roi": "shop_label",
+          "template": "daily_shop_return_shop_label"
+        }
+      ],
+      "source": "daily_shop_purchased_return.png",
+      "source_sha256": "859082c095385312c01f1db67ca78f4902225a5a6a16e4b58247bc175d51ae6e",
+      "observed_date": "2026-10-06"
     }
   ]
 }

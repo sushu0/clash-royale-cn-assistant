@@ -17,8 +17,21 @@ public sealed class ConsoleSnapshot
     [JsonPropertyName("recent_events")] public List<string> RecentEvents { get; set; } = new();
     [JsonRequired, JsonPropertyName("runtime")] public RuntimeSnapshot Runtime { get; set; } = new();
     [JsonPropertyName("busy")] public string? Busy { get; set; }
+    [JsonPropertyName("shopDaily")] public ShopDailySnapshot? ShopDaily { get; set; }
     [JsonPropertyName("history_error")] public string? HistoryError { get; set; }
     [JsonPropertyName("error_report_pending")] public bool ErrorReportPending { get; set; }
+}
+
+public sealed class ShopDailySnapshot
+{
+    [JsonPropertyName("state")] public string State { get; set; } = "idle";
+    [JsonPropertyName("status")] public string Status { get; set; } = "";
+    [JsonPropertyName("free_claimed")] public int FreeClaimed { get; set; }
+    [JsonPropertyName("gold_purchased")] public int GoldPurchased { get; set; }
+    [JsonPropertyName("gems_skipped")] public int GemsSkipped { get; set; }
+    [JsonPropertyName("gold_spent")] public long GoldSpent { get; set; }
+    [JsonPropertyName("message")] public string Message { get; set; } = "";
+    [JsonPropertyName("items")] public List<JsonElement> Items { get; set; } = new();
 }
 
 public sealed class HistorySnapshot

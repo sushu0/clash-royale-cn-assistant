@@ -170,6 +170,46 @@ def cn_game_exit_cancel(frame: np.ndarray | None) -> NavigationStep | None:
     return None
 
 
+def cn_king_skin_promotion_close(frame: np.ndarray | None) -> NavigationStep | None:
+    """Only this recorded promotion's title, role label and red X authorize close."""
+    if not _valid_frame(frame):
+        return None
+    expected_rois = ("king_skin_promotion_title", "king_skin_promotion_role", "king_skin_promotion_close")
+    for page in learned_pages():
+        if page["name"] != "king_skin_promotion" or page["route"] != "king_skin_promotion_close":
+            continue
+        if tuple(cue["roi"] for cue in page["cues"]) != expected_rois or page.get("target_cue") != 2:
+            return None
+        step = _page_step(frame, page)
+        if step is None or step.target is None:
+            return None
+        x1, y1, x2, y2 = CN_PAGE_ROIS["king_skin_promotion_close"]
+        return step if x1 <= step.target[0] < x2 and y1 <= step.target[1] < y2 else None
+    return None
+
+
+def cn_global_challenge_promotion_close(frame: np.ndarray | None) -> NavigationStep | None:
+    """Only the recorded CRL challenge title, subtitle and red X authorize close."""
+    if not _valid_frame(frame):
+        return None
+    expected_rois = (
+        "global_challenge_promotion_title",
+        "global_challenge_promotion_subtitle",
+        "global_challenge_promotion_close",
+    )
+    for page in learned_pages():
+        if page["name"] != "global_challenge_promotion" or page["route"] != "global_challenge_promotion_close":
+            continue
+        if tuple(cue["roi"] for cue in page["cues"]) != expected_rois or page.get("target_cue") != 2:
+            return None
+        step = _page_step(frame, page)
+        if step is None or step.target is None:
+            return None
+        x1, y1, x2, y2 = CN_PAGE_ROIS["global_challenge_promotion_close"]
+        return step if x1 <= step.target[0] < x2 and y1 <= step.target[1] < y2 else None
+    return None
+
+
 def recognize_cn_page(frame: np.ndarray | None) -> str | None:
     step = cn_navigation_step(frame)
     return step.page if step is not None else None

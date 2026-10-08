@@ -1,0 +1,172 @@
+{
+  "schema": "cn-puzzle-reward/v1",
+  "sources": [
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\outputs\\auto-repair\\cases\\816b2fa4258f2b6394ad3f09\\evidence\\game.png",
+      "fixture": "puzzle_open_20261007.png",
+      "sha256": "224404c29aef4b7d7ef64128b34633fbfe0a4dfbb9faa2402ec25416e191ff5a"
+    },
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\work\\auto-repair-816b2fa4258f2b6394ad3f09\\current-game-1791307047778069000.png",
+      "fixture": "puzzle_open_phase2_20261007.png",
+      "sha256": "c7d524a0291f4792ac36407f318c569fc26f348e029240c973a52d5996ddcf56"
+    },
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\work\\random-mastery\\20261007-004615\\evidence\\recovery-2be0c8b4a5e4fb9463e1d5d708183e8a25aab237269658bac5a21b2425260b9a.png",
+      "fixture": "puzzle_reveal_20261007.png",
+      "sha256": "2be0c8b4a5e4fb9463e1d5d708183e8a25aab237269658bac5a21b2425260b9a"
+    },
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\work\\auto-repair-816b2fa4258f2b6394ad3f09\\entry-observation-1791308266919992100.png",
+      "fixture": "puzzle_open_small_caption_20261007.png",
+      "sha256": "7859bf58bc1e6488933cfe679e71193ba8dd7ba3429b8b12d99b9d58f59ea369"
+    },
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\outputs\\auto-repair\\cases\\39f2ecc85029a57791f1e453\\evidence\\game.png",
+      "fixture": "puzzle_reveal_legendary_20261007.png",
+      "sha256": "0060f71ab40c46617209ed3e2691fbdbb01dfec9336b08d3ceaf84f1c14b2c2d"
+    },
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\work\\random-mastery\\20261007-022124\\evidence\\recovery-2d498f9752fd40cc0dd8445344497425e3d0c9345f0b80721db7b26ddb367bc6.png",
+      "fixture": "puzzle_reveal_legendary_before_relaunch_20261007.png",
+      "sha256": "2d498f9752fd40cc0dd8445344497425e3d0c9345f0b80721db7b26ddb367bc6"
+    }
+  ],
+  "actions": [
+    "open_puzzle_reward",
+    "continue_puzzle_reward"
+  ],
+  "coordinate": [
+    209,
+    329
+  ],
+  "required_caller_context": "pending_mastery and not pending_claim_all and not pending_battle; verified Tencent foreground; same-checkpoint startup readiness only",
+  "min_score": 0.95,
+  "min_brightness_ratio": 0.95,
+  "max_difference": 16,
+  "assets": [
+    {
+      "path": "entry_question_20261007_phase1.png",
+      "source_index": 0,
+      "crop_ltrb": [
+        178,
+        275,
+        238,
+        355
+      ],
+      "sha256": "1cdd99ce85cb8e287d8cfb1988677f7e4837d22486758c0209a28c4e113ced26"
+    },
+    {
+      "path": "entry_question_20261007_phase2.png",
+      "source_index": 1,
+      "crop_ltrb": [
+        178,
+        275,
+        238,
+        355
+      ],
+      "sha256": "41c6342178b8585fe84c355268ff3274b958ac64df3515227c07b6c71d08fcbc"
+    },
+    {
+      "path": "entry_open_label_20261007.png",
+      "source_index": 0,
+      "crop_ltrb": [
+        168,
+        574,
+        253,
+        601
+      ],
+      "sha256": "46d3f1c2813c92d138cc04f72a5cf54501cb3a44b408c9c67acc2fbf22ec50fa"
+    },
+    {
+      "path": "reveal_title_20261007.png",
+      "source_index": 2,
+      "crop_ltrb": [
+        177,
+        153,
+        242,
+        193
+      ],
+      "sha256": "99fffd57aa0a5094f3b2d569c032c0d8a0dee7c9e77b99d9e8c1332a800000cd"
+    },
+    {
+      "path": "reveal_unlocked_20261007.png",
+      "source_index": 2,
+      "crop_ltrb": [
+        182,
+        389,
+        233,
+        410
+      ],
+      "sha256": "45ac3657c2e6edfce568c069a98ec4d305872b4aeb1d78718f8c0d85e0713a4b"
+    },
+    {
+      "path": "entry_open_label_20261007_phase2.png",
+      "source_index": 3,
+      "crop_ltrb": [
+        168,
+        574,
+        253,
+        601
+      ],
+      "sha256": "afdedab32e88f445b965debd285b7ba812d83a13886f25161baf320a143e4114"
+    },
+    {
+      "path": "reveal_title_legendary_20261007.png",
+      "source_index": 4,
+      "crop_ltrb": [
+        177,
+        153,
+        242,
+        193
+      ],
+      "sha256": "fd2982c2c55e00ad932b635e7dad81bdd971e650313387d5a1bc6cd160440846"
+    },
+    {
+      "path": "reveal_unlocked_legendary_20261007.png",
+      "source_index": 5,
+      "crop_ltrb": [
+        182,
+        389,
+        233,
+        410
+      ],
+      "sha256": "62abe7129fd4b3339d016e059450de5aaeac27ef9c7a5febdad65b450df85b41"
+    }
+  ],
+  "bounded_entry_scale_search": {
+    "entry_question": {
+      "minimum": 0.94,
+      "maximum": 1.02,
+      "step": 0.005
+    },
+    "entry_open_label": {
+      "minimum": 0.8,
+      "maximum": 1.015,
+      "step": 0.005
+    },
+    "interpolation": "INTER_LINEAR",
+    "rotation": false,
+    "search_rois_unchanged": true,
+    "reveal_scale": 1.0
+  },
+  "paired_reveal_variants": [
+    {
+      "title": "reveal_title_20261007.png",
+      "unlocked": "reveal_unlocked_20261007.png"
+    },
+    {
+      "title": "reveal_title_legendary_20261007.png",
+      "unlocked": "reveal_unlocked_legendary_20261007.png",
+      "calibration_note": "Legendary title from immutable pause frame; same-variant unlocked caption from independently recorded recovery frame. Original threshold/brightness/difference unchanged; variants are not crossed."
+    }
+  ],
+  "validation_sources": [
+    {
+      "path": "D:\\codex\\CodexWork\\clash\\work\\auto-repair-39f2ecc85029a57791f1e453\\current-game-1791313495881487400.png",
+      "fixture": "puzzle_reveal_legendary_current_20261007.png",
+      "sha256": "3ef3bba0ac068d33db02817d5a123d3bee54b5b24e9a331cae973bb0770981af",
+      "calibration_source": false
+    }
+  ]
+}

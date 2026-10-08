@@ -1,0 +1,136 @@
+{
+  "resolution": [
+    419,
+    633
+  ],
+  "channel_order": "BGR after cv2.imread",
+  "captured_at_local": "2026-10-06",
+  "client": "Chinese Clash Royale in MEmu",
+  "frames": [
+    {
+      "file": "drift-001-navigation.png",
+      "sha256": "437d63ddff34e279b4c0b661d1e5fdbec455e5602bce99d6891422e3c0707478"
+    },
+    {
+      "file": "drift-007-transaction.png",
+      "sha256": "8bf685a0777e587e8566dc695ed0989a24075aaabd8bb8096b757c05eb917e05"
+    },
+    {
+      "file": "drift-008-daily-next-row.png",
+      "sha256": "bcf3d0fb8a3030727028dafce2414f82ece223fa9e305933e0902be7092bbdc5"
+    },
+    {
+      "file": "drift-009-daily-next-row.png",
+      "sha256": "b5a17df8704e5b2c44d869304c42f827423947c826d74539083f7a680e1a228e"
+    },
+    {
+      "file": "drift-010-item-recheck.png",
+      "sha256": "bd655799e20a8855a28325a987cae160b4f1b07e9383d57d5a2550cb0c8627ee"
+    },
+    {
+      "file": "drift-016-transaction.png",
+      "sha256": "a3c7faea0435d3f71dff65d994ccb569fc267fcf5a6d2b71acfb13b1f742a5bb"
+    },
+    {
+      "file": "drift-017-daily-next-row.png",
+      "sha256": "e75322d78f391328ec01f7e789edb64e32fdab407053456e1e36154ee710a229"
+    },
+    {
+      "file": "live-before.png",
+      "sha256": "905a969fae5f668156776050f971ad181114530a740b61b6bd3ee612e98ad494"
+    },
+    {
+      "file": "live-daily-fine-2.png",
+      "sha256": "c00955f7d4c3fbc1cfb6516de8af476644107cd64e43d69fce4fe86f95e3903f"
+    },
+    {
+      "file": "live-daily-fine-3.png",
+      "sha256": "14d22b0d7bfdf9ec2182ddc6626294b565fc5499266dc7f692443804c38c4663"
+    },
+    {
+      "file": "live-daily-fine-4.png",
+      "sha256": "4b618cf0dd72a61266e775344badcc22950df7d3e5d1cf0bac2f463a774ed92b"
+    },
+    {
+      "file": "live-free-complete.png",
+      "sha256": "e3eff72ebd048000a1bf4a4b228e121f9abcb8955bf5aee5a70e8ef08a60f686"
+    },
+    {
+      "file": "live-free-open.png",
+      "sha256": "dc49881d35960383ad80fe7b4e2df4f32ccded10d873d8b7d514589b6282aa7b"
+    },
+    {
+      "file": "live-free-reward-1.png",
+      "sha256": "576f20b218576565b7ae85792be6f846815e9574ad53e9b7b090301d690b6e86"
+    },
+    {
+      "file": "live-free-reward-2.png",
+      "sha256": "892d5dff00b8999ea4b01173625ca61188dbb407987bba840a5504add6f960ee"
+    },
+    {
+      "file": "live-free-reward-3-fresh.png",
+      "sha256": "aa0f77f938e3dde23ab01113ab328581d6d3e59eee1e24466559f70482cd466c"
+    },
+    {
+      "file": "live-free-reward-3.png",
+      "sha256": "0ef7ca09ac85170acb2d94237b7c8942d84d598316022ac258a78c47dda32009"
+    },
+    {
+      "file": "live-free-reward-4.png",
+      "sha256": "0b711af1b46e39785d1476fbc89eb4bde449a05523706875eca014f10308583a"
+    },
+    {
+      "file": "live-free-shop-return.png",
+      "sha256": "291d8a6963a87bb6f39cdb9e19a129e5524c7dcc1c55363afff90daf40e1f086"
+    },
+    {
+      "file": "live-gem-confirm.png",
+      "sha256": "b7916ce7e4f3e8169b393dc25d5b0c45f6c3b083ebd3ca2ec8c65e98ce8cbf37"
+    },
+    {
+      "file": "live-gold-cancel.png",
+      "sha256": "91169a78bee287536922ec83ffea3bc5951d1b9ef4dab643655e97b3ba792af6"
+    },
+    {
+      "file": "live-gold-confirm.png",
+      "sha256": "59ce193793f026d566c12da5421e828bf60524be7f0cc1603374c55a7d073f2e"
+    },
+    {
+      "file": "live-gold-purchased-modal.png",
+      "sha256": "db6d91ff39ec1750dde1cdd6991774ad190c34043281cfb6a9287c6868648005"
+    },
+    {
+      "file": "live-gold-shop-return.png",
+      "sha256": "adf62c4b9546f52fe6917a937b7a9c2dc0b583e346b7af8b520f539b4421d150"
+    },
+    {
+      "file": "live-gold-wide-confirm.png",
+      "sha256": "a47173ee155463d68859fe2a9c0da24dfaeb8c4c9f80866a7b6a85cad5c3eb54"
+    },
+    {
+      "file": "live-header-firstrow.png",
+      "sha256": "4fb9aad04cd01bae3e7c5416c59266880631eaeaff72396e7b4ef38e707cdae0"
+    },
+    {
+      "file": "live-header-grid.png",
+      "sha256": "128f73c0a93bb03134b72f9a57b9a4cb850133a66317f230add6d7d7d4b1120b"
+    },
+    {
+      "file": "live-header.png",
+      "sha256": "a767e7e4798f00b7629149e073a3db72e0a15fd7900e8de90f0f548b06f27bf3"
+    },
+    {
+      "file": "live-paid-run-free-inertia.png",
+      "sha256": "b5a17df8704e5b2c44d869304c42f827423947c826d74539083f7a680e1a228e"
+    },
+    {
+      "file": "live-paid-run-lower-purchased.png",
+      "sha256": "e75322d78f391328ec01f7e789edb64e32fdab407053456e1e36154ee710a229"
+    },
+    {
+      "file": "live-paid-run-stable.png",
+      "sha256": "bd655799e20a8855a28325a987cae160b4f1b07e9383d57d5a2550cb0c8627ee"
+    }
+  ],
+  "note": "Native 419x633 emulator captures, unscaled source pixels. The first gold purchase receipt was captured by the source backend. Free and gold confirmations, reward stages and positive purchased markers are separate observations."
+}

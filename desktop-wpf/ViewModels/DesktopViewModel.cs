@@ -42,7 +42,31 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
     public string State => _state;
     public bool StateConfirmed => _stateConfirmed;
     public bool CanStart => !_preview && !IsBusy && string.IsNullOrEmpty(_snapshot?.Busy) && StateConfirmed && !HasStopRequest && _snapshot is not null && (_state == "stopped" || _state == "paused");
-    public bool CanStop => !_preview && BusyCommand != "stop" && (BusyCommand == "start" || _state is "running" or "starting" or "stopping" || (!StateConfirmed && _snapshot is not null));
+    public bool CanPurchaseDaily => CanStart && !HasCalibrationRequest;
+    public bool CanStop => !_preview && BusyCommand != "stop" && (BusyCommand is "start" or "shop_daily" || _state is "running" or "starting" or "stopping" || (!StateConfirmed && _snapshot is not null));
+    public bool IsPurchasingDaily => BusyCommand == "shop_daily";
+    public string ShopButtonText => IsPurchasingDaily ? "正在购买每日精选…" : "一键购买每日精选";
+    public string ShopHint => _preview ? "当前为只读预览，购买操作不可用。"
+        : _stopRequestReadError.Length > 0 ? _stopRequestReadError
+        : HasCalibrationRequest ? "导航校准请求已保留，完成校准并处理请求后才能购买。"
+        : HasStopRequest ? "停止请求已保留，确认并处理请求后才能购买。"
+        : IsPurchasingDaily ? "正在领取免费商品并购买金币商品，可点击停止任务取消。"
+        : IsBusy ? "请等待当前操作完成。"
+        : !StateConfirmed ? "正在确认后台任务状态，确认前不能购买。"
+        : _state is "running" or "starting" or "stopping" ? "请先停止对战任务，再购买每日精选。"
+        : "自动进入商店，领取每日精选免费商品并购买全部金币商品；跳过宝石商品。";
+    public bool HasShopSummary => _snapshot?.ShopDaily is { } shop && shop.State != "idle";
+    public string ShopStatus => IsPurchasingDaily ? "每日精选 · 购买中"
+        : _snapshot?.ShopDaily?.State switch
+        {
+            "completed" => "每日精选 · 购买完成", "cancelled" => "每日精选 · 已取消",
+            "partial" => "每日精选 · 部分完成", "failed" => "每日精选 · 未完成",
+            "running" => "每日精选 · 状态待确认", _ => "每日精选 · 免费和金币商品"
+        };
+    public string ShopSummary => _snapshot?.ShopDaily is { } shop
+        ? $"免费 {shop.FreeClaimed} 件 · 金币 {shop.GoldPurchased} 件\n花费 {shop.GoldSpent:N0} 金币 · 跳过宝石 {shop.GemsSkipped} 件" : "";
+    public string ShopMessage => _snapshot?.ShopDaily is { } shop
+        ? string.IsNullOrWhiteSpace(shop.Message) ? shop.Status : shop.Message : "";
     public bool HasStopRequest => _hasStopRequest;
     public bool HasCalibrationRequest => _hasCalibrationRequest;
     public ErrorRow? CurrentPauseReport
@@ -69,7 +93,7 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
         : _state is "running" or "starting" ? "任务正在运行，可使用停止任务。"
         : _state == "paused" ? "请先查看暂停原因并处理，再手动开始。"
         : "点击开始运行，进入连续 1V1 对战。";
-    public string StateLabel => IsBusy ? (BusyCommand == "start" ? "●  正在启动" : "●  正在停止") : !StateConfirmed && _snapshot is not null ? "●  状态待确认" : _state switch { "running" => "●  运行中", "starting" => "●  恢复中", "stopping" => "●  正在停止", "paused" => "●  已暂停", "stopped" => "●  已停止", _ => "●  连接中" };
+    public string StateLabel => IsBusy ? BusyCommand switch { "start" => "●  正在启动", "shop_daily" => "●  正在购买", _ => "●  正在停止" } : !StateConfirmed && _snapshot is not null ? "●  状态待确认" : _state switch { "running" => "●  运行中", "starting" => "●  恢复中", "stopping" => "●  正在停止", "paused" => "●  已暂停", "stopped" => "●  已停止", _ => "●  连接中" };
     public Brush StateColor => Color(IsBusy || !StateConfirmed || _state is "starting" or "stopping" || (_state == "stopped" && HasStopRequest) ? "#B68121" : _state == "running" ? "#198C6E" : _state == "paused" ? "#BF5B68" : "#75829B");
     public Brush StateBackground => Color(IsBusy || !StateConfirmed || _state is "starting" or "stopping" || (_state == "stopped" && HasStopRequest) ? "#FFF6DF" : _state == "running" ? "#E6F5EF" : _state == "paused" ? "#FCECEE" : "#EDF1F7");
     public string Notice { get => _notice; set => Set(ref _notice, value); }
@@ -130,6 +154,7 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
         _busy = command;
         if (command.Length > 0) { _stateConfirmed = false; _backendBusyConfirmed = false; }
         foreach (string key in new[] { nameof(IsBusy), nameof(StateConfirmed), nameof(CanStart), nameof(CanStop), nameof(StartHint), nameof(StateLabel), nameof(StateColor), nameof(StateBackground) }) Changed(key);
+        RefreshShopProperties();
         RefreshStopRequest();
     }
 
@@ -138,6 +163,7 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
         _stateConfirmed = false;
         _backendBusyConfirmed = false;
         foreach (string key in new[] { nameof(IsBusy), nameof(StateConfirmed), nameof(CanStart), nameof(CanStop), nameof(StartHint), nameof(StateLabel), nameof(StateColor), nameof(StateBackground) }) Changed(key);
+        RefreshShopProperties();
         UpdatePhase(_snapshot);
     }
 
@@ -145,6 +171,7 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
     {
         ReadStopRequest();
         foreach (string key in new[] { nameof(CanStart), nameof(HasStopRequest), nameof(HasCalibrationRequest), nameof(StartHint), nameof(StopRequestReadError), nameof(StateColor), nameof(StateBackground) }) Changed(key);
+        RefreshShopProperties();
         UpdatePhase(_snapshot);
     }
 
@@ -152,8 +179,13 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
     {
         if (IsBusy)
         {
-            Phase = BusyCommand == "start" ? "正在启动任务" : "正在停止任务";
-            PhaseDescription = BusyCommand == "start" ? "正在检查本机连接和游戏启动条件，准备开始任务，请稍候。" : "正在停止后台对战任务，请稍候。";
+            Phase = BusyCommand switch { "start" => "正在启动任务", "shop_daily" => "正在购买每日精选", _ => "正在停止任务" };
+            PhaseDescription = BusyCommand switch
+            {
+                "start" => "正在检查本机连接和游戏启动条件，准备开始任务，请稍候。",
+                "shop_daily" => string.IsNullOrWhiteSpace(ShopMessage) ? "正在进入商店并查找每日精选，只领取免费商品和购买金币商品。" : ShopMessage,
+                _ => "正在停止后台任务，请稍候。"
+            };
             return;
         }
         if (snapshot is null)
@@ -224,6 +256,11 @@ public sealed class DesktopViewModel : INotifyPropertyChanged
         // New or completed reports can arrive without another state change.
         // Recompute the paused explanation only after the report rows update.
         UpdatePhase(snapshot);
+    }
+
+    private void RefreshShopProperties()
+    {
+        foreach (string key in new[] { nameof(CanPurchaseDaily), nameof(IsPurchasingDaily), nameof(ShopButtonText), nameof(ShopHint), nameof(HasShopSummary), nameof(ShopStatus), nameof(ShopSummary), nameof(ShopMessage) }) Changed(key);
     }
 
     private void ReadStopRequest()

@@ -2,6 +2,19 @@
 
 本仓库有 Python 控制台、原始 WPF 开发版和分享版 WPF 前端。构建前请先阅读 [根 README](../README.md) 的客户端、模拟器、许可和运行范围。
 
+## 从当前 main 更新
+
+2026-10-08 更新的是源码。2026-10-05 的 GitHub Release 安装包仍是旧二进制，本次不制作或替换安装包。先停止自己的任务并退出程序，在已克隆仓库中检查和保存本地修改，再执行：
+
+```powershell
+git status --short
+git switch main
+git pull --ff-only origin main
+git rev-parse HEAD
+```
+
+从该提交构建时，前端、对应 Python 后端和识别资源应一起使用。`py-clash-bot/` 是普通 Python/原始 WPF 路径，`portable-backend/` 是分享版后端；它们的运行路径约束不同。共享检测或素材修改应同步到两份源码，具体步骤见 [图片识别维护指南](VISION_MAINTENANCE.md)。已冻结程序不会自动读取 Git 工作树；改 `.py` 或安装包的 `source` 镜像后，仍需重新构建并检查新的可执行目录。
+
 ## 环境
 
 | 工具 | 用途 |
@@ -131,7 +144,7 @@ uv run --project portable-backend --locked --group build python tools/build_port
 
 每一层只能证明它实际检查的内容。离线测试通过不能替代冻结包检查；包能打开不能替代实机闭环；短期对局不能证明长期胜率。
 
-分享版的 `--settings-check` 读取路径设置并结束，不创建主界面或开始任务；它只校验设置，并不证明后端资源或设备可用。源码目前将 `--settings-check-output` 的结果文件限制在 `D:\codex` 下，这是开发验证接口的单独限制，普通分享版运行与首次设置仍使用安装目录。无输出文件的 WinExe 调用可能没有可见终端输出。
+分享版的 `--settings-check` 读取路径设置并结束，不创建主界面或开始任务；它只校验设置，并不证明后端资源或设备可用。当前分享版的 `--settings-check-output` 要求结果文件属于当前安装根，推荐保存到 `data/work`；普通分享版运行与首次设置也使用自己的安装目录，不依赖 D 盘。模拟其他盘符的设置检查可用 stdout 重定向保存结果，不把本机 D 盘路径作为该模拟安装的输出参数。无输出文件的 WinExe 调用可能没有可见终端输出。
 
 ## 回退与自己的数据
 

@@ -22,11 +22,16 @@ import numpy as np
 from pyclashbot.bot.card_detection import identify_567_hand_frame, identify_hog_hand_frame
 from pyclashbot.bot.coords import (
     CN_BATTLE_CLOCK_ROI,
+    CN_CLASSIC_MODE_CORE_ROIS,
     CN_CLASSIC_MODE_ICON_ROI,
     CN_DECK_CLOSE,
     CN_DECK_PREVIEW,
     CN_FOUR_STAR_REWARD_BG_POINTS,
     CN_FRIENDLY_DROP_POINTS,
+    CN_LOBBY_START_BORDER_ROI,
+    CN_LOBBY_START_BUTTON_ROI,
+    CN_LOBBY_START_CONTEXT_ROI,
+    CN_LOBBY_START_FILL_ROIS,
     CN_POST_WIN_REWARD_TAP,
     CN_RESULT_LOSS_YELLOW_ROI,
     CN_REWARD_BACKGROUND_ROI,
@@ -61,6 +66,9 @@ TEMPLATES = resource_path("pyclashbot/detection/reference_images/cn_minimal")
 MANDATORY_TEMPLATES = ("lobby_start", "battle_hud", "result_continue")
 THRESHOLDS = {
     "lobby_start": 0.87,
+    "lobby_start_ready_border": 0.95,
+    "lobby_start_ready_border_legacy": 0.95,
+    "lobby_start_disabled_button": 0.95,
     "battle_hud": 0.88,
     "result_continue": 0.86,
     "result_classic_continue": 0.90,
@@ -82,6 +90,9 @@ THRESHOLDS = {
 }
 SEARCH_REGIONS = {
     "lobby_start": (135, 450, 285, 535),
+    "lobby_start_ready_border": CN_LOBBY_START_BORDER_ROI,
+    "lobby_start_ready_border_legacy": CN_LOBBY_START_BORDER_ROI,
+    "lobby_start_disabled_button": CN_LOBBY_START_BUTTON_ROI,
     "battle_hud": (30, 510, 110, 575),
     "result_continue": (195, 540, 330, 615),
     "result_classic_continue": (145, 530, 285, 615),
@@ -252,16 +263,73 @@ class ChineseVision:
         return "未知"
 
     def classic_selected(self, frame: np.ndarray) -> bool:
+        """Require the verified crossed swords and handles, excluding badges."""
+        if not isinstance(frame, np.ndarray) or frame.shape != (633, 419, 3) or frame.dtype != np.uint8:
+            return False
         path = TEMPLATES.parent / "cn_567" / "classic_icon.png"
         template = cv2.imread(str(path))
-        if template is None:
+        origin_x, origin_y, right, bottom = CN_CLASSIC_MODE_ICON_ROI
+        if template is None or template.shape != (bottom - origin_y, right - origin_x, 3):
             return False
-        x1, y1, x2, y2 = CN_CLASSIC_MODE_ICON_ROI
-        patch = frame[y1:y2, x1:x2]
-        return (
-            patch.shape == template.shape
-            and float(cv2.matchTemplate(patch, template, cv2.TM_CCOEFF_NORMED)[0, 0]) >= 0.94
+        for x1, y1, x2, y2 in CN_CLASSIC_MODE_CORE_ROIS:
+            reference = template[y1 - origin_y : y2 - origin_y, x1 - origin_x : x2 - origin_x]
+            patch = frame[y1:y2, x1:x2]
+            if patch.shape != reference.shape:
+                return False
+            if float(cv2.matchTemplate(patch, reference, cv2.TM_CCOEFF_NORMED)[0, 0]) < 0.94:
+                return False
+            brightness = float(np.mean(cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)))
+            reference_brightness = float(np.mean(cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY)))
+            if brightness < reference_brightness * 0.95:
+                return False
+            if float(np.mean(np.abs(patch.astype(np.float32) - reference.astype(np.float32)))) > 8:
+                return False
+        return True
+
+    def lobby_start_state(self, frame: np.ndarray) -> str:
+        """Separate a bright playable button from the observed disabled one."""
+        if not isinstance(frame, np.ndarray) or frame.shape != (633, 419, 3) or frame.dtype != np.uint8:
+            return "unknown"
+        if self.classify(frame)[0] != "lobby":
+            return "unknown"
+        fill = np.concatenate([frame[y1:y2, x1:x2] for x1, y1, x2, y2 in CN_LOBBY_START_FILL_ROIS], axis=1)
+        hsv = cv2.cvtColor(fill, cv2.COLOR_BGR2HSV)
+        yellow = (hsv[:, :, 0] >= 16) & (hsv[:, :, 0] <= 27) & (hsv[:, :, 1] >= 235) & (hsv[:, :, 2] >= 240)
+        gray = (hsv[:, :, 1] <= 15) & (hsv[:, :, 2] >= 165) & (hsv[:, :, 2] <= 205)
+        x1, y1, x2, y2 = CN_LOBBY_START_CONTEXT_ROI
+        background = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2HSV)
+        observed_blue = (
+            (background[:, :, 0] >= 90)
+            & (background[:, :, 0] <= 115)
+            & (background[:, :, 1] >= 100)
+            & (background[:, :, 2] >= 80)
         )
+        for state, name, colors, max_difference in (
+            ("ready", "lobby_start_ready_border", yellow, 8),
+            ("ready", "lobby_start_ready_border_legacy", yellow, 8),
+            ("disabled", "lobby_start_disabled_button", gray, 3),
+        ):
+            if float(np.mean(colors)) < 0.95:
+                continue
+            if state == "disabled" and float(np.mean(observed_blue)) < 0.95:
+                continue
+            template = self.templates.get(name)
+            if template is None:
+                continue
+            x1, y1, x2, y2 = SEARCH_REGIONS[name]
+            patch = frame[y1:y2, x1:x2]
+            if patch.shape != template.shape:
+                continue
+            if float(cv2.matchTemplate(patch, template, cv2.TM_CCOEFF_NORMED)[0, 0]) < THRESHOLDS[name]:
+                continue
+            brightness = float(np.mean(cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)))
+            reference_brightness = float(np.mean(cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)))
+            if brightness < reference_brightness * 0.95:
+                continue
+            if float(np.mean(np.abs(patch.astype(np.float32) - template.astype(np.float32)))) > max_difference:
+                continue
+            return state
+        return "unknown"
 
     def unopened_star_reward(self, frame: np.ndarray) -> bool:
         """Recognize a free starred chest despite animation of its checkerboard."""

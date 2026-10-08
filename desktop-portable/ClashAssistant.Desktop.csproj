@@ -20,7 +20,7 @@
   <ItemGroup>
     <Resource Include="Assets\clash-desktop.png" />
     <Resource Include="Assets\clash-desktop.ico" />
-    <Content Include="Assets\clash-desktop.ico" Link="clash-desktop.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="clash-desktop.ico" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="wpf-runtime.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

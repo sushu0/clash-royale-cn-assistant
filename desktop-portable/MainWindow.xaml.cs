@@ -31,7 +31,7 @@ public partial class MainWindow : Window
     private ConsoleSnapshot? _snapshot;
     private bool _refreshing, _closingForExit, _exiting, _hidden, _configured, _detachedByUser, _restoreOnShow;
     private bool _previewCollapsed, _previewWasEmbedded;
-    private bool _startCommandPending, _stopCommandPending, _stopRequestedForStart;
+    private bool _startCommandPending, _shopCommandPending, _stopCommandPending, _stopRequestedForStart, _stopRequestedForShop;
     private long _controlRevision;
     private double _gameWidth = 320;
     private int _page;
@@ -79,7 +79,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                _view.Notice = "界面预览已连接本机真实历史数据。";
+                _view.Notice = "界面预览已连接当前安装的独立数据。";
                 var previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
                 previewTimer.Tick += async (_, _) => { previewTimer.Stop(); await ExitAsync(); };
                 previewTimer.Start();
@@ -90,6 +90,8 @@ public partial class MainWindow : Window
 
     private async Task RefreshAsync()
     {
+        // Purchases can wait for several pages and animations. Keep their
+        // progress snapshots live while the local shop busy flag holds the controls.
         if (_refreshing || _exiting || _startCommandPending || _stopCommandPending) return;
         _refreshing = true;
         long revision = _controlRevision;
@@ -101,7 +103,7 @@ public partial class MainWindow : Window
             if (revision != _controlRevision || _startCommandPending || _stopCommandPending || _exiting) return;
             _snapshot = snapshot;
             _view.Apply(_snapshot);
-            _tray?.SetStatus(_view.StateLabel.Replace("●", "").Trim(), _view.State is "running" or "starting", _view.CanStart, _view.CanStop);
+            SyncTray();
             if (AutoScroll.IsChecked == true) LogBox.ScrollToEnd();
             if (!_preview && !_configured && !string.IsNullOrWhiteSpace(_snapshot.Runtime.Memuc))
             {
@@ -125,34 +127,47 @@ public partial class MainWindow : Window
     private async Task RunCommandAsync(string command)
     {
         if (_preview || _exiting) return;
-        if (command == "start")
+        if (command is "start" or "shop_daily")
         {
-            if (_startCommandPending || _stopCommandPending) return;
+            if (_startCommandPending || _shopCommandPending || _stopCommandPending) return;
             _view.RefreshStopRequest();
-            if (!_view.CanStart) { ShowNotice(_view.StartHint); return; }
+            if (command == "start" && !_view.CanStart) { ShowNotice(_view.StartHint); return; }
+            if (command == "shop_daily" && !_view.CanPurchaseDaily) { ShowNotice(_view.ShopHint); return; }
         }
         if (command == "stop" && _stopCommandPending) return;
         if (command == "stop" && !_view.CanStop) { ShowNotice("当前没有正在运行的任务。"); return; }
         if (command == "start") { _startCommandPending = true; _stopRequestedForStart = false; }
-        else { _stopCommandPending = true; _stopRequestedForStart |= _startCommandPending; }
+        else if (command == "shop_daily") { _shopCommandPending = true; _stopRequestedForShop = false; }
+        else { _stopCommandPending = true; _stopRequestedForStart |= _startCommandPending; _stopRequestedForShop |= _shopCommandPending; }
         _controlRevision++;
         SyncCommandBusy();
         SyncTray();
-        _view.Notice = command == "start" ? "正在连接游戏并开始对战…" : "正在停止后台任务…";
+        _view.Notice = command switch
+        {
+            "start" => "正在连接游戏并开始对战…",
+            "shop_daily" => "正在购买每日精选：领取免费商品并购买金币商品，可点击停止任务取消。",
+            _ => "正在停止后台任务…"
+        };
         if (_snapshot is not null) PublishState();
         try
         {
-            var result = command == "start" ? await _backend.StartBotAsync() : await _backend.StopBotAsync();
-            if (command == "stop" || !_stopRequestedForStart) _view.Notice = result.Message;
+            var result = command switch
+            {
+                "start" => await _backend.StartBotAsync(),
+                "shop_daily" => await _backend.PurchaseDailyShopAsync(),
+                _ => await _backend.StopBotAsync()
+            };
+            if (command == "stop" || (command == "start" ? !_stopRequestedForStart : !_stopRequestedForShop)) _view.Notice = result.Message;
         }
         catch (Exception error)
         {
-            if (command == "stop" || !_stopRequestedForStart) ShowNotice("操作未完成：" + error.Message);
+            if (command == "stop" || (command == "start" ? !_stopRequestedForStart : !_stopRequestedForShop)) ShowNotice("操作未完成：" + error.Message);
             App.LogFailure(error);
         }
         finally
         {
             if (command == "start") _startCommandPending = false;
+            else if (command == "shop_daily") _shopCommandPending = false;
             else _stopCommandPending = false;
             _controlRevision++;
             SyncCommandBusy();
@@ -164,11 +179,13 @@ public partial class MainWindow : Window
 
     private void SyncCommandBusy()
     {
-        _view.SetBusy(_stopCommandPending || (_stopRequestedForStart && _startCommandPending) ? "stop" : _startCommandPending ? "start" : "");
+        _view.SetBusy(_stopCommandPending || (_stopRequestedForStart && _startCommandPending) || (_stopRequestedForShop && _shopCommandPending)
+            ? "stop" : _startCommandPending ? "start" : _shopCommandPending ? "shop_daily" : "");
         SyncTray();
     }
 
     private void StartClick(object sender, RoutedEventArgs e) => _ = RunCommandAsync("start");
+    private void ShopDailyClick(object sender, RoutedEventArgs e) => _ = RunCommandAsync("shop_daily");
     private void StopClick(object sender, RoutedEventArgs e) => _ = RunCommandAsync("stop");
     private void ExitClick(object sender, RoutedEventArgs e) => _ = ExitAsync();
     public void ShowNotice(string value) => _view.Notice = value;
@@ -231,7 +248,8 @@ public partial class MainWindow : Window
     {
         _view.SelectedReport = _view.CurrentPauseReport; SelectPage(3);
     }
-    private void SyncTray() => _tray?.SetStatus(_view.StateLabel.Replace("●", "").Trim(), _view.State is "running" or "starting", _view.CanStart, _view.CanStop);
+    private void SyncTray() => _tray?.SetStatus(_view.StateLabel.Replace("●", "").Trim(),
+        _view.StateConfirmed && (_view.State == "running" || _view.IsPurchasingDaily), _view.CanStart, _view.CanStop);
     private void PreviewToggleClick(object sender, RoutedEventArgs e)
     {
         if (!_previewCollapsed)
@@ -325,7 +343,7 @@ public partial class MainWindow : Window
             if (!_preview)
             {
                 var current = await _backend.GetSnapshotAsync();
-                if (current.State is "running" or "starting" or "stopping")
+                if (current.State is "running" or "starting" or "stopping" || current.Busy == "shop_daily")
                 {
                     _view.SetBusy("stop");
                     SyncTray();
@@ -333,7 +351,7 @@ public partial class MainWindow : Window
                     var stopped = await _backend.StopBotAsync();
                     if (stopped.State is not ("stopped" or "paused")) throw new InvalidOperationException("后台任务尚未停止，请稍后重试退出。");
                     var verified = await _backend.GetSnapshotAsync();
-                    if (verified.State is not ("stopped" or "paused")) throw new InvalidOperationException("仍有运行中的任务，已保留软件窗口。");
+                    if (verified.State is not ("stopped" or "paused") || !string.IsNullOrEmpty(verified.Busy)) throw new InvalidOperationException("仍有运行中的任务，已保留软件窗口。");
                     _view.SetBusy("");
                 }
             }
@@ -406,8 +424,10 @@ public partial class MainWindow : Window
                 metrics = new { total = _view.Total, wins = _view.Wins, losses = _view.Losses, rate = _view.WinRate, coins = _view.Coins, rewards = _view.Rewards },
                 emulator = EmulatorHost.Diagnostics(), tray = _tray?.Diagnostics(), notice = _view.Notice,
                 live = _snapshot?.Live,
+                shopDaily = _snapshot?.ShopDaily,
                 ui = new { phase = _view.Phase, description = _view.PhaseDescription, can_start = _view.CanStart, can_stop = _view.CanStop,
-                    state_confirmed = _view.StateConfirmed, start_pending = _startCommandPending, stop_pending = _stopCommandPending,
+                    can_purchase_daily = _view.CanPurchaseDaily, shop_status = _view.ShopStatus, shop_summary = _view.ShopSummary,
+                    state_confirmed = _view.StateConfirmed, start_pending = _startCommandPending, shop_pending = _shopCommandPending, stop_pending = _stopCommandPending,
                     calibration_requested = _view.HasCalibrationRequest, stop_requested = _view.HasStopRequest, report_badge = _view.ReportBadgeText,
                     preview_collapsed = _previewCollapsed, game_width = GameColumn.ActualWidth, recent_grid_height = RecentGrid.ActualHeight,
                     recent_row_count = _view.RecentBattles.Count, recent_visible_capacity = Math.Max(0, (int)Math.Floor((RecentGrid.ActualHeight - 36) / 36)),

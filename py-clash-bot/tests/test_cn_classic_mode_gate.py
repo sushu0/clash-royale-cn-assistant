@@ -1,8 +1,10 @@
 """A fresh causal mode-menu check must precede the first Classic 1v1 request."""
 
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
+import numpy as np
 import pytest
 
 from pyclashbot.bot import cn_1v1_loop as one_module
@@ -17,6 +19,21 @@ class LabelledFrame(str):
     shape = (633, 419, 3)
 
 
+class LabelledCapture(np.ndarray):
+    """A raw image contract with the existing unit seam's comparison label."""
+
+    __hash__ = None
+    name: str
+
+    def __new__(cls, name: str) -> "LabelledCapture":
+        result = cast("LabelledCapture", np.zeros((633, 419, 3), np.uint8).view(cls))
+        result.name = name
+        return result
+
+    def __eq__(self, other):
+        return self.name == other if isinstance(other, str) else super().__eq__(other)
+
+
 @pytest.fixture(autouse=True)
 def clock(monkeypatch):
     monkeypatch.setattr(random_module.time, "monotonic", lambda: 101.0)
@@ -28,6 +45,7 @@ def vision_for():
     vision = SimpleNamespace(
         classify=Mock(side_effect=lambda frame: ("lobby", matches[frame]) if frame in matches else (frame, None)),
         classic_selected=Mock(side_effect=lambda frame: frame in matches),
+        lobby_start_state=Mock(return_value="ready"),
         reward_continuation=Mock(return_value=False),
     )
     return vision
@@ -37,6 +55,23 @@ def random_runner(snapshots=()):
     runner = RandomMasteryLoop.__new__(RandomMasteryLoop)
     runner.vision = vision_for()
     runner._frame = Mock(side_effect=snapshots)
+
+    def label(frame):
+        return runner._preflight_label if isinstance(frame, np.ndarray) else frame
+
+    def raw_capture(deadline):
+        runner._preflight_label = runner._frame()
+        return LabelledCapture(runner._preflight_label)
+
+    classify, classic = runner.vision.classify.side_effect, runner.vision.classic_selected.side_effect
+    runner.vision.classify.side_effect = lambda frame: classify(label(frame))
+    runner.vision.classic_selected.side_effect = lambda frame: classic(label(frame))
+    runner._preflight_capture = Mock(side_effect=raw_capture)
+    runner._preflight_classic_lobby = Mock(
+        side_effect=lambda frame, **_: (label(frame), runner.vision.classify(frame)[1])
+    )
+    runner.stop_path = SimpleNamespace(exists=lambda: False)
+    runner._preflight_foreground = Mock(return_value=one_module.CLASH_ROYALE_PACKAGE)
     runner.device = SimpleNamespace(adb=Mock(return_value=SimpleNamespace(returncode=0)), start_app=Mock())
     runner.logger = Mock()
     runner._event = Mock()
@@ -261,7 +296,12 @@ def test_random_collection_startup_with_unverified_return_route_never_enters_dec
 
 def test_random_first_prefight_uses_menu_verified_fresh_match_center(monkeypatch):
     runner = random_runner(["stale"])
-    runner._prepare_classic_lobby = Mock(return_value="fresh")
+
+    def complete_mode_verification(*args, **kwargs):
+        runner._classic_menu_verified = True
+        return "fresh"
+
+    runner._prepare_classic_lobby = Mock(side_effect=complete_mode_verification)
     runner._tap.side_effect = KeyboardInterrupt
     monkeypatch.setattr(random_module, "random_ui_is", lambda *_: False)
     with pytest.raises(KeyboardInterrupt):

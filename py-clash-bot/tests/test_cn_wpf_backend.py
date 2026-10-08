@@ -108,7 +108,7 @@ def test_readonly_snapshot_reuses_battle_history_queries_without_modifying_datab
     assert snapshot["history_error"] is None
 
 
-@pytest.mark.parametrize("command", ["start", "stop"])
+@pytest.mark.parametrize("command", ["start", "stop", "shop_daily"])
 def test_readonly_backend_refuses_control_commands(fake_control, command):
     bridge = backend.BackendBridge(control=fake_control, read_only=True)
     with pytest.raises(RuntimeError, match="不能"):

@@ -37,6 +37,7 @@ public sealed class BackendClient : IAsyncDisposable
     private const int MaxDiagnosticCharacters = 16 * 1024;
     private static readonly TimeSpan SnapshotTimeout = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan StartTimeout = TimeSpan.FromSeconds(150);
+    private static readonly TimeSpan ShopTimeout = TimeSpan.FromSeconds(300);
     private static readonly TimeSpan StopTimeout = TimeSpan.FromSeconds(45);
     private static readonly UTF8Encoding StrictUtf8 = new(false, true);
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -45,7 +46,7 @@ public sealed class BackendClient : IAsyncDisposable
         MaxDepth = 64
     };
     private static readonly HashSet<string> AllowedCommands = new(StringComparer.Ordinal)
-        { "snapshot", "start", "stop", "reports", "shutdown" };
+        { "snapshot", "start", "shop_daily", "stop", "reports", "shutdown" };
     private static readonly Regex SensitiveField = new(
         @"(?i)\b(?:authorization|cookie|password|passwd|access[_ -]?token|refresh[_ -]?token|api[_ -]?key)\b[^\r\n]*",
         RegexOptions.CultureInvariant);
@@ -141,6 +142,9 @@ public sealed class BackendClient : IAsyncDisposable
     public Task<CommandResult> StopBotAsync(CancellationToken cancellationToken = default) =>
         RequestAsync<CommandResult>("stop", StopTimeout, cancellationToken);
 
+    public Task<CommandResult> PurchaseDailyShopAsync(CancellationToken cancellationToken = default) =>
+        RequestAsync<CommandResult>("shop_daily", ShopTimeout, cancellationToken);
+
     private async Task<T> ReadCommandAsync<T>(string command, CancellationToken cancellationToken)
     {
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -150,7 +154,7 @@ public sealed class BackendClient : IAsyncDisposable
             try { return await RequestAsync<T>(command, SnapshotTimeout, budget.Token).ConfigureAwait(false); }
             catch (BackendRequestException error) when (error.IsTransportFailure && !error.IsTimeout && !budget.IsCancellationRequested)
             {
-                // The same 15-second budget covers both attempts. Never used by start/stop.
+                // The same 15-second budget covers both attempts. Mutations never use this path.
                 return await RequestAsync<T>(command, SnapshotTimeout, budget.Token).ConfigureAwait(false);
             }
         }
@@ -164,12 +168,12 @@ public sealed class BackendClient : IAsyncDisposable
         bool allowDuringDispose = false)
     {
         if (!AllowedCommands.Contains(command)) throw new ArgumentOutOfRangeException(nameof(command));
-        if (_readOnly && (command is "start" or "stop"))
-            throw new BackendRequestException("只读预览无法启动或停止机器人。", command);
+        if (_readOnly && (command is "start" or "stop" or "shop_daily"))
+            throw new BackendRequestException("只读预览无法启动、停止或购买商品。", command);
         if (!allowDuringDispose) ThrowIfDisposed();
         string id = Guid.NewGuid().ToString("D");
         bool sent = false;
-        bool mutation = command is "start" or "stop";
+        bool mutation = command is "start" or "stop" or "shop_daily";
         using var limit = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         limit.CancelAfter(timeout);
         try

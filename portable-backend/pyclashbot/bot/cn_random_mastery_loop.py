@@ -14,6 +14,7 @@ import uuid
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
+from typing import cast
 
 import cv2
 import numpy as np
@@ -46,8 +47,14 @@ from pyclashbot.bot.nav import (
 )
 from pyclashbot.bot.random_deck_strategy import STRATEGY_VERSION, RandomDeckStrategy
 from pyclashbot.detection.cn_battle_cues import _read_elixir, read_cn_battle_cues
-from pyclashbot.detection.cn_daily_gift import daily_gift_action
-from pyclashbot.detection.cn_page_navigation import cn_game_exit_cancel, cn_navigation_step
+from pyclashbot.detection.cn_daily_gift import daily_gift_action, daily_gift_reward_action
+from pyclashbot.detection.cn_page_navigation import (
+    cn_game_exit_cancel,
+    cn_global_challenge_promotion_close,
+    cn_king_skin_promotion_close,
+    cn_navigation_step,
+)
+from pyclashbot.detection.cn_puzzle_reward import puzzle_reward_action
 from pyclashbot.detection.cn_random_deployment import deployment_evidence, slot_was_consumed
 from pyclashbot.detection.cn_random_hand import identify_random_hand
 from pyclashbot.detection.cn_random_ui import (
@@ -59,6 +66,7 @@ from pyclashbot.detection.cn_random_ui import (
     random_ui_is,
 )
 from pyclashbot.detection.cn_reward_quantity import coin_quantity_fallback
+from pyclashbot.detection.cn_shop_daily import confirmation as shop_confirmation
 from pyclashbot.emulators.base import CLASH_ROYALE_PACKAGE
 from pyclashbot.utils.cn_footer_ocr import read_local_ocr
 from pyclashbot.utils.mastery_rewards import (
@@ -78,6 +86,11 @@ BATTLE_POLL_SECONDS = 0.12
 BATTLE_FRAME_STALL_SECONDS = 45.0
 BATTLE_FRAME_SAMPLE_SECONDS = 1.0
 MAX_CONSECUTIVE_RECOVERIES = 3
+LOBBY_START_WAIT_SECONDS = 600.0
+LOBBY_START_POLL_SECONDS = 2.0
+LOBBY_START_REPORT_SECONDS = 30.0
+PRE_MATCH_OBSERVE_SECONDS = 3.0
+PRE_MATCH_OBSERVE_INTERVAL = 0.2
 
 
 class RandomMasteryLoop:
@@ -432,6 +445,14 @@ class RandomMasteryLoop:
         result = self.device.adb(f"shell am force-stop {CLASH_ROYALE_PACKAGE}", timeout=20)
         if result.returncode != 0:
             raise RecoveryExhausted("游戏停止失败; 保留断点并暂停")
+        # A successful force-stop invalidates the in-memory daily reveal. Its
+        # old timer and blue-background continuation cannot own the new loader.
+        # Persisted battle/mastery checkpoints and receipts remain untouched.
+        self._daily_reward_pending = False
+        self._daily_reward_started_at = None
+        self._daily_reward_taps = 0
+        self._daily_gift_attempts = 0
+        self._awaiting_relaunch_observation = True
         self.device.start_app(CLASH_ROYALE_PACKAGE)
         self._reset_battle_frame_monitor()
 
@@ -467,6 +488,51 @@ class RandomMasteryLoop:
             frame = self._capture_frame()
         if frame is None or frame.shape != (633, 419, 3):
             raise RecoveryExhausted("截图尺寸或 ADB 连接异常；暂停")
+        challenge_promotion = cn_global_challenge_promotion_close(frame)
+        if challenge_promotion is not None:
+            if (
+                getattr(self, "pending_claim_all", False)
+                or getattr(self, "pending_battle", False)
+                or getattr(self, "state", None) in ("matching", "battle")
+                or self.device.foreground_package() != CLASH_ROYALE_PACKAGE
+            ):
+                raise RecoveryExhausted("当前对战、领奖或前台状态不允许关闭全球挑战赛广告；保留现场并暂停")
+            attempts = getattr(self, "_global_challenge_promotion_close_attempts", 0) + 1
+            self._global_challenge_promotion_close_attempts = attempts
+            if attempts > 3:
+                raise RecoveryExhausted("全球挑战赛广告连续3次未关闭；保留现场并暂停")
+            if challenge_promotion.target is None:
+                raise RecoveryExhausted("未确认全球挑战赛广告关闭按钮；保留现场并暂停")
+            self._event(
+                "global_challenge_promotion_close_attempt",
+                attempt=attempts,
+                evidence=self._save("global-challenge-promotion", frame),
+            )
+            self._tap(challenge_promotion.target, 0.8)
+            return self._frame()
+        self._global_challenge_promotion_close_attempts = 0
+        promotion = cn_king_skin_promotion_close(frame)
+        if promotion is not None:
+            if (
+                getattr(self, "pending_claim_all", False)
+                or getattr(self, "pending_battle", False)
+                or getattr(self, "state", None) in ("matching", "battle")
+            ):
+                raise RecoveryExhausted("已有对战或领奖交易断点；保留国王皮肤广告现场，暂停操作")
+            attempts = getattr(self, "_king_skin_promotion_close_attempts", 0) + 1
+            self._king_skin_promotion_close_attempts = attempts
+            if attempts > 3:
+                raise RecoveryExhausted("国王皮肤广告连续3次未关闭；保留现场并暂停")
+            if promotion.target is None:
+                raise RecoveryExhausted("未确认国王皮肤广告关闭按钮；保留现场并暂停")
+            self._event(
+                "king_skin_promotion_close_attempt",
+                attempt=attempts,
+                evidence=self._save("king-skin-promotion", frame),
+            )
+            self._tap(promotion.target, 0.8)
+            return self._frame()
+        self._king_skin_promotion_close_attempts = 0
         daily = daily_gift_action(frame)
         if daily is not None:
             attempts = getattr(self, "_daily_gift_attempts", 0) + 1
@@ -474,6 +540,7 @@ class RandomMasteryLoop:
             if attempts > 3:
                 raise RecoveryExhausted("每日礼物选择连续3次未离开；暂停")
             action, target = daily
+            self._awaiting_relaunch_observation = False
             self._event(
                 "daily_gift_choice",
                 action=action,
@@ -523,6 +590,7 @@ class RandomMasteryLoop:
             return self._frame()
         if getattr(self, "_daily_reward_pending", False):
             kind = self.vision.classify(frame)[0]
+            daily_reward = daily_gift_reward_action(frame)
             exited = kind == "lobby" or (
                 kind not in ("reward", "connection", "connection_interrupted")
                 and (
@@ -535,21 +603,23 @@ class RandomMasteryLoop:
                 self._daily_reward_pending = False
                 self._daily_reward_taps = 0
             else:
-                if time.monotonic() - self._daily_reward_started_at >= 120:
+                # Pending rewards have a monotonic start time; relaunch clears both fields.
+                if time.monotonic() - cast(float, self._daily_reward_started_at) >= 120:
                     self._event("daily_gift_reward_timeout", evidence=self._save("daily-gift-reward-timeout", frame))
                     raise RecoveryExhausted("每日礼物奖励120秒内未返回已知页面；暂停")
-                if kind == "reward" or self.vision.reward_continuation(frame):
+                if daily_reward is not None or kind == "reward" or self.vision.reward_continuation(frame):
                     if self._daily_reward_taps >= 40:
                         raise RecoveryExhausted("每日礼物奖励连续40次未结束；暂停")
                     self._daily_reward_taps += 1
                     self._event(
                         "daily_gift_reward",
                         tap=self._daily_reward_taps,
+                        action=daily_reward[0] if daily_reward is not None else "continue_recognized_reward",
                         evidence=self._save("daily-gift-reward", frame),
                     )
                     # Existing four-star reveals need time between inputs.
                     delay = 5 if self.vision.four_star_reward(frame) else 1.5
-                    self._tap(CN_POST_WIN_REWARD_TAP, delay)
+                    self._tap(daily_reward[1] if daily_reward is not None else CN_POST_WIN_REWARD_TAP, delay)
                     return self._frame()
         return frame
 
@@ -873,21 +943,224 @@ class RandomMasteryLoop:
                 break
         raise RecoveryExhausted("未能通过已校准路径确认经典1V1与可交互大厅；未开局")
 
+    def _wait_for_lobby_start(self, frame):
+        """Wait only on a confirmed disabled Classic lobby, without submitting."""
+        if any(getattr(self, name, False) for name in ("pending_battle", "pending_mastery", "pending_claim_all")):
+            raise RecoveryExhausted("已有对战或领奖断点尚未闭合；未提交新匹配")
+        availability_check = getattr(self.vision, "lobby_start_state", None)
+        if not callable(availability_check):
+            raise RecoveryExhausted("对战按钮可用性检测未就绪；未提交匹配")
+        deadline = time.monotonic() + LOBBY_START_WAIT_SECONDS
+        waiting_since = None
+        next_report = 0.0
+        while True:
+            kind, match = self.vision.classify(frame)
+            if kind != "lobby" or match is None or not self.vision.classic_selected(frame):
+                raise RecoveryExhausted("等待对战按钮时未确认经典 1V1 大厅；未提交匹配，保留现场")
+            availability = availability_check(frame)
+            now = time.monotonic()
+            if availability == "ready":
+                if waiting_since is not None:
+                    self.strategy_reason = "对战按钮已开放，准备匹配"
+                    self._event(
+                        "lobby_start_available",
+                        waited_seconds=round(now - waiting_since, 1),
+                        evidence=self._save("lobby-start-available", frame),
+                    )
+                    self.logger.info("经典 1V1 对战按钮已开放，准备匹配")
+                return frame, match
+            if availability != "disabled":
+                raise RecoveryExhausted("未确认对战按钮可点击或已禁用；未提交匹配，保留现场")
+            if waiting_since is None:
+                waiting_since = now
+                self.strategy_reason = "对战按钮暂不可用，等待开放；尚未提交匹配"
+                self._event(
+                    "lobby_start_unavailable",
+                    wait_limit_seconds=LOBBY_START_WAIT_SECONDS,
+                    evidence=self._save("lobby-start-unavailable", frame),
+                )
+                self.logger.info("经典 1V1 对战按钮暂不可用，等待开放；尚未提交匹配")
+                next_report = now + LOBBY_START_REPORT_SECONDS
+            if now >= deadline:
+                raise RecoveryExhausted("经典 1V1 对战按钮持续不可用超过10分钟；未提交匹配，暂停")
+            if now >= next_report:
+                self._event("lobby_start_waiting", waited_seconds=round(now - waiting_since, 1))
+                next_report = now + LOBBY_START_REPORT_SECONDS
+            time.sleep(min(LOBBY_START_POLL_SECONDS, deadline - now))
+            frame = self._frame()
+
+    def _preflight_read(self, command, deadline, *, binary=False):
+        if self.stop_path.exists():
+            raise KeyboardInterrupt
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Pre-match observation deadline exhausted")
+        result = self.device.adb(command, binary_output=binary, timeout=remaining)
+        if self.stop_path.exists():
+            raise KeyboardInterrupt
+        if time.monotonic() >= deadline:
+            raise TimeoutError("Pre-match observation deadline exhausted")
+        if result.returncode != 0:
+            raise RuntimeError("Pre-match read failed")
+        return result.stdout
+
+    def _preflight_capture(self, deadline):
+        raw = self._preflight_read("exec-out screencap -p", deadline, binary=True)
+        if not isinstance(raw, bytes) or not raw:
+            return None
+        return cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR)
+
+    def _preflight_foreground(self, deadline):
+        for command in ("shell dumpsys window", "shell dumpsys activity activities"):
+            output = self._preflight_read(command, deadline)
+            for line in (output or "").splitlines():
+                if any(
+                    key in line for key in ("mCurrentFocus", "mFocusedApp", "mResumedActivity", "topResumedActivity")
+                ):
+                    match = re.search(r"([A-Za-z][\w.]+)/(?:[\w.$]+)", line)
+                    if match:
+                        return match.group(1)
+        return None
+
+    def _reject_preflight(self, frame, reason, observation=None):
+        values = {
+            "kind": "unobserved",
+            "has_match": False,
+            "classic_selected": False,
+            "menu_verified": bool(getattr(self, "_classic_menu_verified", False)),
+            "availability": "unknown",
+            "foreground_package": None,
+            **(observation or {}),
+        }
+        values["eligible_reason"] = reason
+        values.setdefault("evidence_role", "observed_frame" if isinstance(frame, np.ndarray) else "unavailable_capture")
+        if isinstance(frame, np.ndarray) and frame.dtype == np.uint8 and frame.ndim == 3:
+            values["evidence"] = self._save("mismatch", frame)
+        self._event("pre_match_rejected", **values)
+        raise RecoveryExhausted(f"开局前未确认稳定经典1V1大厅；未提交匹配：{reason}")
+
+    def _preflight_classic_lobby(self, frame, *, deadline):
+        stable, previous = 0, None
+        observation = None
+        while True:
+            if self.stop_path.exists():
+                raise KeyboardInterrupt
+            pending = any(
+                getattr(self, name, False) for name in ("pending_battle", "pending_mastery", "pending_claim_all")
+            )
+            if pending or not getattr(self, "_classic_menu_verified", False):
+                self._reject_preflight(frame, "pending_transaction" if pending else "menu_unverified")
+            valid = isinstance(frame, np.ndarray) and frame.shape == (633, 419, 3) and frame.dtype == np.uint8
+            kind, match = self.vision.classify(frame) if valid else ("invalid", None)
+            classic = self.vision.classic_selected(frame) if valid else False
+            availability = self.vision.lobby_start_state(frame) if kind == "lobby" and classic else "unknown"
+            observation = {
+                "kind": kind,
+                "has_match": match is not None,
+                "classic_selected": classic,
+                "menu_verified": True,
+                "availability": availability,
+                "foreground_package": None,
+            }
+            try:
+                observation["foreground_package"] = self._preflight_foreground(deadline)
+            except (OSError, RuntimeError, TimeoutError, subprocess.TimeoutExpired) as error:
+                self._reject_preflight(frame, f"read_failed:{type(error).__name__}", observation)
+            if observation["foreground_package"] != CLASH_ROYALE_PACKAGE:
+                self._reject_preflight(frame, "foreign_app", observation)
+            if not valid:
+                self._reject_preflight(frame, "invalid_frame", observation)
+            if shop_confirmation(frame) is not None:
+                self._reject_preflight(frame, "payment_confirmation", observation)
+            if self.vision.four_star_reward(frame) and self.vision.find(frame, "reward_star") is not None:
+                self._reject_preflight(frame, "recognized_star_reward", observation)
+            if daily_gift_action(frame) is not None or daily_gift_reward_action(frame) is not None:
+                self._reject_preflight(frame, "recognized_daily_reward", observation)
+            if kind not in ("unknown", "lobby") or (kind == "unknown" and cn_navigation_step(frame) is not None):
+                self._reject_preflight(frame, "recognized_non_lobby", observation)
+            if kind == "lobby" and (match is None or not classic):
+                self._reject_preflight(frame, "wrong_mode_or_missing_match", observation)
+            strict = kind == "lobby" and match is not None and classic and availability in ("ready", "disabled")
+            stable = stable + 1 if strict and previous == availability else int(strict)
+            previous = availability if strict else None
+            now = time.monotonic()
+            if now >= deadline:
+                self._reject_preflight(frame, "observation_deadline", observation)
+            if stable >= 2:
+                return frame, match
+            time.sleep(min(PRE_MATCH_OBSERVE_INTERVAL, deadline - now))
+            try:
+                frame = self._preflight_capture(deadline)
+            except (OSError, RuntimeError, TimeoutError, subprocess.TimeoutExpired) as error:
+                self._reject_preflight(
+                    frame,
+                    f"capture_failed:{type(error).__name__}",
+                    {**observation, "evidence_role": "last_successful_capture"},
+                )
+
     def _battle(self, resumed=False):
-        self.state = "matching"
-        frame = self._frame()
-        kind, match = self.vision.classify(frame)
+        deadline = time.monotonic() + PRE_MATCH_OBSERVE_SECONDS
+        if resumed:
+            self.state = "matching"
+            frame = self._frame()
+        else:
+            if self.stop_path.exists():
+                raise KeyboardInterrupt
+            if any(getattr(self, name, False) for name in ("pending_battle", "pending_mastery", "pending_claim_all")):
+                self._reject_preflight(None, "pending_transaction")
+            try:
+                frame = self._preflight_capture(deadline)
+            except (OSError, RuntimeError, TimeoutError, subprocess.TimeoutExpired) as error:
+                self._reject_preflight(None, f"capture_failed:{type(error).__name__}")
+        valid = isinstance(frame, np.ndarray) and frame.shape == (633, 419, 3) and frame.dtype == np.uint8
+        kind, match = self.vision.classify(frame) if valid or resumed else ("invalid", None)
         if resumed:
             if not self.pending_battle or kind not in ("battle", "result"):
                 raise RecoveryExhausted("没有可恢复的本循环对局；未开新局")
         else:
-            if kind == "lobby" and (
-                not self.vision.classic_selected(frame) or not getattr(self, "_classic_menu_verified", False)
-            ):
+            if kind == "lobby" and not getattr(self, "_classic_menu_verified", False):
+                initial_availability = self.vision.lobby_start_state(frame)
+                if match is None or initial_availability not in ("ready", "disabled"):
+                    self._reject_preflight(
+                        frame,
+                        "unverified_lobby_before_menu",
+                        {"kind": kind, "has_match": match is not None, "availability": initial_availability},
+                    )
+                try:
+                    foreground = self._preflight_foreground(deadline)
+                except (OSError, RuntimeError, TimeoutError, subprocess.TimeoutExpired) as error:
+                    self._reject_preflight(frame, f"read_failed:{type(error).__name__}")
+                if foreground != CLASH_ROYALE_PACKAGE:
+                    self._reject_preflight(
+                        frame,
+                        "foreign_app",
+                        {"kind": kind, "has_match": match is not None, "foreground_package": foreground},
+                    )
                 frame = self._prepare_classic_lobby(frame, verify_menu=True)
-                kind, match = self.vision.classify(frame)
-            if kind != "lobby" or match is None or not self.vision.classic_selected(frame):
-                raise RecoveryExhausted("未确认经典 1V1 大厅；未开局")
+                # The causal menu roundtrip remains separate from the short,
+                # input-free observation budget that follows its verified end.
+                deadline = time.monotonic() + PRE_MATCH_OBSERVE_SECONDS
+            frame, match = self._preflight_classic_lobby(frame, deadline=deadline)
+            self.state = "matching"
+            frame, match = self._wait_for_lobby_start(frame)
+            if self.stop_path.exists():
+                raise KeyboardInterrupt
+            if not getattr(self, "_classic_menu_verified", False) or any(
+                getattr(self, name, False) for name in ("pending_battle", "pending_mastery", "pending_claim_all")
+            ):
+                self._reject_preflight(
+                    frame,
+                    "context_changed_before_commit",
+                    {
+                        "kind": self.vision.classify(frame)[0],
+                        "has_match": match is not None,
+                        "classic_selected": self.vision.classic_selected(frame),
+                        "availability": self.vision.lobby_start_state(frame),
+                        "pending_battle": self.pending_battle,
+                        "pending_mastery": self.pending_mastery,
+                        "pending_claim_all": self.pending_claim_all,
+                    },
+                )
             self.pending_battle = True
             self._checkpoint()
             self._event("match_requested", generation=self.generated, evidence=self._save("lobby", frame))
@@ -1002,6 +1275,19 @@ class RandomMasteryLoop:
         )
         self._return_from_result()
 
+    def _post_battle_puzzle_action(self, frame):
+        """Resolve the recorded puzzle panels only for this completed battle."""
+        if (
+            not getattr(self, "pending_mastery", False)
+            or getattr(self, "pending_claim_all", False)
+            or getattr(self, "pending_battle", False)
+        ):
+            return None
+        action = puzzle_reward_action(frame)
+        if action is None or self.device.foreground_package() != CLASH_ROYALE_PACKAGE:
+            return None
+        return action
+
     def _return_from_result(self, *, allow_restart=True):
         self.state = "returning"
         deadline = time.monotonic() + 120
@@ -1020,15 +1306,27 @@ class RandomMasteryLoop:
                 time.sleep(0.4)
                 continue
             lobby_since = None
+            puzzle = self._post_battle_puzzle_action(frame)
+            if time.monotonic() >= deadline:
+                break
             if kind == "result" and match:
                 self._tap(match.center, 1.8)
-            elif kind == "reward" or (reward_context and self.vision.reward_continuation(frame)):
+            elif puzzle is not None or kind == "reward" or (reward_context and self.vision.reward_continuation(frame)):
                 reward_context = True
                 taps += 1
                 if taps > 40:
                     raise RecoveryExhausted("即时奖励步骤超过上限")
                 opened = self.vision.find(frame, "reward_rainbow_open")
-                self._tap(opened.center if opened else CN_POST_WIN_REWARD_TAP, 3)
+                if puzzle is not None:
+                    self._event(
+                        "post_battle_puzzle_reward",
+                        action=puzzle[0],
+                        tap=taps,
+                        evidence=self._save("post-battle-puzzle", frame),
+                    )
+                if time.monotonic() >= deadline:
+                    break
+                self._tap(puzzle[1] if puzzle is not None else opened.center if opened else CN_POST_WIN_REWARD_TAP, 3)
             else:
                 time.sleep(0.8)
         # A completed battle is already checkpointed. One relaunch may clear a
@@ -1037,7 +1335,11 @@ class RandomMasteryLoop:
             self._recover_app("结算/即时奖励120秒未返回大厅", frame)
             recovered = self._startup_frame()
             recovered_kind, _ = self.vision.classify(recovered)
-            if recovered_kind not in ("lobby", "result", "reward") and not self.vision.reward_continuation(recovered):
+            if (
+                recovered_kind not in ("lobby", "result", "reward")
+                and self._post_battle_puzzle_action(recovered) is None
+                and not self.vision.reward_continuation(recovered)
+            ):
                 raise RecoveryExhausted("结算重启后未确认大厅或本局奖励; 保留断点并暂停")
             return self._return_from_result(allow_restart=False)
         raise RecoveryExhausted("结算/即时奖励未返回大厅；暂停")
@@ -1293,10 +1595,15 @@ class RandomMasteryLoop:
                     "mastery_reward_coin",
                 )
             )
-            ready = ready or (
-                getattr(self, "pending_mastery", False)
-                and not getattr(self, "pending_claim_all", False)
-                and self.vision.reward_continuation(frame)
+            ready = (
+                ready
+                or (self._post_battle_puzzle_action(frame) is not None)
+                or (
+                    getattr(self, "pending_mastery", False)
+                    and not getattr(self, "pending_claim_all", False)
+                    and not getattr(self, "_awaiting_relaunch_observation", False)
+                    and self.vision.reward_continuation(frame)
+                )
             )
             core_page = kind in ("lobby", "battle", "result", "reward") or any(
                 random_ui_is(frame, name) for name in ("deck", "collection")
@@ -1326,6 +1633,7 @@ class RandomMasteryLoop:
                 page_returns += 1
                 continue
             if ready and self.device.foreground_package() == CLASH_ROYALE_PACKAGE:
+                self._awaiting_relaunch_observation = False
                 return frame
             if (
                 page_returns < 12
@@ -1454,7 +1762,11 @@ class RandomMasteryLoop:
                 if not self.pending_claim_all:
                     self._return_from_result()
                     frame = self._frame()
-            elif self.pending_mastery and not self.pending_claim_all and self.vision.reward_continuation(frame):
+            elif (
+                self.pending_mastery
+                and not self.pending_claim_all
+                and (self._post_battle_puzzle_action(frame) is not None or self.vision.reward_continuation(frame))
+            ):
                 self._return_from_result()
                 frame = self._frame()
             if self.pending_claim_all and any(

@@ -79,8 +79,10 @@ def process_record(pid: int, script: Path) -> dict:
 
 
 def verified_process(
-    pid: int, script: Path, created_at: float | None = None, *, trusted_executables=()
+    pid: int | None, script: Path, created_at: float | None = None, *, trusted_executables=()
 ) -> psutil.Process | None:
+    if pid is None:
+        return None
     if (
         not isinstance(created_at, (int, float))
         or isinstance(created_at, bool)

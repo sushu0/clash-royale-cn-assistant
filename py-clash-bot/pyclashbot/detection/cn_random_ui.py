@@ -33,12 +33,22 @@ def random_ui_is(frame, name):
         return False
     x1, y1, x2, y2 = CN_RANDOM_UI_ROIS[name]
     patch = frame[y1:y2, x1:x2]
-    target = _template(name)
-    return (
-        patch.shape == target.shape
-        and float(np.mean(np.abs(patch.astype(float) - target.astype(float)))) < 22
-        and float(cv2.matchTemplate(patch, target, cv2.TM_CCOEFF_NORMED)[0, 0]) >= 0.93
-    )
+    variants = (name, "collection_tab_20261005") if name == "collection" else (name,)
+    for variant in variants:
+        target = _template(variant)
+        if (
+            patch.shape != target.shape
+            or float(np.mean(np.abs(patch.astype(float) - target.astype(float)))) >= 22
+            or float(cv2.matchTemplate(patch, target, cv2.TM_CCOEFF_NORMED)[0, 0]) < 0.93
+        ):
+            continue
+        if name == "collection":
+            brightness = float(np.mean(cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)))
+            reference_brightness = float(np.mean(cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)))
+            if brightness < reference_brightness * 0.95:
+                continue
+        return True
+    return False
 
 
 def deck_portraits(frame):

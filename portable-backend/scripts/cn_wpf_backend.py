@@ -26,11 +26,12 @@ import psutil
 from pyclashbot.utils.battle_history import BattleHistory, summarize
 from pyclashbot.utils.cn_error_report import ErrorReporter, _safe, list_error_reports
 from pyclashbot.utils.persistence import atomic_write_json
-from pyclashbot.utils.process_ownership import read_process_state, verified_process
+from pyclashbot.utils.process_ownership import ExclusiveFileLock, read_process_state, verified_process
 from pyclashbot.utils.runtime_config import RESOURCE_ROOT
+from pyclashbot.utils.shop_daily_history import ShopDailyHistoryStore
 from scripts.stop_cn_1v1 import stop_bot
 
-COMMANDS = frozenset({"snapshot", "start", "stop", "reports", "shutdown"})
+COMMANDS = frozenset({"snapshot", "start", "stop", "shop_daily", "reports", "shutdown"})
 MAX_REQUEST_BYTES = 64 * 1024
 SHANGHAI = timezone(timedelta(hours=8))
 
@@ -106,6 +107,11 @@ class BackendBridge:
         self.busy = None
         self._operation = None
         self._start_operation = None
+        self._shop_operation = None
+        self.shop_path = self.control.OUTPUTS / "shop-daily-latest.json"
+        self.shop_daily = read_process_state(self.shop_path)
+        self.shop_history = ShopDailyHistoryStore(self.control.TASK_ROOT)
+        self.shop_history_error = None
         self._launch_lock = threading.Lock()
         self._stop_unconfirmed = (
             read_process_state(self.control.PID_FILE.with_suffix(".stop.json")).get("confirmed") is False
@@ -123,6 +129,7 @@ class BackendBridge:
         self._read_existing_history()
         if self.read_only:
             return
+        self._initialize_shop_history()
         self._reporter = ErrorReporter(
             self.control.OUTPUTS / "error-reports",
             adb=self.control.ADB,
@@ -135,6 +142,44 @@ class BackendBridge:
         self._report_thread = threading.Thread(target=self._report_loop, name="wpf-pause-evidence", daemon=True)
         self._history_thread.start()
         self._report_thread.start()
+
+    def _initialize_shop_history(self):
+        """Recover old receipts once; never replay their game actions."""
+        try:
+            imported = self.shop_history.import_results()
+            if imported["errors"]:
+                raise ValueError("; ".join(imported["errors"]))
+            for report in sorted(self.control.OUTPUTS.glob("wpf-desktop-shop-daily-*/ACCEPTANCE.json")):
+                self.shop_history.import_verified_acceptance(report)
+        except (OSError, ValueError, RuntimeError) as error:
+            self.shop_history_error = _safe(str(error))
+            logging.warning("Daily shop history recovery needs review: %s", self.shop_history_error)
+
+    def _shop_display(self, latest):
+        """Old WPF clients show today's totals through their existing fields."""
+        display = copy.deepcopy(latest)
+        try:
+            today = self.shop_history.snapshot()
+        except (OSError, ValueError, RuntimeError) as error:
+            message = _safe(str(error))
+            display.update(counter_scope="latest_run", statistics_error=message)
+            display["message"] = "今日累计统计暂时无法读取，当前显示最近一次操作结果：" + message
+            return display, None, message
+        fields = ("free_claimed", "gold_purchased", "gems_skipped", "gold_spent")
+        display.update({key: today[key] for key in fields})
+        display.update(counter_scope="today", date=today["date"], daily_items=today["items"])
+        display.setdefault(
+            "state", "completed" if len(today["items"]) == 6 else "partial" if today["items"] else "idle"
+        )
+        message = (
+            f"今日累计（{today['date']}）：免费 {today['free_claimed']} 件，"
+            f"金币商品 {today['gold_purchased']} 件，花费 {today['gold_spent']:,} 金币，"
+            f"跳过宝石商品 {today['gems_skipped']} 件。"
+        )
+        if latest.get("message"):
+            message += " 最近一次操作：" + str(latest["message"])
+        display["message"] = message
+        return display, today, self.shop_history_error
 
     def _read_existing_history(self):
         path = self.control.HISTORY_DB
@@ -198,10 +243,12 @@ class BackendBridge:
                 history.close()
 
     def _report_loop(self):
+        reporter = self._reporter
+        assert reporter is not None  # initialize() sets this before starting the report thread.
         while not self.stop_event.is_set():
             try:
                 if self._state_and_owner()[0] == "paused":
-                    self._report_future = self._reporter.capture_pause()
+                    self._report_future = reporter.capture_pause()
             except (OSError, ValueError, RuntimeError) as error:
                 logging.error("WPF pause evidence failed: %s", _safe(str(error)))
             self.stop_event.wait(2)
@@ -272,6 +319,8 @@ class BackendBridge:
             scopes = copy.deepcopy(self.scopes)
             rewards = dict(self.reward_totals)
             history_error = self.history_error
+            shop_daily = copy.deepcopy(self.shop_daily)
+        shop_display, shop_today, shop_history_error = self._shop_display(shop_daily)
         if busy == "start" and state in {"stopped", "paused"}:
             state = "starting"
         elif (
@@ -302,6 +351,10 @@ class BackendBridge:
                 "active_owner_executable": str(owner) if owner else None,
             },
             "busy": busy,
+            "shopDaily": _safe(shop_display),
+            "shopDailyLastRun": _safe(shop_daily),
+            "shopDailyToday": _safe(shop_today),
+            "shop_daily_history_error": shop_history_error,
             "history_error": history_error,
             "error_report_pending": future is not None and not future.done(),
             "bridge_pid": os.getpid(),
@@ -313,21 +366,33 @@ class BackendBridge:
         if self.read_only:
             raise RuntimeError("只读后台连接不能启动或停止机器人")
         with self.lock:
-            if command == "start" and (
+            if command in {"start", "shop_daily"} and (
                 self._stop_unconfirmed
                 or read_process_state(self.control.PID_FILE.with_suffix(".stop.json")).get("confirmed") is False
             ):
                 raise RuntimeError("上次停止尚未确认，请先重试停止任务")
             if self.busy == "stop":
                 raise RuntimeError("任务正在停止，请等待停止完成")
-            if command == "start" and (self.busy or self._start_operation is not None):
-                raise RuntimeError("启动操作尚未完成，请等待当前操作结束")
+            if command in {"start", "shop_daily"} and (
+                self.busy or self._start_operation is not None or self._shop_operation is not None
+            ):
+                raise RuntimeError("当前操作尚未完成，请等待当前操作结束")
+            if command == "shop_daily":
+                if self._state_and_owner()[0] not in {"stopped", "paused"}:
+                    raise RuntimeError("请先停止对战任务，再购买每日精选")
+                if (self.control.TASK_ROOT / "work" / "random-mastery" / "DRAIN").exists():
+                    raise RuntimeError("停止或导航校准请求尚未处理，暂不能购买每日精选")
             operation = {"command": command, "cancel": threading.Event(), "done": threading.Event()}
             if command == "stop" and self._start_operation is not None:
                 self._start_operation["cancel"].set()
                 operation["cancelled_start"] = self._start_operation
             if command == "start":
                 self._start_operation = operation
+            if command == "shop_daily":
+                self._shop_operation = operation
+            if command == "stop" and self._shop_operation is not None:
+                self._shop_operation["cancel"].set()
+                operation["cancelled_shop"] = self._shop_operation
             self._operation, self.busy = operation, command
             return operation
 
@@ -335,6 +400,91 @@ class BackendBridge:
         path = self.control.PID_FILE.with_suffix(".stop.json")
         request = read_process_state(path)
         atomic_write_json(path, {"requested_at_ns": time_ns(), **request, "confirmed": bool(confirmed)})
+
+    def _publish_shop(self, result):
+        value = {**result, "updated_at": updated_at()}
+        atomic_write_json(self.shop_path, value)
+        with self.lock:
+            self.shop_daily = copy.deepcopy(value)
+        try:
+            self.shop_history.observe(value)
+        except (OSError, ValueError, RuntimeError) as error:
+            self.shop_history_error = _safe(str(error))
+            logging.warning("Daily shop receipt history needs review: %s", self.shop_history_error)
+
+    def _run_shop_daily(self, operation):
+        self._publish_shop(
+            {
+                "state": "running",
+                "status": "正在检查每日精选",
+                "message": "正在确认模拟器操作权限。",
+                "free_claimed": 0,
+                "gold_purchased": 0,
+                "gems_skipped": 0,
+                "gold_spent": 0,
+                "items": [],
+            }
+        )
+        try:
+            return self._execute_shop_daily(operation)
+        except Exception as error:
+            with self.lock:
+                progress = copy.deepcopy(self.shop_daily)
+            cancelled = operation["cancel"].is_set()
+            progress.update(
+                state="cancelled" if cancelled else "failed",
+                status="每日精选购买已取消" if cancelled else "每日精选购买已停止",
+                message="每日精选购买已取消。" if cancelled else _safe(str(error)),
+            )
+            self._publish_shop(progress)
+            raise
+
+    def _execute_shop_daily(self, operation):
+        from pyclashbot.bot.cn_1v1_loop import TimedAdbController, _LogAdapter
+        from pyclashbot.bot.cn_shop_daily_state import run_shop_daily
+
+        if operation["cancel"].is_set():
+            raise RuntimeError("每日精选购买已取消")
+        # Use the exact same physical lock as source and frozen battle runners.
+        # Checking the displayed state alone cannot fence another desktop client.
+        with ExclusiveFileLock(self.control.PID_FILE.parent / "cn-runner.lock"):
+            if self._state_and_owner()[0] not in {"stopped", "paused"}:
+                raise RuntimeError("对战任务仍在运行，已取消每日精选购买")
+            evidence = self.control.OUTPUTS / "shop-daily" / datetime.now(SHANGHAI).strftime("%Y%m%d-%H%M%S-%f")
+            evidence.mkdir(parents=True, exist_ok=False)
+            progress: dict[str, object] = {
+                "state": "running",
+                "status": "正在检查每日精选",
+                "message": "正在连接游戏并识别商品。",
+                "free_claimed": 0,
+                "gold_purchased": 0,
+                "gems_skipped": 0,
+                "gold_spent": 0,
+                "items": [],
+                "evidence_dir": str(evidence),
+            }
+            self._publish_shop(progress)
+            try:
+                logger = _LogAdapter(logging.getLogger("shop-daily"))
+                TimedAdbController.adb_path = str(self.control.ADB)
+                emulator = TimedAdbController(logger, device_serial=self.control.SERIAL)
+
+                def publish(result):
+                    progress.update(result)
+                    self._publish_shop(progress)
+
+                result = run_shop_daily(
+                    emulator, logger, cancel_event=operation["cancel"], on_update=publish, evidence_dir=evidence
+                )
+                progress.update(result)
+                self._publish_shop(progress)
+                atomic_write_json(evidence / "result.json", progress)
+                return {"state": self._state_and_owner()[0], "message": progress["message"], "shopDaily": progress}
+            except Exception as error:
+                progress.update(state="failed", status="每日精选购买已停止", message=_safe(str(error)))
+                self._publish_shop(progress)
+                atomic_write_json(evidence / "result.json", progress)
+                raise
 
     def command(self, command, *, operation=None):
         if command == "snapshot":
@@ -347,10 +497,12 @@ class BackendBridge:
                 "message": "后台连接已关闭，机器人状态未改变。",
                 "shutdown": True,
             }
-        if command not in {"start", "stop"}:
+        if command not in {"start", "stop", "shop_daily"}:
             raise ValueError("Unknown backend command")
         operation = operation or self.prepare_control(command)
         try:
+            if command == "shop_daily":
+                return self._run_shop_daily(operation)
             if command == "start" and operation["cancel"].is_set():
                 raise RuntimeError("启动已取消：用户已停止任务")
             state, owner = self._state_and_owner()
@@ -378,6 +530,9 @@ class BackendBridge:
                     raise RuntimeError("启动已取消：用户已停止任务")
             else:
                 cancelled_start = operation.get("cancelled_start")
+                cancelled_shop = operation.get("cancelled_shop")
+                if cancelled_shop is not None and not cancelled_shop["done"].wait(35):
+                    raise RuntimeError("每日精选取消尚未完成，停止状态未确认，请重试停止")
                 with self._launch_lock:
                     pending_watchdog = (cancelled_start or {}).get("watchdog_identity")
                     if pending_watchdog is not None:
@@ -389,9 +544,13 @@ class BackendBridge:
                         message = "机器人已停止；MEmu 和游戏保持打开。"
                     else:
                         message = (
-                            self._stop_existing_owner(owner)
-                            if owner is not None
-                            else self.control.ControlWindow._stop_worker()
+                            "每日精选购买已停止；MEmu 和游戏保持打开。"
+                            if cancelled_shop is not None
+                            else (
+                                self._stop_existing_owner(owner)
+                                if owner is not None
+                                else self.control.ControlWindow._stop_worker()
+                            )
                         )
                 if cancelled_start is not None and not cancelled_start["done"].wait(2):
                     raise RuntimeError("启动取消尚未完成，停止状态未确认，请重试停止")
@@ -427,6 +586,8 @@ class BackendBridge:
                 operation["done"].set()
                 if self._start_operation is operation:
                     self._start_operation = None
+                if self._shop_operation is operation:
+                    self._shop_operation = None
                 if self._operation is operation:
                     self._operation, self.busy = None, None
 
@@ -441,6 +602,8 @@ class BackendBridge:
         with self.lock:
             if self._start_operation is not None:
                 self._start_operation["cancel"].set()
+            if self._shop_operation is not None:
+                self._shop_operation["cancel"].set()
 
 
 def serve(bridge, input_stream, output_stream):
@@ -488,7 +651,7 @@ def serve(bridge, input_stream, output_stream):
             except (ValueError, TypeError) as error:
                 emit(identity, False, error=str(error))
                 continue
-            if command in {"start", "stop"}:
+            if command in {"start", "stop", "shop_daily"}:
                 try:
                     operation = bridge.prepare_control(command)
                 except RuntimeError as error:
@@ -517,6 +680,7 @@ def main():
             raise SystemExit("--data-root requires the installation data directory")
         root = Path(sys.argv[position + 1]).resolve()
         from pyclashbot.utils.runtime_config import distribution_data_root
+
         if root != distribution_data_root():
             raise SystemExit("分享版数据必须保存到当前安装目录的 data 文件夹")
         os.environ["PYCLASHBOT_DATA_ROOT"] = str(root)

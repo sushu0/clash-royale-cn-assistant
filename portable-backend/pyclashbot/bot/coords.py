@@ -38,6 +38,11 @@ CN_567_POINTS = {
     "back": {"left": (165, 460), "right": (253, 460)},
 }
 CN_CLASSIC_MODE_ICON_ROI = (296, 478, 334, 519)
+CN_CLASSIC_MODE_CORE_ROIS = ((300, 485, 324, 504), (302, 505, 323, 517))
+CN_LOBBY_START_BORDER_ROI = (150, 459, 273, 472)
+CN_LOBBY_START_BUTTON_ROI = (150, 459, 273, 530)
+CN_LOBBY_START_FILL_ROIS = ((156, 476, 184, 498), (241, 476, 267, 498))
+CN_LOBBY_START_CONTEXT_ROI = (320, 335, 350, 380)
 CN_567_ALLY_ROI = (45, 190, 374, 470)
 # Conservative interior of the observed 2.5-5 tile rocket annulus. Arena tiles
 # are about 17-18 px; never use the melee/dead-zone placement as air coverage.
@@ -98,6 +103,18 @@ CN_HOG_ENEMY_PRINCESS_TOWER_POINTS = {"left": (115, 130), "right": (303, 130)}
 # attack cannot hit both 36 pixels apart (pilot 10, battle 5).
 CN_HOG_DUAL_LANE_MUSKETEER_POINT = (209, 392)
 CN_POST_WIN_REWARD_TAP = (209, 329)
+CN_PUZZLE_REWARD_ROIS = {
+    "entry_question": (178, 275, 238, 355),
+    "entry_open_label": (168, 574, 253, 601),
+    "reveal_title": (177, 153, 242, 193),
+    "reveal_unlocked": (182, 389, 233, 410),
+}
+CN_PUZZLE_REWARD_SEARCH_ROIS = {
+    "entry_question": (170, 267, 246, 363),
+    "entry_open_label": (166, 572, 255, 603),
+    "reveal_title": (169, 145, 250, 201),
+    "reveal_unlocked": (174, 381, 241, 418),
+}
 CN_HOG_ELITE_ABILITY_ROI = (325, 450, 382, 504)
 CN_HOG_ELITE_ABILITY_TAP = (352, 477)
 CN_HOG_DEEP_MUSKETEER_POINTS = {"left": (152, 431), "right": (267, 431)}
@@ -205,6 +222,63 @@ CN_RANDOM_MASTERY_CLAIM_ROI = (65, 285, 354, 535)
 CN_RANDOM_MASTERY_FOOTER_ROI = (68, 472, 331, 520)
 CN_RANDOM_CLAIM_ALL_BUTTON_ROI = (170, 476, 249, 505)
 CN_RANDOM_CLAIM_ALL = (209, 491)
+# Tencent daily selections, measured on the live 419x633 shop frame.
+CN_SHOP_DAILY_COLUMNS = (70, 209, 348)
+CN_SHOP_DAILY_VISIBLE_ROWS = (260, 450)
+CN_SHOP_DAILY_PROBE_GOLD = (209, 245)
+CN_SHOP_DAILY_FREE_CONFIRM = (209, 434)
+CN_SHOP_DAILY_FREE_CANCEL = (352, 134)
+CN_SHOP_DAILY_FREE_GOLD_CONFIRM = (209, 399)
+CN_SHOP_DAILY_FREE_GOLD_CANCEL = (352, 214)
+CN_SHOP_DAILY_SCROLL_TO_HEADER = (209, 240, 209, 390)
+CN_SHOP_DAILY_SCROLL_DOWN = (209, 390, 209, 240)
+CN_SHOP_DAILY_SCROLL_MS = 500
+CN_SHOP_DAILY_SCROLL_FINE_DOWN = (209, 390, 209, 340)
+CN_SHOP_DAILY_SCROLL_FINE_UP = (209, 340, 209, 390)
+CN_SHOP_DAILY_SCROLL_FINE_MS = 1000
+CN_SHOP_DAILY_CONTENT_ROI = (0, 174, 419, 572)
+CN_SHOP_DAILY_HEADER_ROI = (110, 174, 300, 550)
+CN_SHOP_DAILY_COLUMN_BOUNDS = ((15, 124), (155, 264), (295, 404))
+CN_SHOP_DAILY_CARD_HEIGHT = 212
+CN_SHOP_DAILY_ROW_GAP = 9
+CN_SHOP_GOLD_BALANCE_ROI = (240, 6, 302, 28)
+CN_SHOP_DAILY_CONFIRM = (210, 438)
+CN_SHOP_DAILY_CANCEL = (351, 202)
+CN_SHOP_DAILY_REWARD_CONTINUE = (209, 530)
+CN_SHOP_DAILY_FIRST_BOTTOM_OFFSET = 258
+CN_SHOP_DAILY_FIXED_ROIS = {
+    "offers_tab": (35, 110, 140, 166),
+    "shop_label": (50, 609, 94, 633),
+    "popup_close": (336, 187, 370, 220),
+    "popup_corner": (43, 180, 73, 215),
+    "popup_card_label": (192, 241, 230, 266),
+    "popup_button_border": (164, 414, 186, 462),
+    "popup_payment": (170, 418, 249, 455),
+    "popup_price": (171, 420, 249, 454),
+    "free_popup_title": (161, 118, 259, 148),
+    "free_popup_close": (336, 120, 370, 152),
+    "free_popup_corner": (43, 114, 76, 148),
+    "free_popup_button_border": (164, 410, 179, 457),
+    "free_popup_payment": (173, 415, 246, 452),
+    "free_gold_popup_title": (145, 204, 275, 224),
+    "free_gold_popup_close": (341, 202, 364, 225),
+    "free_gold_popup_corner": (47, 197, 65, 227),
+    "free_gold_popup_bag": (170, 287, 247, 355),
+    "free_gold_popup_button_border": (166, 378, 177, 420),
+    "free_gold_popup_payment": (181, 386, 240, 414),
+    "insufficient_gold": (40, 174, 378, 525),
+    "reward_title": (40, 0, 380, 220),
+    "reward_floor": (10, 400, 409, 633),
+    "reward_chest_background": (289, 0, 416, 109),
+    "reward_chest_core": (135, 400, 271, 469),
+    "reward_chest_footer": (80, 536, 336, 633),
+    "reward_complete_core": (135, 219, 278, 291),
+    "reward_complete_label": (171, 300, 250, 333),
+    "reward_complete_background": (289, 0, 416, 109),
+    "reward_complete_footer": (80, 536, 336, 633),
+    "popup_purchased_label": (162, 418, 253, 456),
+    "popup_purchased_check": (310, 410, 365, 457),
+}
 CN_RANDOM_REWARD_CONTINUE = (209, 600)
 CN_RANDOM_REWARD_AMOUNT_ROI = (140, 320, 280, 354)
 CN_RANDOM_REWARD_QUANTITY_SEARCH_ROI = (133, 313, 287, 361)
@@ -351,6 +425,8 @@ CN_DAILY_GIFT_RICH_LABEL_ROI = (135, 170, 285, 215)
 CN_DAILY_GIFT_LUCK_LABEL_ROI = (135, 307, 285, 352)
 CN_DAILY_GIFT_COSMETIC_LABEL_ROI = (135, 440, 285, 484)
 CN_DAILY_GIFT_COSMETIC_PANEL_ROI = (103, 382, 311, 485)
+CN_DAILY_GIFT_EMOTE_TITLE_ROI = (177, 132, 244, 170)
+CN_DAILY_GIFT_EMOTE_ICON_ROI = (164, 229, 256, 308)
 
 # --- Fight: champion ability ---
 CHAMPION_ABILITY_DISMISS_COORD = (330, 460)
@@ -410,6 +486,8 @@ CN_PAGE_GOBLIN_PREVIEW_CLOSE = (210, 616)
 CN_PAGE_CROWN_TOOLTIP_CLOSE = (210, 424)
 CN_PAGE_KING_LEVEL_CLOSE = (354, 33)
 CN_PAGE_CLASSIC_INFO_CLOSE = (345, 253)
+CN_PAGE_KING_SKIN_PROMOTION_CLOSE = (352, 89)
+CN_PAGE_GLOBAL_CHALLENGE_PROMOTION_CLOSE = (388, 65)
 CN_PAGE_DAILY_GIFT_RECEIVED_CLOSE = (210, 606)
 CN_PAGE_DAILY_GIFT_INFO_TOGGLE = (352, 67)
 CN_PAGE_NEWS_VIDEO_CLOSE = (381, 64)
@@ -470,6 +548,8 @@ CN_PAGE_RETURN_COORDS = {
     "crown_tooltip_close": CN_PAGE_CROWN_TOOLTIP_CLOSE,
     "king_level_close": CN_PAGE_KING_LEVEL_CLOSE,
     "classic_info_close": CN_PAGE_CLASSIC_INFO_CLOSE,
+    "king_skin_promotion_close": CN_PAGE_KING_SKIN_PROMOTION_CLOSE,
+    "global_challenge_promotion_close": CN_PAGE_GLOBAL_CHALLENGE_PROMOTION_CLOSE,
     "daily_gift_received_close": CN_PAGE_DAILY_GIFT_RECEIVED_CLOSE,
     "daily_gift_info_toggle": CN_PAGE_DAILY_GIFT_INFO_TOGGLE,
     "news_video_close": CN_PAGE_NEWS_VIDEO_CLOSE,
@@ -529,6 +609,7 @@ CN_PAGE_ROIS = {
     "shop_nav_selected": (42, 572, 99, 627),
     "shop_nav_selected_search": (25, 552, 120, 633),
     "shop_category_header": (40, 111, 379, 166),
+    "shop_label": (50, 609, 94, 633),
     "shop_info_title": (172, 147, 246, 172),
     "shop_info_close": (357, 152, 372, 166),
     "offer_title_search": (140, 130, 280, 260),
@@ -657,6 +738,12 @@ CN_PAGE_ROIS = {
     "king_level_close": (342, 20, 367, 46),
     "classic_info_title": (171, 243, 251, 268),
     "classic_info_close": (332, 239, 359, 267),
+    "king_skin_promotion_title": (130, 332, 289, 357),
+    "king_skin_promotion_role": (79, 112, 105, 182),
+    "king_skin_promotion_close": (339, 76, 365, 102),
+    "global_challenge_promotion_title": (147, 52, 272, 165),
+    "global_challenge_promotion_subtitle": (117, 224, 293, 243),
+    "global_challenge_promotion_close": (376, 53, 400, 77),
     "daily_gift_received_title": (115, 43, 299, 71),
     "daily_gift_received_body": (172, 254, 316, 297),
     "daily_gift_received_confirm": (167, 587, 253, 627),

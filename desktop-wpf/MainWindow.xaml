@@ -54,8 +54,11 @@
                     <Border Background="{Binding StateColor}" CornerRadius="12,0,0,12"/>
                     <Grid Grid.Column="1" Margin="15,12"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                       <StackPanel><TextBlock Text="{Binding Phase}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="{Binding PhaseDescription}" Style="{StaticResource Caption}" Margin="0,6,0,0"/></StackPanel>
-                      <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                      <StackPanel Grid.Column="1" Width="208" Margin="14,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="随机卡组 · 无限对战" FontSize="11" Foreground="#4F6FA5" HorizontalAlignment="Right" ToolTip="{Binding SessionText}"/>
+                        <Button Content="{Binding ShopButtonText}" Click="ShopDailyClick" IsEnabled="{Binding CanPurchaseDaily}" ToolTip="{Binding ShopHint}" AutomationProperties.AutomationId="PurchaseDailyShop" AutomationProperties.HelpText="{Binding ShopHint}" Padding="10,8" Margin="0,8,0,0" Background="#EDF6F1" BorderBrush="#BBDCCB" Foreground="#26744E"/>
+                        <TextBlock Text="{Binding ShopStatus}" FontSize="11" Foreground="#4F6FA5" HorizontalAlignment="Right" Margin="0,6,0,0" ToolTip="{Binding ShopMessage}"/>
+                        <TextBlock Text="{Binding ShopSummary}" Style="{StaticResource Caption}" FontSize="11" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,4,0,0" Visibility="{Binding HasShopSummary,Converter={StaticResource BoolVisibility}}" ToolTip="{Binding ShopMessage}"/>
                         <Button Content="查看校准说明" Click="CalibrationInfoClick" Style="{StaticResource QuietButton}" Padding="6,4" Margin="0,5,0,0" Foreground="#946321" Visibility="{Binding HasCalibrationRequest,Converter={StaticResource BoolVisibility}}"/>
                         <Button Content="查看暂停报告" Click="LatestReportClick" Style="{StaticResource QuietButton}" Padding="6,4" Margin="0,5,0,0" Foreground="#AC4654" Visibility="{Binding HasPauseReport,Converter={StaticResource BoolVisibility}}"/>
                       </StackPanel>

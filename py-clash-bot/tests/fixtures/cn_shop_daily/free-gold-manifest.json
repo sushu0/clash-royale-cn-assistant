@@ -1,0 +1,83 @@
+{
+  "source_run": "D:\\codex\\CodexWork\\clash\\outputs\\shop-daily\\20261007-003105-370669",
+  "screenshots": [
+    {
+      "source": "D:\\codex\\CodexWork\\clash\\outputs\\shop-daily\\20261007-003105-370669\\004-transaction.png",
+      "fixture": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\tests\\fixtures\\cn_shop_daily\\live-free-gold-open.png",
+      "sha256": "85a1b8734b885848c38a30d888ab8c51ff069964fbc0577f3cf744eff2173d0a"
+    },
+    {
+      "source": "D:\\codex\\CodexWork\\clash\\outputs\\shop-daily\\20261007-003105-370669\\041-transaction.png",
+      "fixture": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\tests\\fixtures\\cn_shop_daily\\live-free-gold-open-fresh.png",
+      "sha256": "1d0d6401268b04147baa269f5914de3939bd92d1907f4ecd3b713af91cc403fb"
+    }
+  ],
+  "templates": [
+    {
+      "name": "free_gold_popup_title",
+      "roi": [
+        145,
+        204,
+        275,
+        224
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_title.png",
+      "sha256": "6a91a39c2635270c5b272f151bbd94bd2c9ca689dba19af64f079cf0b3713da5"
+    },
+    {
+      "name": "free_gold_popup_close",
+      "roi": [
+        341,
+        202,
+        364,
+        225
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_close.png",
+      "sha256": "107420a678c4aaf80b735cf0120a3e2a1c7647c1780e283fbfd7f2319722fe70"
+    },
+    {
+      "name": "free_gold_popup_corner",
+      "roi": [
+        47,
+        197,
+        65,
+        227
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_corner.png",
+      "sha256": "0cae7896752c9cc8d1c672fbe6f1030a5a94b366e130c74ed98988e9002542d5"
+    },
+    {
+      "name": "free_gold_popup_bag",
+      "roi": [
+        170,
+        287,
+        247,
+        355
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_bag.png",
+      "sha256": "87582d63dbe2e6bcbf8dcbcd1e8851a445a5f229d38c78ec3c64d3832f3f267b"
+    },
+    {
+      "name": "free_gold_popup_button_border",
+      "roi": [
+        166,
+        378,
+        177,
+        420
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_button_border.png",
+      "sha256": "793d9dbed232b9f56c7083c981ec601aff6951beb2f568c4c67ef0656ca51df3"
+    },
+    {
+      "name": "free_gold_popup_payment",
+      "roi": [
+        181,
+        386,
+        240,
+        414
+      ],
+      "path": "D:\\codex\\CodexWork\\clash\\py-clash-bot\\pyclashbot\\detection\\reference_images\\cn_shop_daily\\free_gold_popup_payment.png",
+      "sha256": "a1a94f73b2d040e49ab7e6cc92062303817f736f4e9549ed26cfea2f1369225d"
+    }
+  ]
+}

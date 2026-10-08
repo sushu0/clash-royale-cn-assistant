@@ -482,6 +482,8 @@ MAIN_PAGE_CHECKS = {
 
 NAV_CLICKS: dict[tuple[str, str], list[tuple[int, int]]] = {
     (PAGE_CN_MAIN, PAGE_CN_CARD): [CARD_PAGE_ICON_FROM_CLASH_MAIN],
+    (PAGE_CN_MAIN, PAGE_SHOP): [BOTTOM_NAV_SHOP_TAB_COORD],
+    (PAGE_SHOP, PAGE_CN_MAIN): [BOTTOM_NAV_MAIN_TAB_FROM_SHOP_COORD],
     (PAGE_CN_CARD, PAGE_CN_MAIN): [BOTTOM_NAV_MAIN_TAB_FROM_CARD_COORD],
     (PAGE_CN_COLLECTION, PAGE_CN_CARD): [CN_RANDOM_DECK_TAB],
     (PAGE_MAIN, PAGE_CARD): [BOTTOM_NAV_CARD_TAB_FROM_MAIN_COORD],
@@ -553,6 +555,7 @@ def recover_cn_page_once(
 CN_MODE_DESTINATION_OBSERVATIONS = 10
 CN_MODE_DESTINATION_INTERVAL = 0.4
 CN_MODE_STABLE_OBSERVATIONS = 3
+CN_MODE_MAX_DIRECTIONAL_SWIPES = 4
 
 
 def _valid_cn_frame(frame):
@@ -592,6 +595,7 @@ def navigate_cn_classic_1v1(emulator, logger: NavigationLogger, vision, max_step
     frame = emulator.screenshot()
     reverse = False
     no_progress = 0
+    directional_swipes = 0
     for _ in range(max_steps):
         if not _valid_cn_frame(frame):
             return False
@@ -618,16 +622,23 @@ def navigate_cn_classic_1v1(emulator, logger: NavigationLogger, vision, max_step
             emulator.click(*point)
             return _wait_for_cn_mode_destination(emulator, vision, "lobby") is not None
         if cn_mode_menu_at_top(frame):
+            if reverse:
+                directional_swipes = 0
             reverse = False
             no_progress = 0
-        if no_progress >= 2:
+        # Animated row artwork can change even after scrolling reaches the
+        # bottom. Bound each scan direction independently of that pixel change
+        # so the clipped Classic row is revisited within the input budget.
+        if no_progress >= 2 or directional_swipes >= CN_MODE_MAX_DIRECTIONAL_SWIPES:
             reverse = not reverse
             no_progress = 0
+            directional_swipes = 0
         before = frame
         if reverse:
             emulator.swipe(*CN_CLASSIC_MODE_SCROLL_TO_TOP)
         else:
             emulator.swipe(*CN_CLASSIC_MODE_SCROLL_TO_BOTTOM)
+        directional_swipes += 1
         time.sleep(0.8)
         frame = emulator.screenshot()
         if _valid_cn_frame(frame):
